@@ -1,0 +1,25 @@
+{
+  "cwd": "P:\\projects\\node\\rywlatest",
+  "type": [
+    "capacitor"
+  ],
+  "name": "Rayongwit Latest",
+  "pkg": "xyz.devpixels.rywlatest",
+  "framework": "vue",
+  "template": "tabs",
+  "cssPreProcessor": false,
+  "bundler": "vite",
+  "capacitor": {
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "theming": {
+    "customColor": true,
+    "color": "#235B95",
+    "darkMode": false,
+    "iconFonts": true
+  },
+  "customBuild": false
+}
