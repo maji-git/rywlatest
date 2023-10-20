@@ -2,11 +2,17 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
+include ':capacitor-community-file-opener'
+project(':capacitor-community-file-opener').projectDir = new File('../node_modules/@capacitor-community/file-opener/android')
+
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
 
 include ':capacitor-browser'
 project(':capacitor-browser').projectDir = new File('../node_modules/@capacitor/browser/android')
+
+include ':capacitor-filesystem'
+project(':capacitor-filesystem').projectDir = new File('../node_modules/@capacitor/filesystem/android')
 
 include ':capacitor-keyboard'
 project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor/keyboard/android')
@@ -16,3 +22,6 @@ project(':capacitor-splash-screen').projectDir = new File('../node_modules/@capa
 
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
+
+include ':capacitor-blob-writer'
+project(':capacitor-blob-writer').projectDir = new File('../node_modules/capacitor-blob-writer/android')

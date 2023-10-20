@@ -1,19 +1,112 @@
 import { CapacitorHttp } from '@capacitor/core';
 import store from '@/js/store.js';
+import { f7 } from 'framework7-vue';
+import html2pdf from 'html2pdf.js'
+import { resolveImg } from '../utils/img';
 
 const url = "https://rayongwit.ac.th/student/index.php"
 const stdPrintUrl = "https://rayongwit.ac.th/student/print.php"
 
-export async function getInfo(username, password) {
-    const res = await CapacitorHttp.post({
+export async function reauthenticate() {
+    if (store.state.authData.username == "" || store.state.authData.password == "") {
+        f7.loginScreen.open("#info-register-screen")
+        return
+    }
+
+    await CapacitorHttp.post({
         url: url,
-        data: `username=${username}&password=${password}`,
+        data: `username=${store.state.authData.username}&password=${store.state.authData.password}`,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
     });
 
-    let sessionID = document.cookie + "; path=/"
+    if (store.state.userData == null) {
+        store.state.userData = {}
+    }
+
+    store.state.userData['sessionID'] = document.cookie + "; path=/"
+
+    return store.state.userData['sessionID']
+}
+
+export async function getStdFixPDF() {
+    const sessionID = await reauthenticate()
+
+    if (sessionID) {
+        const prog = f7.dialog.progress("กำลังประมวลผล...", 1)
+        prog.setText("กำลังโหลดหน้า stdPrint...")
+        prog.open()
+        prog.setProgress(0)
+
+        const stdPrint = await CapacitorHttp.get({
+            url: stdPrintUrl,
+            headers: {
+                "Cookie": sessionID
+            }
+        });
+
+        const tempElement = document.createElement("div")
+        tempElement.innerHTML = `${stdPrint.data.replace("../", "https://rayongwit.ac.th/")}<style>* {font-family: Arial !important;}</style>`
+
+        let i = 0
+        let queryAll = tempElement.querySelectorAll("img")
+
+        prog.setText("กำลังโหลดรูปภาพ...")
+
+        for (const imgs of queryAll) {
+            i++
+            prog.setProgress((i / queryAll.length) * 100)
+
+            const targetURL = imgs.src.replace("http://192.168.1.170:5173/", "https://rayongwit.ac.th/").replace("../", "https://rayongwit.ac.th/")
+            imgs.setAttribute("onerror", "this.src=&quot;https://rayongwit.ac.th/ticket/pic/no-pic.JPG&quot;;")
+
+            const resolved = await resolveImg(targetURL)
+            imgs.src = resolved
+        }
+        
+        // Format Text
+        for (const p of tempElement.querySelectorAll("p")) {
+            p.style.fontSize = "10.72px"
+        }
+
+        for (const p of tempElement.querySelectorAll("strong")) {
+            p.style.fontSize = "10.72px"
+        }
+
+        for (const p of tempElement.querySelectorAll("td")) {
+            p.style.fontSize = "14px"
+        }
+
+        tempElement.querySelector(".navbar").remove()
+        tempElement.querySelector("button[onclick='window.print()']").remove()        
+
+        console.log(tempElement.innerHTML)
+
+        const opt = {
+            margin: 0.3,
+            filename: "stdfix.pdf",
+            image: { type: "jpeg", quality: 1 },
+            html2canvas: { scale: 2, useCORS: true, dpi: 300 },
+            jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
+        };
+
+        prog.setProgress(100,100)
+
+        prog.setText("กำลังส่งออกเป็น PDF... ใกล้เสร็จแล้ว :D")
+
+        const data = await html2pdf().set(opt).from(tempElement).toPdf().output('blob')
+
+        prog.close()
+
+        return data
+    }
+}
+
+export async function getInfo(username, password) {
+    store.state.authData.username = username
+    store.state.authData.password = password
+    const sessionID = await reauthenticate()
 
     const stdPrint = await CapacitorHttp.get({
         url: stdPrintUrl,

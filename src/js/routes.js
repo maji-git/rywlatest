@@ -11,6 +11,7 @@ import NotFoundPage from '../pages/404.vue';
 import NewsPage from '../pages/news.vue';
 import EventsPage from '../pages/events.vue';
 import WatpolPage from '../pages/watpol.vue';
+import BehaviourPage from '../pages/behaviour.vue';
 
 var routes = [
   {
@@ -28,6 +29,10 @@ var routes = [
   {
     path: '/watpol/',
     component: WatpolPage,
+  },
+  {
+    path: '/behaviour/',
+    component: BehaviourPage,
   },
   {
     path: '/about/',

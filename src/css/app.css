@@ -1,6 +1,16 @@
 /* Your app custom styles here */
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+@import url('./bootstrap-4-utilities.min.css');
 
 * {
-    font-family: var(--f7-font-family), 'Noto Sans Thai';
+    font-family: 'Noto Sans Thai';
+}
+
+.img-field {
+    max-width: 100%;
+    height: auto;
+}
+
+.rounded {
+    border-radius: 0.5em;
 }

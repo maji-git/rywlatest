@@ -5,6 +5,10 @@ import { f7 } from 'framework7-vue';
 const store = createStore({
   state: {
     userData: null,
+    authData: {
+      username: "",
+      password: ""
+    },
     classPlans: {
       first: {
         ["ห้องเรียนพิเศษวิทยาศาสตร์ ตามแนวทาง สสวท. และ สอวน."]: [1,2],
@@ -39,6 +43,13 @@ const store = createStore({
         return null
       }
       return state.userData;
+    },
+    sessionID({ state }) {
+      if (state.userData == null) {
+        f7.loginScreen.open("#info-register-screen")
+        return null
+      }
+      return state.userData.sessionID;
     }
   },
   actions: {
