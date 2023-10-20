@@ -18,16 +18,12 @@
       <f7-toolbar tabbar icons bottom>
         <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
-        <f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>
+          <f7-link tab-link="#view-behavior" icon-ios="f7:face" icon-md="material:face" text="ประวัติพฤติกรรม"></f7-link>
+          <f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>
       </f7-toolbar>
 
-      <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
-
-      <!-- Catalog View -->
-      <f7-view id="view-catalog" name="catalog" tab url="/catalog/"></f7-view>
-
-      <!-- Settings View -->
+      <f7-view id="view-behavior" name="behaviour" tab url="/behavior/"></f7-view>
       <f7-view id="view-settings" name="settings" tab url="/settings/"></f7-view>
 
     </f7-views>
@@ -54,16 +50,15 @@
         <f7-page login-screen>
           <f7-login-screen-title>ลงชื่อเข้าใช้</f7-login-screen-title>
           <f7-list form>
+            <f7-list-input label="รหัสนักเรียน" type="number" placeholder="00000"
+              v-model:value="studentID"></f7-list-input>
 
-            <f7-list-input label="รหัสนักเรียน" type="text" placeholder="00000" v-model:value="studentID"></f7-list-input>
-
-            <f7-list-input label="รหัสบัตรประชาชน 13 หลัก" type="text" placeholder="0000000000000"
+            <f7-list-input label="รหัสบัตรประชาชน 13 หลัก" type="number" placeholder="0000000000000"
               v-model:value="cardID"></f7-list-input>
-
-            <f7-list-input label="วันเกิด" type="date" placeholder="" v-model:value="birthdate"></f7-list-input>
           </f7-list>
           <f7-list>
-            <f7-list-button title="ค้นหา" @click="alertLoginData"></f7-list-button>
+            <f7-list-button title="ค้นหา" @click="infoSubmitted"></f7-list-button>
+            <f7-list-button title="ปิด" @click="closeInfoRegister"></f7-list-button>
             <f7-block-footer>
               ข้อมูลนี้จะนำไปใช้ในการลงชื่อเข้าใช้ต่างๆ จะไม่มีการส่งข้อมูลออกทั้งสิ้น
             </f7-block-footer>
@@ -80,43 +75,56 @@ import { f7, f7ready } from 'framework7-vue';
 import { getDevice } from 'framework7/lite-bundle';
 import capacitorApp from '../js/capacitor-app.js';
 import routes from '../js/routes.js';
-import store from '../js/store';
+import store from '@/js/store.js';
+import { getInfo } from "@/js/lib/stdsession.js"
 
 const device = getDevice();
-// Framework7 Parameters
 const f7params = {
-  name: 'Rayongwit Latest', // App name
-  theme: 'auto', // Automatic theme detection
+  name: 'ระยองวิทย์ล่าสุด',
+  theme: 'auto',
   colors: {
     primary: '#235B95',
   },
 
-  // App store
   store: store,
-  // App routes
   routes: routes,
-
-
-  // Input settings
   input: {
     scrollIntoViewOnFocus: device.capacitor,
     scrollIntoViewCentered: device.capacitor,
   },
-  // Capacitor Statusbar settings
   statusbar: {
     iosOverlaysWebView: true,
     androidOverlaysWebView: false,
   },
 };
-// Login screen data
+
 const studentID = ref('');
 const cardID = ref('');
-const birthdate = ref('');
 
-const alertLoginData = () => {
-  f7.dialog.alert('Username: ' + studentID.value + '<br>Password: ' + cardID.value + '<br>Birthdate: ' + birthdate.value, () => {
-    f7.loginScreen.close();
-  });
+const infoSubmitted = async () => {
+  const preloadDialog = f7.dialog.preloader("กำลังค้นหา...")
+  const studentData = await getInfo(studentID.value, cardID.value)
+
+  preloadDialog.close()
+
+  if (studentData['firstname'] != "") {
+    f7.dialog.confirm(`คุณใช่ ${studentData.firstname} ${studentData.surname} จากห้อง ${studentData.mathayom}/${studentData.room} หรือไม่?`, () => {
+      f7.toast.create({ text: "บันทึกข้อมูลเสร็จสิ้น!", closeTimeout: 2000, closeButton: true }).open()
+      store.state.userData = studentData
+
+      f7.loginScreen.close()
+    }, () => {
+      f7.loginScreen.close()
+    });
+  } else {
+    f7.dialog.alert('ไม่มีข้อมูลเกี่ยวกับเลขประจำตัวนี้' + studentID.value, () => {
+      f7.loginScreen.close()
+    });
+  }
+}
+
+const closeInfoRegister = () => {
+  f7.loginScreen.close()
 }
 
 onMounted(() => {
