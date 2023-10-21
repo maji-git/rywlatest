@@ -78,8 +78,9 @@ const f7params = {
     scrollIntoViewCentered: device.capacitor,
   },
   statusbar: {
-    iosOverlaysWebView: true,
-    androidOverlaysWebView: false,
+    enabled: true,
+    androidBackgroundColor: "#EAF1F9",
+    iosBackgroundColor: "#EAF1F9",
   },
 };
 
