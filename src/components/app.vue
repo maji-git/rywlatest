@@ -18,12 +18,14 @@
       <f7-toolbar tabbar icons bottom>
         <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
-          <f7-link tab-link="#view-behavior" icon-ios="f7:face" icon-md="material:face" text="ประวัติพฤติกรรม"></f7-link>
+          <f7-link tab-link="#view-behavior" icon-ios="f7:face" icon-md="material:face" text="คะแนนพฤติกรรม"></f7-link>
+          <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
           <f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>
       </f7-toolbar>
 
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
       <f7-view id="view-behavior" name="behaviour" tab url="/behaviour/"></f7-view>
+      <f7-view id="view-docs" name="behaviour" tab url="/docs/"></f7-view>
       <f7-view id="view-settings" name="settings" tab url="/settings/"></f7-view>
 
     </f7-views>
@@ -59,11 +61,11 @@ import { getDevice } from 'framework7/lite-bundle';
 import capacitorApp from '../js/capacitor-app.js';
 import routes from '../js/routes.js';
 import store from '@/js/store.js';
-import { getInfo } from "@/js/lib/stdsession.js"
+import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthState } from "@/js/lib/stdsession.js"
 
 const device = getDevice();
 const f7params = {
-  name: 'ระยองวิทย์ล่าสุด',
+  name: 'คือ...!!!',
   theme: 'auto',
   colors: {
     primary: '#235B95',
@@ -86,7 +88,8 @@ const cardID = ref('');
 
 const infoSubmitted = async () => {
   const preloadDialog = f7.dialog.preloader("กำลังค้นหา...")
-  const studentData = await getInfo(studentID.value, cardID.value)
+  setToState(studentID.value, cardID.value)
+  const studentData = await getInfo()
 
   preloadDialog.close()
 
@@ -94,10 +97,11 @@ const infoSubmitted = async () => {
     f7.dialog.confirm(`คุณใช่ ${studentData.firstname} ${studentData.surname} จากห้อง ${studentData.mathayom}/${studentData.room} หรือไม่?`, () => {
       f7.toast.create({ text: "บันทึกข้อมูลเสร็จสิ้น!", closeTimeout: 2000, closeButton: true }).open()
       store.state.userData = studentData
+      saveToPreferences()
 
       f7.loginScreen.close()
     }, () => {
-      f7.loginScreen.close()
+      clearAuthState()
     });
   } else {
     f7.dialog.alert('ไม่มีข้อมูลเกี่ยวกับเลขประจำตัวนี้' + studentID.value, () => {
@@ -112,12 +116,11 @@ const closeInfoRegister = () => {
 
 onMounted(() => {
   f7ready(() => {
-
-    // Init capacitor APIs (see capacitor-app.js)
     if (device.capacitor) {
       capacitorApp.init(f7);
     }
-    // Call F7 APIs here
+
+    loadFromPreferences()
   });
 });
 </script>

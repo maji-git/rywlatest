@@ -3,9 +3,11 @@ import store from '@/js/store.js';
 import { f7 } from 'framework7-vue';
 import html2pdf from 'html2pdf.js'
 import { resolveImg } from '../utils/img';
+import { Preferences } from '@capacitor/preferences';
 
 const url = "https://rayongwit.ac.th/student/index.php"
 const stdPrintUrl = "https://rayongwit.ac.th/student/print.php"
+const stdHistoryUrl = "https://rayongwit.ac.th/student/stdhistory.php"
 
 export async function reauthenticate() {
     if (store.state.authData.username == "" || store.state.authData.password == "") {
@@ -64,7 +66,7 @@ export async function getStdFixPDF() {
             const resolved = await resolveImg(targetURL)
             imgs.src = resolved
         }
-        
+
         // Format Text
         for (const p of tempElement.querySelectorAll("p")) {
             p.style.fontSize = "10.72px"
@@ -79,7 +81,7 @@ export async function getStdFixPDF() {
         }
 
         tempElement.querySelector(".navbar").remove()
-        tempElement.querySelector("button[onclick='window.print()']").remove()        
+        tempElement.querySelector("button[onclick='window.print()']").remove()
 
         console.log(tempElement.innerHTML)
 
@@ -91,7 +93,7 @@ export async function getStdFixPDF() {
             jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
         };
 
-        prog.setProgress(100,100)
+        prog.setProgress(100, 100)
 
         prog.setText("กำลังส่งออกเป็น PDF... ใกล้เสร็จแล้ว :D")
 
@@ -103,9 +105,42 @@ export async function getStdFixPDF() {
     }
 }
 
-export async function getInfo(username, password) {
-    store.state.authData.username = username
-    store.state.authData.password = password
+export async function getBehaviourData() {
+    const sessionID = await reauthenticate()
+
+    const stdPrint = await CapacitorHttp.get({
+        url: stdHistoryUrl,
+        headers: {
+            "Cookie": sessionID
+        }
+    });
+    const parser = new DOMParser()
+    const dom = parser.parseFromString(stdPrint.data, "text/html")
+    const history = []
+
+    //let dom = document
+    for (const trs of dom.querySelectorAll("tbody tr")) {
+        const tds = trs.querySelectorAll("td")
+        if (tds.length > 4) {
+            history.push({
+                index: parseInt(tds[0]?.textContent),
+                behaviour: tds[1]?.textContent,
+                consequence: tds[2]?.textContent,
+                date: tds[3]?.textContent,
+                reporter: tds[4]?.textContent,
+                evidence: tds[5]?.querySelector("a")?.getAttribute("href")?.replace("../", "https://rayongwit.ac.th/"),
+                comment: tds[6]?.textContent,
+            })
+        }
+    }
+
+    return {
+        status: dom.querySelector("h5:nth-child(3) strong p:nth-child(3)").textContent,
+        history: history
+    }
+}
+
+export async function getInfo() {
     const sessionID = await reauthenticate()
 
     const stdPrint = await CapacitorHttp.get({
@@ -176,21 +211,46 @@ export async function getInfo(username, password) {
         }
     }
 
-    console.log(classPlan)
-
     const result = {
         sessionID: sessionID,
-        headshot: "https://rayongwit.ac.th/ticket/pic/" + username + "s.JPG",
+        headshot: "https://rayongwit.ac.th/ticket/pic/" + store.state.authData.username + "s.JPG",
         firstname: realname,
         surname: surname,
         mathayom: mathayom,
         room: room,
         no: studentNumber,
-        studentID: username,
+        studentID: store.state.authData.username,
         classPlan: classPlan,
         classTeachers: teachers,
-        nationalID: password
+        nationalID: store.state.authData.password
     }
 
     return result
+}
+
+export async function setToState(username, password) {
+    store.state.authData.username = username
+    store.state.authData.password = password
+}
+
+export async function clearAuthState() {
+    store.state.authData.username = ""
+    store.state.authData.password = ""
+}
+
+export async function saveToPreferences() {
+    await Preferences.set({
+        key: 'loginData',
+        value: JSON.stringify(store.state.authData)
+    });
+}
+
+export async function loadFromPreferences() {
+    const loginDB = await Preferences.get({ key: 'loginData' });
+
+    if (loginDB.value) {
+        const loginData = JSON.parse(loginDB.value)
+        store.state.authData = loginData
+        store.state.userData = await getInfo()
+    }
 }

@@ -17,6 +17,7 @@ import '../css/app.css';
 
 // Import App Component
 import App from '../components/app.vue';
+import store from "./store.js"
 
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
@@ -28,6 +29,8 @@ const app = createApp(App);
 registerComponents(app);
 
 StatusBar.setStyle({ style: Style.Dark });
+
+console.log(store)
 
 // Mount the app
 app.mount('#app');

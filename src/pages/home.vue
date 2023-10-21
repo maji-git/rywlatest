@@ -5,7 +5,9 @@
         <f7-link icon-ios="f7:menu" icon-md="material:menu" panel-open="left"></f7-link>
       </f7-nav-left>
       <f7-nav-title sliding>RYW Latest</f7-nav-title>
-      <f7-nav-title-large>RYW Latest</f7-nav-title-large>
+      <f7-nav-title-large>
+        <img src="@/assets/logo-txt.png" class="img-fluid" height="80">
+      </f7-nav-title-large>
     </f7-navbar>
 
     <f7-block>

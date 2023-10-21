@@ -1,9 +1,9 @@
 <template>
-    <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData">
+    <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
         <div class="text-align-center">
             <h4>คะแนนพฤติกรรม</h4>
-            <f7-gauge type="circle" value="100" size="300" border-color="#2196f3" border-width="5" value-text="0"
-                value-font-size="100" value-text-color="#2196f3" label-text="ไม่มีคะแนนพฤติกรรม" />
+            <f7-gauge type="circle" value="100" size="300" :border-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" border-width="7" :value-text="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? ':D' : '!'"
+                value-font-size="100" :value-text-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" :label-text="behaviourStatus" />
         </div>
 
         <f7-block>
@@ -13,11 +13,9 @@
         <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
         <f7-list strong inset>
             <ul>
-                <f7-list-item media-item link="#" popup-open="#behaviour-info"
-                    title="2.1 แต่งกายผิดระเบียบ แต่งกายไม่สุภาพเรียบร้อย" subtitle="07/06/2023 • กัลยวรรธน์ สัตย์อุดม"
-                    badge="ตักเตือน" badge-color="orange"></f7-list-item>
-                <f7-list-item media-item link="#" title="2.2 ทรงผมผิดระเบียบ" subtitle="06/06/2023 • กัลยวรรธน์ สัตย์อุดม"
-                    badge="ตัดคะแนน" badge-color="red"></f7-list-item>
+                <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)"
+                    :title="b.behaviour" :subtitle="`${b.date} • ${b.reporter}`"
+                    :badge="b.consequence" :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
             </ul>
         </f7-list>
 
@@ -31,17 +29,17 @@
                     </f7-navbar>
                     <f7-block>
                         <div class="block">
-                            <img class="img-field rounded"
-                                src="https://rayongwit.ac.th/ticket/uploads/1686096490%E0%B8%81%E0%B8%B1%E0%B8%A5%E0%B8%A2%E0%B8%A7%E0%B8%A3%E0%B8%A3%E0%B8%98%E0%B8%99%E0%B9%8C.jpg">
-                            <f7-chip text="ตักเตือน" color="orange"></f7-chip>
-                            <h1>2.1 แต่งกายผิดระเบียบ แต่งกายไม่สุภาพเรียบร้อย</h1>
+                            <img v-if="previewData.evidence" class="img-field rounded"
+                                :src="previewData.evidence">
+                            <f7-chip :text="previewData.consequence" :color="previewData.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-chip>
+                            <h1>{{ previewData.behaviour }}</h1>
                         </div>
                     </f7-block>
 
                     <f7-block inset>
                         <f7-block-title>หมายเหตุ</f7-block-title>
                         <f7-block strong>
-                            ถุงเท้าลูกฟูก
+                            {{ previewData.comment ?? "-" }}
                         </f7-block>
                     </f7-block>
 
@@ -50,8 +48,8 @@
                             <f7-list-item accordion-item title="ข้อมูลเพิ่มเติม" class="accordion-item-expanded">
                                 <f7-accordion-content>
                                     <f7-list>
-                                        <f7-list-item title="ว/ด/ป">07/06/2023</f7-list-item>
-                                        <f7-list-item title="ผู้รายงาน">กัลยวรรธน์ สัตย์อุดม</f7-list-item>
+                                        <f7-list-item title="ว/ด/ป">{{ previewData.consequence }}</f7-list-item>
+                                        <f7-list-item title="ผู้รายงาน">{{ previewData.reporter }}</f7-list-item>
                                     </f7-list>
                                 </f7-accordion-content>
                             </f7-list-item>
@@ -61,7 +59,7 @@
                     <f7-block inset>
                         <div class="grid grid-cols-2 grid-gap">
                             <f7-button tonal>บันทึกรูปภาพ</f7-button>
-                            <f7-button tonal>พิมพ์ใบแก้คะแนน</f7-button>
+                            <f7-button tonal @click="printPaper">พิมพ์ใบแก้คะแนน</f7-button>
                         </div>
                     </f7-block>
                 </f7-page>
@@ -72,20 +70,29 @@
   
 <script setup>
 import { onMounted, ref } from "vue";
-import { getStdFixPDF } from "@/js/lib/stdsession.js"
+import { getStdFixPDF, getBehaviourData } from "@/js/lib/stdsession.js"
 import { Browser } from '@capacitor/browser';
 import writeBlob from "capacitor-blob-writer";
 import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"
+import { f7 } from 'framework7-vue';
 
-const openSite = async (url) => {
-    await Browser.open({ url });
+const behaviourStatus = ref("-")
+const behaviours = ref([])
+const previewData = ref({})
+
+const previewInfo = (index) => {
+    previewData.value = behaviours.value.find((v) => v.index == index)
+    f7.popup.open("#behaviour-info")
 }
 
-const annoucements = ref({})
-const isLoaded = ref(false)
-
 const loadData = async (done) => {
+    const data = await getBehaviourData()
+    behaviours.value = data.history
+    behaviourStatus.value = data.status
+    if (done) {
+        done()
+    }
 }
 
 const printPaper = async () => {
@@ -104,8 +111,4 @@ const printPaper = async () => {
         })
     }
 }
-
-onMounted(async () => {
-    loadData()
-})
 </script>
