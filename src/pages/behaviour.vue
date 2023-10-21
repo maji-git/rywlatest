@@ -2,8 +2,12 @@
     <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
         <div class="text-align-center">
             <h4>คะแนนพฤติกรรม</h4>
-            <f7-gauge type="circle" value="100" size="300" :border-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" border-width="7" :value-text="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? ':D' : '!'"
-                value-font-size="100" :value-text-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" :label-text="behaviourStatus" />
+            <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA" border-width="7" />
+            <f7-gauge v-else type="circle" value="100" size="300"
+                :border-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" border-width="7"
+                :value-text="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? ':D' : '!'" value-font-size="100"
+                :value-text-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'"
+                :label-text="behaviourStatus" />
         </div>
 
         <f7-block>
@@ -12,10 +16,13 @@
 
         <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
         <f7-list strong inset>
-            <ul>
-                <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)"
-                    :title="b.behaviour" :subtitle="`${b.date} • ${b.reporter}`"
-                    :badge="b.consequence" :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
+            <div class="text-align-center" v-if="!isLoaded">
+                <f7-preloader />
+            </div>
+            <ul v-else>
+                <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)" :title="b.behaviour"
+                    :subtitle="`${b.date} • ${b.reporter}`" :badge="b.consequence"
+                    :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
             </ul>
         </f7-list>
 
@@ -29,9 +36,9 @@
                     </f7-navbar>
                     <f7-block>
                         <div class="block">
-                            <img v-if="previewData.evidence" class="img-field rounded"
-                                :src="previewData.evidence">
-                            <f7-chip :text="previewData.consequence" :color="previewData.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-chip>
+                            <img v-if="previewData.evidence" class="img-field rounded" :src="previewData.evidence">
+                            <f7-chip :text="previewData.consequence"
+                                :color="previewData.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-chip>
                             <h1>{{ previewData.behaviour }}</h1>
                         </div>
                     </f7-block>
@@ -80,6 +87,7 @@ import { f7 } from 'framework7-vue';
 const behaviourStatus = ref("-")
 const behaviours = ref([])
 const previewData = ref({})
+const isLoaded = ref(false)
 
 const previewInfo = (index) => {
     previewData.value = behaviours.value.find((v) => v.index == index)
@@ -87,9 +95,11 @@ const previewInfo = (index) => {
 }
 
 const loadData = async (done) => {
+    isLoaded.value = false
     const data = await getBehaviourData()
     behaviours.value = data.history
     behaviourStatus.value = data.status
+    isLoaded.value = true
     if (done) {
         done()
     }
