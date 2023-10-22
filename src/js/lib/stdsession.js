@@ -228,12 +228,12 @@ export async function getInfo() {
     return result
 }
 
-export async function setToState(username, password) {
+export function setToState(username, password) {
     store.state.authData.username = username
     store.state.authData.password = password
 }
 
-export async function clearAuthState() {
+export function clearAuthState() {
     store.state.authData.username = ""
     store.state.authData.password = ""
 }

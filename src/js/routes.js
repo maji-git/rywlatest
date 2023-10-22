@@ -12,6 +12,7 @@ import NewsPage from '../pages/news.vue';
 import EventsPage from '../pages/events.vue';
 import WatpolPage from '../pages/watpol.vue';
 import BehaviourPage from '../pages/behaviour.vue';
+import DocsPage from '../pages/docs.vue';
 
 var routes = [
   {
@@ -33,6 +34,10 @@ var routes = [
   {
     path: '/behaviour/',
     component: BehaviourPage,
+  },
+  {
+    path: '/docs/',
+    component: DocsPage,
   },
   {
     path: '/about/',

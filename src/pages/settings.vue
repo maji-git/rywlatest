@@ -22,28 +22,41 @@
             <f7-list-item title="วันที่เกิด"><f7-button fill>แก้ไข</f7-button></f7-list-item>
             <f7-list-item title="ครูที่ปรึกษา">
               <ul>
-                <li v-for="teacher in userData.classTeachers">{{teacher}}</li>
+                <li v-for="teacher in userData.classTeachers">{{ teacher }}</li>
               </ul>
             </f7-list-item>
           </f7-list>
         </f7-accordion-content>
       </f7-list-item>
     </f7-list>
-    
+
     <f7-block class="text-align-center">
       <p v-if="userData == null">ทำการกรอกข้อมูลพื้นฐานเพื่อใช้งานระบบได้มากขึ้น</p>
-      <f7-button fill login-screen-open="#info-register-screen" v-text="userData == null ? 'กรอกข้อมูล' : 'แก้ไขข้อมูล'"></f7-button>
+      <f7-button fill login-screen-open="#info-register-screen"
+        v-text="userData == null ? 'กรอกข้อมูล' : 'แก้ไขข้อมูล'"></f7-button>
+      <f7-list>
+        <f7-list-button fill v-if="userData != null">การตั้งค่า</f7-list-button>
+        <f7-list-button fill v-if="userData != null" color="red" @click="clearUserdata">ลงชื่อออก</f7-list-button>
+      </f7-list>
     </f7-block>
   </f7-page>
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { getInfo } from "@/js/lib/stdsession.js"
-import { Browser } from '@capacitor/browser';
+import { clearAuthState } from "@/js/lib/stdsession.js"
 import store from '@/js/store.js';
-import { useStore } from "framework7-vue"
+import { useStore, f7 } from "framework7-vue"
 const userData = useStore(store, "userData")
+
+const clearUserdata = () => {
+  f7.dialog.confirm("คุณต้องการที่จะลงชื่อออกหรือไม่?", () => {
+    f7.dialog.close()
+    store.state.userData = null
+    clearAuthState()
+    saveToPreferences()
+  })
+}
 
 onMounted(() => {
   console.log(userData.value)

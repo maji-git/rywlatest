@@ -10,6 +10,11 @@
       </f7-nav-title-large>
     </f7-navbar>
 
+    <f7-block class="text-align-center" v-if="store.state.userData == null">
+      <p>ทำการกรอกข้อมูลพื้นฐานเพื่อใช้งานระบบได้มากขึ้น</p>
+      <f7-button fill login-screen-open="#info-register-screen">กรอกข้อมูล</f7-button>
+    </f7-block>
+
     <f7-block>
       <div class="grid grid-cols-2 grid-gap">
         <f7-button tonal>ข่าวสารโรงเรียน</f7-button>
@@ -24,19 +29,15 @@
         <f7-button tonal>ประวัติพฤติกรรม</f7-button>
       </div>
     </f7-block>
-    
+
     <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
     <div class="text-align-center" v-if="!isALoading">
-    <f7-preloader />
+      <f7-preloader />
     </div>
     <f7-list strong inset>
       <ul>
-        <f7-list-item media-item
-        v-for="(item, index) in annoucements"
-          :key="index"
-        link="#"
-        :title="item.title"
-        :subtitle="item.date" @click="openSite(item.article)"></f7-list-item>
+        <f7-list-item media-item v-for="(item, index) in annoucements" :key="index" link="#" :title="item.title"
+          :subtitle="item.date" @click="openSite(item.article)"></f7-list-item>
       </ul>
     </f7-list>
     <div class="text-align-center">
@@ -68,6 +69,7 @@
 import { onMounted, ref } from "vue";
 import { getAnnouncements } from "@/js/lib/announcements.js"
 import { Browser } from '@capacitor/browser';
+import store from '@/js/store.js';
 
 const openSite = async (url) => {
   await Browser.open({ url });
