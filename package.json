@@ -41,6 +41,7 @@
     "html2pdf.js": "^0.10.1",
     "jetifier": "^2.0.0",
     "jsdom": "^22.1.0",
+    "lunr": "^2.3.9",
     "material-icons": "^1.13.12",
     "skeleton-elements": "^4.0.1",
     "string-strip-html": "^13.4.3",

@@ -53,12 +53,16 @@
                     <f7-block inset>
                         <f7-list strong outline-ios dividers-ios accordion-list>
                             <f7-list-item accordion-item title="ข้อมูลเพิ่มเติม" class="accordion-item-expanded">
-                                <f7-accordion-content>
-                                    <f7-list>
-                                        <f7-list-item title="ว/ด/ป">{{ previewData.date }}</f7-list-item>
-                                        <f7-list-item title="ผู้รายงาน">{{ previewData.reporter }}</f7-list-item>
-                                    </f7-list>
-                                </f7-accordion-content>
+                                <f7-accordion>
+                                    <f7-accordion-item :opened="true">
+                                        <f7-accordion-content>
+                                            <f7-list>
+                                                <f7-list-item title="ว/ด/ป">{{ previewData.date }}</f7-list-item>
+                                                <f7-list-item title="ผู้รายงาน">{{ previewData.reporter }}</f7-list-item>
+                                            </f7-list>
+                                        </f7-accordion-content>
+                                    </f7-accordion-item>
+                                </f7-accordion>
                             </f7-list-item>
                         </f7-list>
                     </f7-block>

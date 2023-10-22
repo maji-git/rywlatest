@@ -8,6 +8,7 @@ import { Preferences } from '@capacitor/preferences';
 const url = "https://rayongwit.ac.th/student/index.php"
 const stdPrintUrl = "https://rayongwit.ac.th/student/print.php"
 const stdHistoryUrl = "https://rayongwit.ac.th/student/stdhistory.php"
+const teacherTelUrl = "https://rayongwit.ac.th/student/telteacher.php"
 
 export async function reauthenticate() {
     if (store.state.authData.username == "" || store.state.authData.password == "") {
@@ -140,6 +141,32 @@ export async function getBehaviourData() {
     }
 }
 
+export async function getTeachersTel() {
+    const sessionID = await reauthenticate()
+
+    const stdPrint = await CapacitorHttp.get({
+        url: teacherTelUrl,
+        headers: {
+            "Cookie": sessionID
+        }
+    });
+    const parser = new DOMParser()
+    const dom = parser.parseFromString(stdPrint.data, "text/html")
+
+    const teachers = []
+
+    for (const t of dom.querySelectorAll("tbody tr")) {
+        const tds = t.querySelectorAll("td")
+        teachers.push({
+            name: tds[0].innerText,
+            room: tds[1].innerText,
+            tel: tds[2].innerText,
+        })
+    }
+
+    return teachers
+}
+
 export async function getInfo() {
     const sessionID = await reauthenticate()
 
@@ -163,7 +190,6 @@ export async function getInfo() {
 
         if (par.innerText?.includes("ชื่อผู้บำเพ็ญประโยชน์")) {
             const splitd = par.textContent.trim().split("  ")
-            console.log(splitd)
             let namesplit = splitd[1].split("  ")
             realname = namesplit[0]
             surname = namesplit[1]

@@ -13,6 +13,7 @@ import EventsPage from '../pages/events.vue';
 import WatpolPage from '../pages/watpol.vue';
 import BehaviourPage from '../pages/behaviour.vue';
 import DocsPage from '../pages/docs.vue';
+import TeachersPage from '../pages/teachers.vue';
 
 var routes = [
   {
@@ -40,6 +41,10 @@ var routes = [
     component: DocsPage,
   },
   {
+    path: '/teachers/',
+    component: TeachersPage,
+  },
+  {
     path: '/about/',
     component: AboutPage,
   },
@@ -51,7 +56,6 @@ var routes = [
     path: '/settings/',
     component: SettingsPage,
   },
-
   {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     component: DynamicRoutePage,

@@ -35,7 +35,8 @@
       <f7-button fill login-screen-open="#info-register-screen"
         v-text="userData == null ? 'กรอกข้อมูล' : 'แก้ไขข้อมูล'"></f7-button>
       <f7-list>
-        <f7-list-button fill v-if="userData != null">การตั้งค่า</f7-list-button>
+        <f7-list-button fill>การตั้งค่า</f7-list-button>
+        <f7-list-button link="/about/" fill>เกี่ยวกับแอปนี้</f7-list-button>
         <f7-list-button fill v-if="userData != null" color="red" @click="clearUserdata">ลงชื่อออก</f7-list-button>
       </f7-list>
     </f7-block>

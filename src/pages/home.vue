@@ -25,8 +25,8 @@
         <f7-button tonal href="/watpol/">ดูผลการเรียน</f7-button>
       </div>
       <div class="grid grid-cols-2 grid-gap">
-        <f7-button tonal>กรอกใบลา</f7-button>
-        <f7-button tonal>ประวัติพฤติกรรม</f7-button>
+        <f7-button tonal>ค้นหากิจกรรม/รางวัล</f7-button>
+        <f7-button tonal href="/teachers/">ข้อมูลคุณครู</f7-button>
       </div>
     </f7-block>
 

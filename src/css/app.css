@@ -14,3 +14,7 @@
 .rounded {
     border-radius: 0.5em;
 }
+
+.list-group-title {
+    transform: translate(0px, 25px);
+}
