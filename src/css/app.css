@@ -18,3 +18,28 @@
 .list-group-title {
     transform: translate(0px, 25px);
 }
+
+.home-action-btn {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-action-btn p {
+    margin: 0;
+    margin-top: 5px;
+    line-height: 20px;
+}
+
+.banner-img {
+    height: 220px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.toolbar {
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}

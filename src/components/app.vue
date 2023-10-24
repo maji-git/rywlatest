@@ -25,7 +25,7 @@
 
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
       <f7-view id="view-behavior" name="behaviour" tab url="/behaviour/"></f7-view>
-      <f7-view id="view-docs" name="behaviour" tab url="/docs/"></f7-view>
+      <f7-view id="view-docs" name="docs" tab url="/docs/"></f7-view>
       <f7-view id="view-settings" name="settings" tab url="/settings/"></f7-view>
 
     </f7-views>
@@ -70,7 +70,6 @@ const f7params = {
   colors: {
     primary: '#235B95',
   },
-
   store: store,
   routes: routes,
   input: {

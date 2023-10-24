@@ -1,14 +1,10 @@
 <template>
     <f7-page name="about">
         <f7-navbar title="ข้อมูลคุณครู" back-link="Back">
-            <f7-nav-right>
-                <f7-link class="searchbar-enable" data-searchbar=".searchbar-demo" icon-ios="f7:search"
-                    icon-md="material:search" />
-            </f7-nav-right>
         </f7-navbar>
 
         <f7-block>
-            <f7-list v-for="subject in subjects" class="search-list searchbar-found">
+            <f7-list v-for="subject in subjects">
                 <f7-block-title>{{ subject.subjectName }}</f7-block-title>
                 <f7-list-item swipeout v-for="t in subject.teachers" :title="t.name" :badge="t.role"
                     :badge-color="store.state.teacherRoleColor[t.role] ?? 'green'">

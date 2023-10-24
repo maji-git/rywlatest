@@ -18,6 +18,8 @@ export async function getAllTeachers() {
         });
         const parser = new DOMParser()
         const dom = parser.parseFromString(stdPerson.data.replaceAll("../", "https://rayongwit.ac.th/"), "text/html")
+
+        console.log(dom)
     
         for (const t of dom.querySelectorAll("#img .allimg, #img .director")) {
             const fontData = (t.querySelector("font")?.innerHTML).split("<br>")

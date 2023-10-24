@@ -82,7 +82,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getStdFixPDF, getBehaviourData } from "@/js/lib/stdsession.js"
-import { Browser } from '@capacitor/browser';
 import writeBlob from "capacitor-blob-writer";
 import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"

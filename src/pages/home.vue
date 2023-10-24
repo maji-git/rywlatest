@@ -10,28 +10,54 @@
       </f7-nav-title-large>
     </f7-navbar>
 
+    <swiper-container :pagination="true" class="swiper-multiple" :space-between="50" :slides-per-view="'auto'">
+      <swiper-slide v-for="banner in banners">
+        <div class="banner-img" :style="`background-image: url('${banner}');`" @click="$refs.page.open()"></div>
+      </swiper-slide>
+    </swiper-container>
+
+    <f7-photo-browser ref="page" :photos="banners" :thumbs="banners" type="page" page-back-link-text="Back">
+    </f7-photo-browser>
+
     <f7-block class="text-align-center" v-if="store.state.userData == null">
       <p>ทำการกรอกข้อมูลพื้นฐานเพื่อใช้งานระบบได้มากขึ้น</p>
       <f7-button fill login-screen-open="#info-register-screen">กรอกข้อมูล</f7-button>
     </f7-block>
 
     <f7-block>
-      <div class="grid grid-cols-2 grid-gap">
-        <f7-button tonal>ข่าวสารโรงเรียน</f7-button>
-        <f7-button tonal href="/events/">ตารางกิจกรรม</f7-button>
+      <div class="grid grid-cols-2 grid-gap mb-3">
+        <f7-button tonal href="/news/" color="purple" class="home-action-btn">
+          <f7-icon material="newspaper"></f7-icon>
+          <p>ข่าวสารโรงเรียน</p>
+        </f7-button>
+        <f7-button tonal href="/calendar/" color="orange" class="home-action-btn">
+          <f7-icon material="calendar_month"></f7-icon>
+          <p>ตารางกิจกรรม</p>
+        </f7-button>
       </div>
-      <div class="grid grid-cols-2 grid-gap">
-        <f7-button tonal>ตารางสอน</f7-button>
-        <f7-button tonal href="/watpol/">ดูผลการเรียน</f7-button>
-      </div>
-      <div class="grid grid-cols-2 grid-gap">
-        <f7-button tonal>ค้นหากิจกรรม/รางวัล</f7-button>
-        <f7-button tonal href="/teachers/">ข้อมูลคุณครู</f7-button>
+      <div class="grid grid-cols-1 grid-gap mb-3">
+        <!--<f7-button tonal>ตารางสอน</f7-button>-->
+        <f7-button tonal href="/watpol/" color="green" class="home-action-btn">
+          <f7-icon material="scoreboard"></f7-icon>
+          <p>ดูผลการเรียน</p>
+        </f7-button>
+        <!--
+        <f7-button tonal href="/teachers/" color="blue" class="home-action-btn">
+          <f7-icon material="badge"></f7-icon>
+          <p>ข้อมูลคุณครู</p>
+        </f7-button>
+        -->
       </div>
     </f7-block>
 
+    <f7-block strong inset v-if="store.state.userData != null">
+      <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
+      <h1 :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'green' : 'orange'};`"
+        :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
+    </f7-block>
+
     <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
-    <div class="text-align-center" v-if="!isALoading">
+    <div class="text-align-center" v-if="isLoading">
       <f7-preloader />
     </div>
     <f7-list strong inset>
@@ -44,30 +70,14 @@
       <f7-link href="/news/">ดูทั้งหมด</f7-link>
     </div>
 
-    <f7-block-title>Modals</f7-block-title>
-    <f7-block class="grid grid-cols-2 grid-gap">
-      <f7-button fill popup-open="#my-popup">Popup</f7-button>
-      <f7-button fill login-screen-open="#my-login-screen">Login Screen</f7-button>
-    </f7-block>
-
-    <f7-block-title>Panels</f7-block-title>
-    <f7-block class="grid grid-cols-2 grid-gap">
-      <f7-button fill panel-open="left">Left Panel</f7-button>
-      <f7-button fill panel-open="right">Right Panel</f7-button>
-    </f7-block>
-
-    <f7-list strong inset dividersIos>
-      <f7-list-item title="Dynamic (Component) Route"
-        link="/dynamic-route/blog/45/post/125/?foo=bar#about"></f7-list-item>
-      <f7-list-item title="Default Route (404)" link="/load-something-that-doesnt-exist/"></f7-list-item>
-      <f7-list-item title="Request Data & Load" link="/request-and-load/user/123456/"></f7-list-item>
-    </f7-list>
+    <br>
   </f7-page>
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { getAnnouncements } from "@/js/lib/announcements.js"
+import { getAnnouncements, getBanners } from "@/js/lib/announcements.js"
+import { getBehaviourData } from "@/js/lib/stdsession.js"
 import { Browser } from '@capacitor/browser';
 import store from '@/js/store.js';
 
@@ -76,10 +86,20 @@ const openSite = async (url) => {
 }
 
 const annoucements = ref({})
-const isALoading = ref(false)
+const behaviourData = ref({})
+const banners = ref([])
+const isLoading = ref(false)
 
-onMounted(async () => {
+const loadData = async () => {
+  isLoading.value = true
   annoucements.value = (await getAnnouncements()).slice(0, 5);
-  isALoading.value = true
+  behaviourData.value = await getBehaviourData()
+  banners.value = await getBanners()
+  console.log(banners.value)
+  isLoading.value = false
+}
+
+onMounted(() => {
+  loadData()
 })
 </script>
