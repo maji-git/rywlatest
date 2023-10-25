@@ -19,7 +19,6 @@
             <f7-list-item title="แผนการเรียน">{{ userData.classPlan }}</f7-list-item>
             <f7-list-item title="รหัสนักเรียน">{{ userData.studentID }}</f7-list-item>
             <f7-list-item title="บัตรประชาชน">{{ userData.nationalID }}</f7-list-item>
-            <f7-list-item title="วันที่เกิด"><f7-button fill>แก้ไข</f7-button></f7-list-item>
             <f7-list-item title="ครูที่ปรึกษา">
               <ul>
                 <li v-for="teacher in userData.classTeachers">{{ teacher }}</li>
