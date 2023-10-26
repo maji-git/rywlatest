@@ -1,3 +1,5 @@
+import { Keyboard } from "@capacitor/keyboard";
+
 var capacitorApp = {
   f7: null,
   /*
@@ -89,18 +91,20 @@ var capacitorApp = {
     var f7 = capacitorApp.f7;
     if (!window.Capacitor || !window.Capacitor.Plugins.Keyboard) return;
     var $ = f7.$;
-    var Keyboard = window.Capacitor.Plugins.Keyboard;
     if (!Keyboard) return;
     Keyboard.setResizeMode({ mode: 'native' });
     Keyboard.setScroll({ isDisabled: true });
     Keyboard.setAccessoryBarVisible({ isVisible: false });
     window.addEventListener('keyboardWillShow', () => {
+      document.querySelector(".toolbar").style.display = "none"
       f7.input.scrollIntoView(document.activeElement, 0, true, true);
     });
     window.addEventListener('keyboardDidShow', () => {
       f7.input.scrollIntoView(document.activeElement, 0, true, true);
     });
     window.addEventListener('keyboardDidHide', () => {
+      document.querySelector(".toolbar").style.display = "block"
+
       if (document.activeElement && $(document.activeElement).parents('.messagebar').length) {
         return;
       }

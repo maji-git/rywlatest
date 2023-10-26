@@ -55,6 +55,7 @@
   "devDependencies": {
     "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "^5.5.0",
+    "@types/underscore": "^1.11.12",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vue/compiler-sfc": "^3.3.5",
     "cordova-res": "^0.15.4",
