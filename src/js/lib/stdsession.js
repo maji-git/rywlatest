@@ -4,6 +4,7 @@ import { f7 } from 'framework7-vue';
 import html2pdf from 'html2pdf.js'
 import { resolveImg } from '../utils/img';
 import { Preferences } from '@capacitor/preferences';
+import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 const url = "https://rayongwit.ac.th/student/index.php"
 const stdPrintUrl = "https://rayongwit.ac.th/student/print.php"
@@ -265,14 +266,16 @@ export function clearAuthState() {
 }
 
 export async function saveToPreferences() {
-    await Preferences.set({
-        key: 'loginData',
+    await SecureStoragePlugin.set({
+        key: "loginData",
         value: JSON.stringify(store.state.authData)
-    });
+    })
 }
 
 export async function loadFromPreferences() {
-    const loginDB = await Preferences.get({ key: 'loginData' });
+    const loginDB = await SecureStoragePlugin.get({
+        key: "loginData"
+    })
 
     if (loginDB.value) {
         const loginData = JSON.parse(loginDB.value)
