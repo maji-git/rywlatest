@@ -122,7 +122,7 @@ const exportCSV = async () => {
     }
 
     const fpath = await Filesystem.writeFile({
-        path: 'ryw-grades.csv',
+        path: `ryw-grades-${new Date().getTime()}.csv`,
         data: result,
         directory: Directory.Documents,
         encoding: Encoding.UTF8
