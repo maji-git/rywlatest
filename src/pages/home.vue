@@ -1,12 +1,13 @@
 <template>
-  <f7-page name="home">
+  <f7-page name="home" ptr :ptr-mousewheel="true" @ptr:refresh="loadData">
     <f7-navbar large :sliding="false">
       <f7-nav-left>
         <f7-link icon-ios="f7:menu" icon-md="material:menu" panel-open="left"></f7-link>
       </f7-nav-left>
       <f7-nav-title sliding>RYW Latest</f7-nav-title>
       <f7-nav-title-large>
-        <img src="@/assets/logo-txt.png" class="img-fluid" height="80">
+        <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;" ref="logoAnim"/>
+
       </f7-nav-title-large>
     </f7-navbar>
 
@@ -80,6 +81,8 @@ import { getAnnouncements, getBanners } from "@/js/lib/announcements.js"
 import { getBehaviourData } from "@/js/lib/stdsession.js"
 import { Browser } from '@capacitor/browser';
 import store from '@/js/store.js';
+import { LottieAnimation } from "lottie-web-vue"
+import LogoTextJSON from "@/assets/lottie/logo-text.json"
 
 const openSite = async (url) => {
   await Browser.open({ url });
@@ -88,15 +91,26 @@ const openSite = async (url) => {
 const annoucements = ref({})
 const behaviourData = ref({})
 const banners = ref([])
+const logoAnim = ref()
 const isLoading = ref(false)
 
-const loadData = async () => {
+const loadData = async (done) => {
   isLoading.value = true
+  
+  logoAnim.value.setDirection(-1)
+  logoAnim.value.play()
+
   annoucements.value = (await getAnnouncements()).slice(0, 5);
   behaviourData.value = await getBehaviourData()
   banners.value = await getBanners()
-  console.log(banners.value)
+
+  logoAnim.value.setDirection(1)
+  logoAnim.value.play()
+  
   isLoading.value = false
+  if (done) {
+    done()
+  }
 }
 
 onMounted(() => {

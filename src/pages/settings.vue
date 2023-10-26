@@ -16,7 +16,13 @@
             <f7-list-item title="ชื่อ นามสกุล">{{ userData.firstname }} {{ userData.surname }}</f7-list-item>
             <f7-list-item title="มัธยมศึกษาปีที่">{{ userData.mathayom }}</f7-list-item>
             <f7-list-item title="ห้อง">{{ userData.room }}</f7-list-item>
-            <f7-list-item title="แผนการเรียน">{{ userData.classPlan }}</f7-list-item>
+            <f7-list-item title="แผนการเรียน">
+              <div class="display-flex align-items-center">
+              <img v-if="store.state.classPlansLogos.includes(userData.classPlan)" :src="`plan-icons/${userData.classPlan}.png`" class="mr-2" height="40">
+              
+              {{ userData.classPlan }}
+              </div>
+            </f7-list-item>
             <f7-list-item title="รหัสนักเรียน">{{ userData.studentID }}</f7-list-item>
             <f7-list-item title="บัตรประชาชน">{{ userData.nationalID }}</f7-list-item>
             <f7-list-item title="ครูที่ปรึกษา">

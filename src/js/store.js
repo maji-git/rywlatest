@@ -37,9 +37,16 @@ const store = createStore({
       "วิทยาศาสตร์": "purple",
       "เทคโนโลยี": "blue",
     },
+    classPlansLogos: [
+      "GIFTED",
+      "SMART COM",
+      "EIS",
+      "EP",
+      "Wit-Com",
+    ],
     classPlans: {
       first: {
-        ["ห้องเรียนพิเศษวิทยาศาสตร์ ตามแนวทาง สสวท. และ สอวน."]: [1,2],
+        ["GIFTED"]: [1,2],
         ["SMART COM"]: [3],
         ["ปกติ"]: [4,5,6,7,8],
         ["EIS"]: [9,10,11],
