@@ -69,7 +69,7 @@
 
                     <f7-block inset>
                         <div class="grid grid-cols-2 grid-gap">
-                            <f7-button tonal>บันทึกรูปภาพ</f7-button>
+                            <f7-button tonal v-if="previewData.evidence" @click="saveImage">บันทึกรูปภาพ</f7-button>
                             <f7-button tonal @click="printPaper">พิมพ์ใบแก้คะแนน</f7-button>
                         </div>
                     </f7-block>
@@ -80,17 +80,40 @@
 </template>
   
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { getStdFixPDF, getBehaviourData } from "@/js/lib/stdsession.js"
+import { resolveImg } from "@/js/utils/img.js"
 import writeBlob from "capacitor-blob-writer";
 import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"
+import { Media } from "@capacitor-community/media"
 import { f7 } from 'framework7-vue';
+import { parse } from 'path-browserify'
 
 const behaviourStatus = ref("-")
 const behaviours = ref([])
 const previewData = ref({})
 const isLoaded = ref(false)
+
+const saveImage = async () => {
+    const loadDialog = f7.dialog.progress("กำลังดาวน์โหลด...")
+    loadDialog.open()
+
+    const imgURL = await resolveImg(previewData.value.evidence)
+    const albums = await Media.getAlbums()
+    const targetAlbum = albums.albums.find((e) => e.name == "Download").identifier
+
+    const res = await Media.savePhoto({
+        path: imgURL,
+        albumIdentifier: targetAlbum
+    })
+
+    loadDialog.close()
+
+    FileOpener.open({
+        filePath: res.filePath
+    })
+}
 
 const previewInfo = (index) => {
     previewData.value = behaviours.value.find((v) => v.index == index)
@@ -111,8 +134,6 @@ const loadData = async (done) => {
 const printPaper = async () => {
     const data = await getStdFixPDF()
     if (data) {
-        console.log(data)
-
         const blo = await writeBlob({
             path: "ryw-stdfix.pdf",
             directory: Directory.Cache,

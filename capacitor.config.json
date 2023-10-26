@@ -13,5 +13,9 @@
     "url": "http://192.168.1.170:5173",
     "cleartext": true
   },
+  "backgroundColor": "FDFDFF",
+  "android": {
+    "backgroundColor": "FDFDFF"
+  },
   "cordova": {}
 }
