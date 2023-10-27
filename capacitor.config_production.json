@@ -1,0 +1,19 @@
+{
+  "appId": "xyz.devpixels.rywlatest",
+  "appName": "Rayongwit Latest",
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "server": {
+    "cleartext": true
+  },
+  "backgroundColor": "FDFDFF",
+  "android": {
+    "backgroundColor": "FDFDFF"
+  },
+  "cordova": {}
+}
