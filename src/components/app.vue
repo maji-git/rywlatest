@@ -18,7 +18,7 @@
       <f7-toolbar tabbar icons bottom>
         <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
-          <f7-link tab-link="#view-behavior" icon-ios="f7:face" icon-md="material:face" text="คะแนนพฤติกรรม"></f7-link>
+          <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face" text="คะแนนพฤติกรรม"></f7-link>
           <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
           <f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>
       </f7-toolbar>
@@ -66,7 +66,7 @@ import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthS
 const device = getDevice();
 const f7params = {
   name: 'คือ...!!!',
-  theme: 'ios',
+  theme: 'auto',
   colors: {
     primary: '#235B95',
   },
