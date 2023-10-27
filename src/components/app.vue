@@ -66,7 +66,7 @@ import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthS
 const device = getDevice();
 const f7params = {
   name: 'คือ...!!!',
-  theme: 'auto',
+  theme: 'ios',
   colors: {
     primary: '#235B95',
   },

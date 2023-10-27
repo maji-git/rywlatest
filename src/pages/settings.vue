@@ -41,8 +41,9 @@
         v-text="userData == null ? 'กรอกข้อมูล' : 'แก้ไขข้อมูล'"></f7-button>
       <f7-list>
         <f7-list-button fill>การตั้งค่า</f7-list-button>
-        <f7-list-button link="/about/" fill>เกี่ยวกับแอปนี้</f7-list-button>
+        <f7-list-button link="/about/" fill>เกี่ยวกับแอพนี้</f7-list-button>
         <f7-list-button fill v-if="userData != null" color="red" @click="clearUserdata">ลงชื่อออก</f7-list-button>
+        <f7-list-button @click="rerunApp">รีเซ็ตแอพ</f7-list-button>
       </f7-list>
     </f7-block>
   </f7-page>
@@ -54,6 +55,10 @@ import { clearAuthState } from "@/js/lib/stdsession.js"
 import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
 const userData = useStore(store, "userData")
+
+const rerunApp = () => {
+  location.reload()
+}
 
 const clearUserdata = () => {
   f7.dialog.confirm("คุณต้องการที่จะลงชื่อออกหรือไม่?", () => {

@@ -1,7 +1,6 @@
 {
   "appId": "xyz.devpixels.rywlatest",
   "appName": "Rayongwit Latest",
-  "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "plugins": {
