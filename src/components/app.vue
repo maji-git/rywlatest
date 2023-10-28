@@ -18,14 +18,16 @@
       <f7-toolbar tabbar icons bottom>
         <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
-          <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face" text="คะแนนพฤติกรรม"></f7-link>
-          <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
+          <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face" text="พฤติกรรม"></f7-link>
+          <!--<f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>-->
+          <!--<f7-link tab-link="#view-sports" icon-ios="f7:sports_soccer" icon-md="material:sports_soccer" text="กีฬาสี"></f7-link>-->
           <f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>
       </f7-toolbar>
 
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
       <f7-view id="view-behavior" name="behaviour" tab url="/behaviour/"></f7-view>
       <f7-view id="view-docs" name="docs" tab url="/docs/"></f7-view>
+      <f7-view id="view-sports" name="sports" tab url="/sports/"></f7-view>
       <f7-view id="view-settings" name="settings" tab url="/settings/"></f7-view>
 
     </f7-views>

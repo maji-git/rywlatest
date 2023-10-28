@@ -13,6 +13,7 @@ import EventsPage from '../pages/events.vue';
 import WatpolPage from '../pages/watpol.vue';
 import BehaviourPage from '../pages/behaviour.vue';
 import DocsPage from '../pages/docs.vue';
+import SportsPage from '../pages/sports.vue';
 import CalendarPage from '../pages/calendar.vue';
 import TeachersPage from '../pages/teachers.vue';
 
@@ -44,6 +45,10 @@ var routes = [
   {
     path: '/docs/',
     component: DocsPage,
+  },
+  {
+    path: '/sports/',
+    component: SportsPage,
   },
   {
     path: '/teachers/',
