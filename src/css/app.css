@@ -47,3 +47,56 @@
 .gauge-front-circle {
     stroke-linecap: round;
 }
+
+.landing-page {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.landing-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.landing-actions {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.flex-space {
+    flex-grow: 1;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.landing-container > div {
+    margin: 0;
+    height: 50%;
+}
+
+.text-muted {
+    opacity: 0.5;
+}
+
+.landing-img {
+    padding: 20px;
+}
+
+.landing-img {
+    display: grid;
+    place-items: center;
+}

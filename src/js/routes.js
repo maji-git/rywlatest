@@ -16,6 +16,7 @@ import DocsPage from '../pages/docs.vue';
 import SportsPage from '../pages/sports.vue';
 import CalendarPage from '../pages/calendar.vue';
 import TeachersPage from '../pages/teachers.vue';
+import PreferencesPage from '../pages/pref.vue';
 
 var routes = [
   {
@@ -53,6 +54,10 @@ var routes = [
   {
     path: '/teachers/',
     component: TeachersPage,
+  },
+  {
+    path: '/prefs/',
+    component: PreferencesPage,
   },
   {
     path: '/about/',

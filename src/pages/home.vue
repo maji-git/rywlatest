@@ -6,7 +6,8 @@
       </f7-nav-left>
       <f7-nav-title sliding>RYW Latest</f7-nav-title>
       <f7-nav-title-large>
-        <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;" ref="logoAnim"/>
+        <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
+          ref="logoAnim" />
 
       </f7-nav-title-large>
     </f7-navbar>
@@ -38,7 +39,7 @@
       </div>
       <div class="grid grid-cols-1 grid-gap mb-3">
         <!--<f7-button tonal>ตารางสอน</f7-button>-->
-        <f7-button tonal href="/watpol/" color="green" class="home-action-btn">
+        <f7-button tonal href="/watpol/" color="green" class="home-action-btn" v-if="store.state.userData">
           <f7-icon material="scoreboard"></f7-icon>
           <p>ดูผลการเรียน</p>
         </f7-button>
@@ -96,17 +97,20 @@ const isLoading = ref(false)
 
 const loadData = async (done) => {
   isLoading.value = true
-  
+
   logoAnim.value.setDirection(-1)
   logoAnim.value.play()
 
   annoucements.value = (await getAnnouncements()).slice(0, 5);
-  behaviourData.value = await getBehaviourData()
+  if (store.state.userData) {
+    behaviourData.value = await getBehaviourData()
+  }
+
   banners.value = await getBanners()
 
   logoAnim.value.setDirection(1)
   logoAnim.value.play()
-  
+
   isLoading.value = false
   if (done) {
     done()

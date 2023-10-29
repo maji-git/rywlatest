@@ -1,12 +1,12 @@
 import { Keyboard } from "@capacitor/keyboard";
 
-var capacitorApp = {
+let capacitorApp = {
   f7: null,
   /*
   This method hides splashscreen after 2 seconds
   */
   handleSplashscreen: function () {
-    var f7 = capacitorApp.f7;
+    let f7 = capacitorApp.f7;
     if (!window.Capacitor) return;
     setTimeout(() => {
       if (window.Capacitor.Plugins && window.Capacitor.Plugins.SplashScreen) {
@@ -20,7 +20,7 @@ var capacitorApp = {
   In case there is a current view with navigation history, it will go back instead.
   */
   handleAndroidBackButton: function () {
-    var f7 = capacitorApp.f7;
+    let f7 = capacitorApp.f7;
     const $ = f7.$;
     if (!window.Capacitor || !window.Capacitor.Plugins.App) return;
     window.Capacitor.Plugins.App.addListener(
@@ -42,7 +42,7 @@ var capacitorApp = {
           f7.popover.close('.popover.modal-in');
           return;
         }
-        if ($('.popup.modal-in').length) {
+        if ($('.popup.modal-in:not(.popup-ignore-back)').length) {
           if ($('.popup.modal-in>.view').length) {
             const currentView = f7.views.get('.popup.modal-in>.view');
             if (currentView && currentView.router && currentView.router.history.length > 1) {
@@ -88,9 +88,9 @@ var capacitorApp = {
     - hides keyboard accessory bar for all inputs except where it required
   */
   handleKeyboard: function () {
-    var f7 = capacitorApp.f7;
+    let f7 = capacitorApp.f7;
     if (!window.Capacitor || !window.Capacitor.Plugins.Keyboard) return;
-    var $ = f7.$;
+    let $ = f7.$;
     if (!Keyboard) return;
     Keyboard.setResizeMode({ mode: 'native' });
     Keyboard.setScroll({ isDisabled: true });
@@ -115,9 +115,9 @@ var capacitorApp = {
       'touchstart',
       'input, textarea, select',
       function (e) {
-        var nodeName = e.target.nodeName.toLowerCase();
-        var type = e.target.type;
-        var showForTypes = ['datetime-local', 'time', 'date', 'datetime'];
+        let nodeName = e.target.nodeName.toLowerCase();
+        let type = e.target.type;
+        let showForTypes = ['datetime-local', 'time', 'date', 'datetime'];
         if (nodeName === 'select' || showForTypes.indexOf(type) >= 0) {
           Keyboard.setAccessoryBarVisible({ isVisible: true });
         } else {

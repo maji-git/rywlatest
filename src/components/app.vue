@@ -32,6 +32,8 @@
 
     </f7-views>
 
+    <LandingPopup/>
+
     <f7-login-screen id="info-register-screen">
       <f7-view>
         <f7-page login-screen>
@@ -58,12 +60,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { f7, f7ready } from 'framework7-vue';
+import LandingPopup from "./landing.vue"
 
 import { getDevice } from 'framework7/lite-bundle';
 import capacitorApp from '../js/capacitor-app.js';
 import routes from '../js/routes.js';
 import store from '@/js/store.js';
 import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthState } from "@/js/lib/stdsession.js"
+import { Preferences } from "@capacitor/preferences"
 
 const device = getDevice();
 const f7params = {
@@ -107,7 +111,6 @@ const infoSubmitted = async () => {
     });
   } else {
     f7.dialog.alert('ไม่มีข้อมูลเกี่ยวกับเลขประจำตัวนี้' + studentID.value, () => {
-      f7.loginScreen.close()
     });
   }
 }
@@ -117,12 +120,18 @@ const closeInfoRegister = () => {
 }
 
 onMounted(() => {
-  f7ready(() => {
+  f7ready(async () => {
     if (device.capacitor) {
       capacitorApp.init(f7);
     }
 
     loadFromPreferences()
+
+    const firstTime = await Preferences.get({key: "landingDone"})
+
+    if (firstTime.value !== "1") {
+      f7.popup.open("#landing-popup")
+    }
   });
 });
 </script>

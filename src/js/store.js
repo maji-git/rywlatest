@@ -74,14 +74,12 @@ const store = createStore({
   getters: {
     userData({ state }) {
       if (state.userData == null) {
-        f7.loginScreen.open("#info-register-screen")
         return null
       }
       return state.userData;
     },
     sessionID({ state }) {
       if (state.userData == null) {
-        f7.loginScreen.open("#info-register-screen")
         return null
       }
       return state.userData.sessionID;

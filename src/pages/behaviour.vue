@@ -1,30 +1,37 @@
 <template>
     <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
-        <div class="text-align-center">
-            <h4>คะแนนพฤติกรรม</h4>
-            <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA" border-width="7" />
-            <f7-gauge v-else type="circle" value="100" size="300"
-                :border-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" border-width="7"
-                :value-text="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? ':D' : '!'" value-font-size="100"
-                :value-text-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'"
-                :label-text="behaviourStatus" />
-        </div>
-
-        <f7-block>
-            <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
+        <f7-block class="text-align-center" v-if="!isLoggedin">
+            <p>ต้องลงชื่อเข้าใช้เพื่อใช้งานฟีเจอร์นี้</p>
+            <f7-button fill login-screen-open="#info-register-screen">ลงชื่อเข้าใช้</f7-button>
         </f7-block>
 
-        <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
-        <f7-list strong inset>
-            <div class="text-align-center" v-if="!isLoaded">
-                <f7-preloader />
+        <div v-if="isLoggedin">
+            <div class="text-align-center">
+                <h4>คะแนนพฤติกรรม</h4>
+                <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA" border-width="7" />
+                <f7-gauge v-else type="circle" value="100" size="300"
+                    :border-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" border-width="7"
+                    :value-text="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? ':D' : '!'" value-font-size="100"
+                    :value-text-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'"
+                    :label-text="behaviourStatus" />
             </div>
-            <ul v-else>
-                <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)" :title="b.behaviour"
-                    :subtitle="`${b.date} • ${b.reporter}`" :badge="b.consequence"
-                    :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
-            </ul>
-        </f7-list>
+
+            <f7-block>
+                <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
+            </f7-block>
+
+            <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
+            <f7-list strong inset>
+                <div class="text-align-center" v-if="!isLoaded">
+                    <f7-preloader />
+                </div>
+                <ul v-else>
+                    <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)"
+                        :title="b.behaviour" :subtitle="`${b.date} • ${b.reporter}`" :badge="b.consequence"
+                        :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
+                </ul>
+            </f7-list>
+        </div>
 
         <f7-popup id="behaviour-info">
             <f7-view>
@@ -88,31 +95,36 @@ import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"
 import { Media } from "@capacitor-community/media"
 import { f7 } from 'framework7-vue';
-import { parse } from 'path-browserify'
+import store from '@/js/store.js';
 
 const behaviourStatus = ref("-")
 const behaviours = ref([])
 const previewData = ref({})
 const isLoaded = ref(false)
+const isLoggedin = ref(false)
 
 const saveImage = async () => {
     const loadDialog = f7.dialog.progress("กำลังดาวน์โหลด...")
     loadDialog.open()
 
-    const imgURL = await resolveImg(previewData.value.evidence)
-    const albums = await Media.getAlbums()
-    const targetAlbum = albums.albums.find((e) => e.name == "Download").identifier
+    try {
+        const imgURL = await resolveImg(previewData.value.evidence)
+        const albums = await Media.getAlbums()
+        const targetAlbum = albums.albums.find((e) => e.name == "Download").identifier
 
-    const res = await Media.savePhoto({
-        path: imgURL,
-        albumIdentifier: targetAlbum
-    })
+        const res = await Media.savePhoto({
+            path: imgURL,
+            albumIdentifier: targetAlbum
+        })
+
+        FileOpener.open({
+            filePath: res.filePath
+        })
+    } catch (err) {
+        f7.dialog.alert(`ข้อผิดผลาด: ${err}`).open()
+    }
 
     loadDialog.close()
-
-    FileOpener.open({
-        filePath: res.filePath
-    })
 }
 
 const previewInfo = (index) => {
@@ -122,6 +134,11 @@ const previewInfo = (index) => {
 
 const loadData = async (done) => {
     isLoaded.value = false
+    if (store.state.userData) {
+        isLoggedin.value = true
+    } else {
+        isLoggedin.value = false
+    }
     const data = await getBehaviourData()
     behaviours.value = data.history
     behaviourStatus.value = data.status

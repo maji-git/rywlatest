@@ -49,6 +49,7 @@
     "lunr": "^2.3.9",
     "material-icons": "^1.13.12",
     "path-browserify": "^1.0.1",
+    "promise-callbacks": "^3.8.2",
     "skeleton-elements": "^4.0.1",
     "string-strip-html": "^13.4.3",
     "swiper": "^10.3.1",

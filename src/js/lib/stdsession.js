@@ -13,7 +13,6 @@ const teacherTelUrl = "https://rayongwit.ac.th/student/telteacher.php"
 
 export async function reauthenticate() {
     if (store.state.authData.username == "" || store.state.authData.password == "") {
-        f7.loginScreen.open("#info-register-screen")
         return
     }
 
@@ -110,35 +109,37 @@ export async function getStdFixPDF() {
 export async function getBehaviourData() {
     const sessionID = await reauthenticate()
 
-    const stdPrint = await CapacitorHttp.get({
-        url: stdHistoryUrl,
-        headers: {
-            "Cookie": sessionID
-        }
-    });
-    const parser = new DOMParser()
-    const dom = parser.parseFromString(stdPrint.data, "text/html")
-    const history = []
+    if (sessionID) {
+        const stdPrint = await CapacitorHttp.get({
+            url: stdHistoryUrl,
+            headers: {
+                "Cookie": sessionID
+            }
+        });
+        const parser = new DOMParser()
+        const dom = parser.parseFromString(stdPrint.data, "text/html")
+        const history = []
 
-    //let dom = document
-    for (const trs of dom.querySelectorAll("tbody tr")) {
-        const tds = trs.querySelectorAll("td")
-        if (tds.length > 4) {
-            history.push({
-                index: parseInt(tds[0]?.textContent),
-                behaviour: tds[1]?.textContent,
-                consequence: tds[2]?.textContent,
-                date: tds[3]?.textContent,
-                reporter: tds[4]?.textContent,
-                evidence: tds[5]?.querySelector("a")?.getAttribute("href")?.replace("../", "https://rayongwit.ac.th/"),
-                comment: tds[6]?.textContent,
-            })
+        //let dom = document
+        for (const trs of dom.querySelectorAll("tbody tr")) {
+            const tds = trs.querySelectorAll("td")
+            if (tds.length > 4) {
+                history.push({
+                    index: parseInt(tds[0]?.textContent),
+                    behaviour: tds[1]?.textContent,
+                    consequence: tds[2]?.textContent,
+                    date: tds[3]?.textContent,
+                    reporter: tds[4]?.textContent,
+                    evidence: tds[5]?.querySelector("a")?.getAttribute("href")?.replace("../", "https://rayongwit.ac.th/"),
+                    comment: tds[6]?.textContent,
+                })
+            }
         }
-    }
 
-    return {
-        status: dom.querySelector("h5:nth-child(3) strong p:nth-child(3)").textContent,
-        history: history
+        return {
+            status: dom.querySelector("h5:nth-child(3) strong p:nth-child(3)")?.textContent,
+            history: history
+        }
     }
 }
 
@@ -171,88 +172,92 @@ export async function getTeachersTel() {
 export async function getInfo() {
     const sessionID = await reauthenticate()
 
-    const stdPrint = await CapacitorHttp.get({
-        url: stdPrintUrl,
-        headers: {
-            "Cookie": sessionID
+    if (sessionID) {
+        const stdPrint = await CapacitorHttp.get({
+            url: stdPrintUrl,
+            headers: {
+                "Cookie": sessionID
+            }
+        });
+        const parser = new DOMParser()
+        const dom = parser.parseFromString(stdPrint.data, "text/html")
+
+        let realname = ""
+        let surname = ""
+        let mathayom = ""
+        let room = ""
+        let studentNumber = ""
+
+        for (const par of dom.querySelectorAll("p")) {
+            console.log(par.innerText)
+
+            if (par.innerText?.includes("ชื่อผู้บำเพ็ญประโยชน์")) {
+                const splitd = par.textContent.trim().split("  ")
+                let namesplit = splitd[1].split("  ")
+                realname = namesplit[0]
+                surname = namesplit[1]
+                let roomtsplit = splitd[2].split("    ")[1].split("/")
+                mathayom = parseInt(roomtsplit[0])
+                room = parseInt(roomtsplit[1])
+
+                let numSplit = splitd[3].split(" ").filter((e) => e != '')
+                studentNumber = parseInt(numSplit[1])
+            }
         }
-    });
-    const parser = new DOMParser()
-    const dom = parser.parseFromString(stdPrint.data, "text/html")
 
-    let realname = ""
-    let surname = ""
-    let mathayom = ""
-    let room = ""
-    let studentNumber = ""
-
-    for (const par of dom.querySelectorAll("p")) {
-        console.log(par.innerText)
-
-        if (par.innerText?.includes("ชื่อผู้บำเพ็ญประโยชน์")) {
-            const splitd = par.textContent.trim().split("  ")
-            let namesplit = splitd[1].split("  ")
-            realname = namesplit[0]
-            surname = namesplit[1]
-            let roomtsplit = splitd[2].split("    ")[1].split("/")
-            mathayom = parseInt(roomtsplit[0])
-            room = parseInt(roomtsplit[1])
-
-            let numSplit = splitd[3].split(" ").filter((e) => e != '')
-            studentNumber = parseInt(numSplit[1])
+        const tds = dom.querySelectorAll("td")
+        const potentials = []
+        for (const par of tds) {
+            if (par.innerText.startsWith("(")) {
+                potentials.push(par.textContent.replace("(", "").replace(")", ""))
+            }
         }
-    }
 
-    const tds = dom.querySelectorAll("td")
-    const potentials = []
-    for (const par of tds) {
-        if (par.innerText.startsWith("(")) {
-            potentials.push(par.textContent.replace("(", "").replace(")", ""))
+        const teachers = []
+
+        if (tds.length > 2) {
+            teachers.push(potentials[0])
+            teachers.push(potentials[1])
+        } else {
+            teachers.push(potentials[0])
         }
-    }
 
-    const teachers = []
+        let targetPlan = {}
 
-    if (tds.length > 2) {
-        teachers.push(potentials[0])
-        teachers.push(potentials[1])
-    } else {
-        teachers.push(potentials[0])
-    }
-
-    let targetPlan = {}
-
-    if (mathayom > 3) {
-        // ม.ปลาย
-        targetPlan = store.state.classPlans.second
-    } else {
-        // ม.ต้น
-        targetPlan = store.state.classPlans.first
-    }
-
-    let classPlan = "[ ไม่มีข้อมูล ]"
-
-    for (const [key, value] of Object.entries(targetPlan)) {
-        if (value.includes(room)) {
-            classPlan = key
+        if (mathayom > 3) {
+            // ม.ปลาย
+            targetPlan = store.state.classPlans.second
+        } else {
+            // ม.ต้น
+            targetPlan = store.state.classPlans.first
         }
+
+        let classPlan = "[ ไม่มีข้อมูล ]"
+
+        for (const [key, value] of Object.entries(targetPlan)) {
+            if (value.includes(room)) {
+                classPlan = key
+            }
+        }
+
+        const result = {
+            sessionID: sessionID,
+            headshot: "https://rayongwit.ac.th/ticket/pic/" + store.state.authData.username + "s.JPG",
+            firstname: realname,
+            surname: surname,
+            mathayom: mathayom,
+            room: room,
+            no: studentNumber,
+            studentID: store.state.authData.username,
+            classPlan: classPlan,
+            classTeachers: teachers,
+            nationalID: store.state.authData.password
+        }
+
+        return result
     }
 
-    const result = {
-        sessionID: sessionID,
-        headshot: "https://rayongwit.ac.th/ticket/pic/" + store.state.authData.username + "s.JPG",
-        firstname: realname,
-        surname: surname,
-        mathayom: mathayom,
-        room: room,
-        no: studentNumber,
-        studentID: store.state.authData.username,
-        classPlan: classPlan,
-        classTeachers: teachers,
-        nationalID: store.state.authData.password
-    }
-
-    return result
+    return null
 }
 
 export function setToState(username, password) {
