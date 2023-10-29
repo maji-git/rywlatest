@@ -3,7 +3,6 @@ import store from '@/js/store.js';
 import { f7 } from 'framework7-vue';
 import html2pdf from 'html2pdf.js'
 import { resolveImg } from '../utils/img';
-import { Preferences } from '@capacitor/preferences';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 const url = "https://rayongwit.ac.th/student/index.php"
