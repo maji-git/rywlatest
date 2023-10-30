@@ -25,8 +25,8 @@
   -->
 
     <div class="home-head">
-      <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;position: relative;top: 8px;"
-        ref="logoAnim" />
+      <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1"
+        style="height: 80px;position: relative;top: 8px;" ref="logoAnim" />
     </div>
 
     <swiper-container :pagination="true" class="swiper-multiple" :space-between="50" :slides-per-view="'auto'">
@@ -38,9 +38,14 @@
     <f7-photo-browser ref="page" :photos="banners" :thumbs="banners" type="page" page-back-link-text="Back">
     </f7-photo-browser>
 
-    <f7-block class="text-align-center" v-if="store.state.userData == null">
+    <f7-block class="text-align-center" v-if="store.state.userData == null && !isLoading">
       <p>ทำการกรอกข้อมูลพื้นฐานเพื่อใช้งานระบบได้มากขึ้น</p>
       <f7-button fill login-screen-open="#info-register-screen">กรอกข้อมูล</f7-button>
+    </f7-block>
+
+    <f7-block strong inset color="green">
+      <strong><f7-icon material="lightbulb" size="20"></f7-icon> แอพนี้อยู่ในระหว่างการทดสอบ</strong>
+      ถ้าเจอบัค หรือมีไอเดียดีๆ ก็ผ่ากส่งมาได้ที่ devpixelsrecords@gmail.com 😺
     </f7-block>
 
     <f7-block>
