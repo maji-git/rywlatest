@@ -20,7 +20,7 @@
     transform: translate(0px, 25px);
 }
 
-.home-action-btn {
+.block-action-btn {
     height: 100px;
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@
     justify-content: center;
 }
 
-.home-action-btn p {
+.block-action-btn p {
     margin: 0;
     margin-top: 5px;
     line-height: 20px;

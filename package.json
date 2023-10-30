@@ -20,6 +20,7 @@
     "last 5 Firefox versions"
   ],
   "dependencies": {
+    "@capacitor-community/contacts": "^5.0.4",
     "@capacitor-community/file-opener": "^1.0.5",
     "@capacitor-community/media": "^5.2.2",
     "@capacitor/android": "^5.5.0",

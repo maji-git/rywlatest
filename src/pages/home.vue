@@ -28,44 +28,42 @@
 
     <f7-block>
       <div class="grid grid-cols-2 grid-gap mb-3">
-        <f7-button tonal href="/news/" color="purple" class="home-action-btn">
+        <f7-button tonal href="/news/" color="purple" class="block-action-btn">
           <f7-icon material="newspaper"></f7-icon>
           <p>ข่าวสารโรงเรียน</p>
         </f7-button>
-        <f7-button tonal href="/calendar/" color="orange" class="home-action-btn">
+        <f7-button tonal href="/calendar/" color="orange" class="block-action-btn">
           <f7-icon material="calendar_month"></f7-icon>
           <p>ตารางกิจกรรม</p>
         </f7-button>
-      </div>
-      <div class="grid grid-cols-2 grid-gap mb-3">
-        <!--<f7-button tonal>ตารางสอน</f7-button>-->
-        <f7-button tonal href="/attendee/" color="blue" class="home-action-btn" v-if="store.state.userData">
+        <f7-button tonal href="/attendee/" color="blue" class="block-action-btn" v-if="store.state.userData">
           <f7-icon material="meeting_room"></f7-icon>
           <p>บันทึกการมาโรงเรียน</p>
         </f7-button>
-        <f7-button tonal href="/watpol/" color="green" class="home-action-btn" v-if="store.state.userData">
+        <f7-button tonal href="/watpol/" color="green" class="block-action-btn" v-if="store.state.userData">
           <f7-icon material="scoreboard"></f7-icon>
           <p>ดูผลการเรียน</p>
         </f7-button>
-        <!--
-        <f7-button tonal href="/teachers/" color="blue" class="home-action-btn">
-          <f7-icon material="badge"></f7-icon>
-          <p>ข้อมูลคุณครู</p>
-        </f7-button>
-        -->
       </div>
+      <f7-button tonal href="/teachers/" color="red" class="block-action-btn" v-if="store.state.userData">
+        <f7-icon material="school"></f7-icon>
+        <p>ข้อมูลคุณครู</p>
+      </f7-button>
     </f7-block>
 
     <f7-block strong inset v-if="store.state.userData != null">
       <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
-      <h1 :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'var(--f7-color-teal)' : 'var(--f7-color-deeporange)'};`"
+      <h1
+        :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'var(--f7-color-teal)' : 'var(--f7-color-deeporange)'};`"
         :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
     </f7-block>
 
     <f7-block strong inset v-if="store.state.userData != null">
       <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
-      <h1 v-if="checkedIn" style="color: var(--f7-color-teal);"><f7-icon material="check_circle" size="30"></f7-icon> บันทึกแล้ว</h1>
-      <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
+      <h1 v-if="checkedIn" style="color: var(--f7-color-teal);"><f7-icon material="check_circle" size="30"></f7-icon>
+        บันทึกแล้ว</h1>
+      <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon
+          material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
       <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
     </f7-block>
 
