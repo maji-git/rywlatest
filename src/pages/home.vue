@@ -1,16 +1,33 @@
 <template>
   <f7-page name="home" ptr :ptr-mousewheel="true" @ptr:refresh="loadData">
+
+    <!--
     <f7-navbar large :sliding="false">
       <f7-nav-left>
         <f7-link icon-ios="f7:menu" icon-md="material:menu" panel-open="left"></f7-link>
       </f7-nav-left>
+
       <f7-nav-title sliding>RYW Latest</f7-nav-title>
+
+      <f7-nav-right>
+        <f7-link icon-md="material:notifications"></f7-link>
+
+        <div v-if="store.state.userData" class="user-avatar"
+          :style="`background-image: url(${store.state.userData.headshot})`"></div>
+      </f7-nav-right>
+
       <f7-nav-title-large>
         <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
           ref="logoAnim" />
 
       </f7-nav-title-large>
     </f7-navbar>
+  -->
+
+    <div class="home-head">
+      <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;position: relative;top: 8px;"
+        ref="logoAnim" />
+    </div>
 
     <swiper-container :pagination="true" class="swiper-multiple" :space-between="50" :slides-per-view="'auto'">
       <swiper-slide v-for="banner in banners">
@@ -60,8 +77,14 @@
 
     <f7-block strong inset v-if="store.state.userData != null">
       <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
-      <h1 v-if="checkedIn" style="color: var(--f7-color-teal);"><f7-icon material="check_circle" size="30"></f7-icon>
-        บันทึกแล้ว</h1>
+      <div class="display-flex align-items-center" style="color: var(--f7-color-teal);" v-if="checkedIn">
+        <f7-icon material="check_circle" size="40"></f7-icon>
+        <div class="ml-2">
+          <h2 class="m-0">บันทึกแล้ว</h2>
+          <p class="m-0"><strong>{{ checkedInTime }}</strong></p>
+        </div>
+      </div>
+
       <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon
           material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
       <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
@@ -104,6 +127,7 @@ const banners = ref([])
 const logoAnim = ref()
 const isLoading = ref(false)
 const checkedIn = ref(false)
+const checkedInTime = ref("")
 
 const loadData = async (done) => {
   isLoading.value = true
@@ -123,6 +147,7 @@ const loadData = async (done) => {
     if (attendeeData[0]) {
       if (attendeeData[0].date.getDate() == today.getDate()) {
         checkedIn.value = true
+        checkedInTime.value = attendeeData[0].entranceTime
       }
     }
   }

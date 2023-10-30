@@ -1,6 +1,6 @@
 <template>
     <f7-page name="about" ptr :ptr-mousewheel="true" @ptr:refresh="listTeachers">
-        <f7-navbar title="ข้อมูลคุณครู" back-link="Back">
+        <f7-navbar title="ข้อมูลคุณครู" back-link="/">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
                     icon-md="material:search" />

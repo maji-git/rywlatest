@@ -101,3 +101,17 @@
     display: grid;
     place-items: center;
 }
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: top;
+    margin-right: 10px;
+}
+
+.home-head {
+    background-color: var(--f7-navbar-bg-color, var(--f7-bars-bg-color));
+    padding: 20px;
+}

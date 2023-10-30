@@ -61,8 +61,12 @@ export async function getStdFixPDF() {
             i++
             prog.setProgress((i / queryAll.length) * 100)
 
-            const targetURL = imgs.src.replace("http://192.168.1.170:5173/", "https://rayongwit.ac.th/").replace("../", "https://rayongwit.ac.th/")
+            let targetURL = imgs.src.replace("http://192.168.1.170:5173/", "https://rayongwit.ac.th/").replace("../", "https://rayongwit.ac.th/")
             imgs.setAttribute("onerror", "this.src=&quot;https://rayongwit.ac.th/ticket/pic/no-pic.JPG&quot;;")
+
+            if (targetURL.includes("logo.png")) {
+                targetURL = "https://rayongwit.ac.th/student/logo.png"
+            }
 
             const resolved = await resolveImg(targetURL)
             imgs.src = resolved

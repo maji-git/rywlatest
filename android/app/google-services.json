@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "675000735085",
+    "project_id": "rywlatest",
+    "storage_bucket": "rywlatest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675000735085:android:4c16282eddd741f1def664",
+        "android_client_info": {
+          "package_name": "xyz.devpixels.rywlatest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2flULDmMQ8BbbqBuWaHoxgIVLpsSa_TE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
