@@ -37,8 +37,12 @@
           <p>ตารางกิจกรรม</p>
         </f7-button>
       </div>
-      <div class="grid grid-cols-1 grid-gap mb-3">
+      <div class="grid grid-cols-2 grid-gap mb-3">
         <!--<f7-button tonal>ตารางสอน</f7-button>-->
+        <f7-button tonal href="/attendee/" color="blue" class="home-action-btn" v-if="store.state.userData">
+          <f7-icon material="meeting_room"></f7-icon>
+          <p>บันทึกการมาโรงเรียน</p>
+        </f7-button>
         <f7-button tonal href="/watpol/" color="green" class="home-action-btn" v-if="store.state.userData">
           <f7-icon material="scoreboard"></f7-icon>
           <p>ดูผลการเรียน</p>
@@ -54,8 +58,15 @@
 
     <f7-block strong inset v-if="store.state.userData != null">
       <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
-      <h1 :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'green' : 'orange'};`"
+      <h1 :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'var(--f7-color-teal)' : 'var(--f7-color-deeporange)'};`"
         :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
+    </f7-block>
+
+    <f7-block strong inset v-if="store.state.userData != null">
+      <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
+      <h1 v-if="checkedIn" style="color: var(--f7-color-teal);"><f7-icon material="check_circle" size="30"></f7-icon> บันทึกแล้ว</h1>
+      <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
+      <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
     </f7-block>
 
     <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
@@ -79,7 +90,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getAnnouncements, getBanners } from "@/js/lib/announcements.js"
-import { getBehaviourData } from "@/js/lib/stdsession.js"
+import { getBehaviourData, getAttendees } from "@/js/lib/stdsession.js"
 import { Browser } from '@capacitor/browser';
 import store from '@/js/store.js';
 import { LottieAnimation } from "lottie-web-vue"
@@ -94,9 +105,11 @@ const behaviourData = ref({})
 const banners = ref([])
 const logoAnim = ref()
 const isLoading = ref(false)
+const checkedIn = ref(false)
 
 const loadData = async (done) => {
   isLoading.value = true
+  checkedIn.value = false
 
   logoAnim.value.setDirection(-1)
   logoAnim.value.play()
@@ -104,6 +117,16 @@ const loadData = async (done) => {
   annoucements.value = (await getAnnouncements()).slice(0, 5);
   if (store.state.userData) {
     behaviourData.value = await getBehaviourData()
+
+
+    const today = new Date()
+    const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
+
+    if (attendeeData[0]) {
+      if (attendeeData[0].date.getDate() == today.getDate()) {
+        checkedIn.value = true
+      }
+    }
   }
 
   banners.value = await getBanners()

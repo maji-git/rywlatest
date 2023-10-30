@@ -17,6 +17,7 @@ import SportsPage from '../pages/sports.vue';
 import CalendarPage from '../pages/calendar.vue';
 import TeachersPage from '../pages/teachers.vue';
 import PreferencesPage from '../pages/pref.vue';
+import AttendeePage from '../pages/attendee.vue';
 
 var routes = [
   {
@@ -60,22 +61,17 @@ var routes = [
     component: PreferencesPage,
   },
   {
-    path: '/about/',
-    component: AboutPage,
+    path: '/attendee/',
+    component: AttendeePage,
   },
   {
-    path: '/form/',
-    component: FormPage,
+    path: '/about/',
+    component: AboutPage,
   },
   {
     path: '/settings/',
     component: SettingsPage,
   },
-  {
-    path: '/dynamic-route/blog/:blogId/post/:postId/',
-    component: DynamicRoutePage,
-  },
-  
   {
     path: '(.*)',
     component: NotFoundPage,

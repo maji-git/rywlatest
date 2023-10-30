@@ -3,6 +3,7 @@ import store from '@/js/store.js';
 import { f7 } from 'framework7-vue';
 import html2pdf from 'html2pdf.js'
 import { resolveImg } from '../utils/img';
+import { thaiToDate } from '../utils/date';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 const url = "https://rayongwit.ac.th/student/index.php"
@@ -166,6 +167,43 @@ export async function getTeachersTel() {
     }
 
     return teachers
+}
+
+export async function getAttendees(month = 11) {
+    const sessionID = await reauthenticate()
+
+    const stdPrint = await CapacitorHttp.post({
+        url: url,
+        data: `cl=${month}`,
+        headers: {
+            "Cookie": sessionID,
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+    });
+    const parser = new DOMParser()
+    const dom = parser.parseFromString(stdPrint.data, "text/html")
+
+    const attendees = []
+
+    for (const t of dom.querySelectorAll("div tbody tr")) {
+        const tds = t.querySelectorAll("td")
+    
+        if (tds.length > 3) {
+            const attendData = {
+                date: thaiToDate(tds[0]?.innerHTML?.trim()),
+                dateTxt: tds[0]?.innerHTML?.trim(),
+                entranceTime: tds[1]?.innerHTML?.trim(),
+                exitTime: tds[2]?.innerHTML?.trim(),
+                comment: tds[3]?.innerHTML?.trim(),
+            }
+    
+            if (attendData.entranceTime && attendData.entranceTime != "-") {
+                attendees.push(attendData)
+            }
+        }
+    }
+    
+    return attendees
 }
 
 export async function getInfo() {
