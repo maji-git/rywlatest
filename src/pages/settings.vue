@@ -16,6 +16,7 @@
             <f7-list-item title="ชื่อ นามสกุล">{{ userData.firstname }} {{ userData.surname }}</f7-list-item>
             <f7-list-item title="มัธยมศึกษาปีที่">{{ userData.mathayom }}</f7-list-item>
             <f7-list-item title="ห้อง">{{ userData.room }}</f7-list-item>
+            <f7-list-item title="เลขที่">{{ userData.no }}</f7-list-item>
             <f7-list-item title="แผนการเรียน">
               <div class="display-flex align-items-center">
               <img v-if="store.state.classPlansLogos.includes(userData.classPlan)" :src="`plan-icons/${userData.classPlan}.png`" class="mr-2" height="40">
@@ -43,7 +44,6 @@
         <f7-list-button link="/prefs/" fill>การตั้งค่า</f7-list-button>
         <f7-list-button link="/about/" fill>เกี่ยวกับแอพนี้</f7-list-button>
         <f7-list-button fill v-if="userData != null" color="red" @click="clearUserdata">ลงชื่อออก</f7-list-button>
-        <f7-list-button @click="location.reload()">รีเซ็ตแอพ</f7-list-button>
       </f7-list>
     </f7-block>
   </f7-page>
