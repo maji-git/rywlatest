@@ -1,0 +1,98 @@
+/* prompt-regular - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-italic - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: italic;
+    font-weight: 400;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-500 - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-500.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-500italic - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: italic;
+    font-weight: 500;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-500italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-600 - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-600.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-600italic - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: italic;
+    font-weight: 600;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-600italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-700 - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-700.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-700italic - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: italic;
+    font-weight: 700;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-700italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* prompt-800 - latin_latin-ext_thai */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 800;
+    src: url('../fonts/prompt-v10-latin_latin-ext_thai-800.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
