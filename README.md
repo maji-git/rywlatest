@@ -1,99 +1,48 @@
-# Rayongwit Latest
+<center>
 
-## Framework7 CLI Options
+<img src="resources/readme-splash.png" height="200">
 
-Framework7 app created with following options:
+# RYW Latest | ล่าสุด ระยองวิทย์
+เป็นคนแรกที่ได้ข่าวระยองวิทย์!
 
-```
-{
-  "cwd": "P:\\projects\\node\\rywlatest",
-  "type": [
-    "capacitor"
-  ],
-  "name": "Rayongwit Latest",
-  "pkg": "xyz.devpixels.rywlatest",
-  "framework": "vue",
-  "template": "tabs",
-  "cssPreProcessor": false,
-  "bundler": "vite",
-  "capacitor": {
-    "platforms": [
-      "ios",
-      "android"
-    ]
-  },
-  "theming": {
-    "customColor": true,
-    "color": "#235B95",
-    "darkMode": false,
-    "iconFonts": true
-  },
-  "customBuild": false
-}
+</center>
+
+RYW Latest เป็นแอพพลิเคชั่นสำหรับข่าวประชาสัมพันธ์ และอื่นๆ สำหรับเพื่อนๆ ในระยองวิทย์ (หลัก) ทุกคน ทำงานผ่าน [Web scraping](https://en.wikipedia.org/wiki/Web_scraping) เป็นหลัก รันบน [Framework7](https://framework7.io/)
+
+## Setup
+| โปรแกรม | ดาวน์โหลด |
+|--|--|
+| NodeJS | https://nodejs.org/en/ |
+| npm | ลงพร้อมกับ NodeJS |
+| Android Studio & SDK | https://developer.android.com/studio |
+
+1. โคลน
+```sh
+git clone https://github.com/SK-Fast/rywlatest.git
 ```
 
-## Install Dependencies
-
-First of all we need to install dependencies, run in terminal
-```
+2. ลง Packages แล้ว Sync กับ Capacitor
+```sh
 npm install
+npx cap sync
 ```
 
-## NPM Scripts
-
-* 🔥 `start` - run development server
-* 🔧 `dev` - run development server
-* 🔧 `build` - build web app for production
-* 📱 `build-capacitor-ios` - build app and copy it to iOS capacitor project
-* 📱 `build-capacitor-android` - build app and copy it to Android capacitor project
-
-## Vite
-
-There is a [Vite](https://vitejs.dev) bundler setup. It compiles and bundles all "front-end" resources. You should work only with files located in `/src` folder. Vite config located in `vite.config.js`.
-## Capacitor
-
-This project created with Capacitor support. And first thing required before start is to add capacitor platforms, run in terminal:
-
-```
-npx cap add ios && npx cap add android
+3. เปิด Android Studio
+```sh
+npx cap open android
 ```
 
-Check out [official Capacitor documentation](https://capacitorjs.com) for more examples and usage examples.
+4. ต่อ Emulator หรือ Device USB แล้ว รัน Project บน Android Studio
 
-## Assets
-
-Assets (icons, splash screens) source images located in `assets-src` folder. To generate your own icons and splash screen images, you will need to replace all assets in this directory with your own images (pay attention to image size and format), and run the following command in the project directory:
-
-```
-framework7 assets
+5. เปิด Test Server
+```sh
+npm run dev
 ```
 
-Or launch UI where you will be able to change icons and splash screens:
+<div align="center">
 
-```
-framework7 assets --ui
-```
+[devpixels.xyz](https://devpixels.xyz)
+•
+[rayongwit.ac.th](https://rayongwit.ac.th)
 
-## Capacitor Assets
-
-Capacitor assets are located in `resources` folder which is intended to be used with `cordova-res` tool. To generate  mobile apps assets run in terminal:
-```
-npx cordova-res
-```
-
-Check out [official cordova-res documentation](https://github.com/ionic-team/cordova-res) for more usage examples.
-
-## Documentation & Resources
-
-* [Framework7 Core Documentation](https://framework7.io/docs/)
-* [Framework7 Vue Documentation](https://framework7.io/vue/)
-
-
-* [Framework7 Icons Reference](https://framework7.io/icons/)
-* [Community Forum](https://forum.framework7.io)
-
-## Support Framework7
-
-Love Framework7? Support project by donating or pledging on:
-- Patreon: https://patreon.com/framework7
-- OpenCollective: https://opencollective.com/framework7
+</div>
