@@ -6,6 +6,13 @@
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": ["badge", "alert"]
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_rywl",
+      "iconColor": "#1F2C4F"
     }
   },
   "server": {
