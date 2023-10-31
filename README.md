@@ -1,11 +1,11 @@
-<center>
+<div align="center">
 
 <img src="resources/readme-splash.png" height="200">
 
 # RYW Latest | ล่าสุด ระยองวิทย์
 เป็นคนแรกที่ได้ข่าวระยองวิทย์!
 
-</center>
+</div>
 
 RYW Latest เป็นแอพพลิเคชั่นสำหรับข่าวประชาสัมพันธ์ และอื่นๆ สำหรับเพื่อนๆ ในระยองวิทย์ (หลัก) ทุกคน ทำงานผ่าน [Web scraping](https://en.wikipedia.org/wiki/Web_scraping) เป็นหลัก รันบน [Framework7](https://framework7.io/)
 
