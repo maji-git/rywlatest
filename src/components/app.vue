@@ -69,7 +69,7 @@ import capacitorApp from '../js/capacitor-app.js';
 import routes from '../js/routes.js';
 import store from '@/js/store.js';
 import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthState } from "@/js/lib/stdsession.js"
-import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
+import { loadPrefs as notifyLoadPrefs, waitForMessages } from "@/js/services/notifications.js"
 import { Preferences } from "@capacitor/preferences"
 
 const device = getDevice();
@@ -130,6 +130,7 @@ onMounted(() => {
     }
 
     loadFromPreferences()
+    waitForMessages()
     notifyLoadPrefs()
 
     const firstTime = await Preferences.get({key: "landingDone"})

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="resources/readme-splash.png" height="200">
+<img src="readme-splash.png" height="200">
 
 # RYW Latest | ล่าสุด ระยองวิทย์
 เป็นคนแรกที่ได้ข่าวระยองวิทย์!

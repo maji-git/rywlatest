@@ -30,15 +30,13 @@ const rerunApp = () => {
     location.reload()
 }
 
-const onNotifyToggled = async (state) => {
+const onNotifyToggled = async () => {
     const val = !notifyUserToggle.value
 
     if (val) {
+        console.log("Requesting")
         const res = await enableNotify()
-
-        if (!res.success) {
-            notifyUserToggle.value = !notifyUserToggle.value
-        }
+        console.log(res)
     } else {
         disableNotify()
     }
