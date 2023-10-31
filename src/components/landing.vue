@@ -19,7 +19,7 @@
                             <p class="text-center text-muted">
                                 <f7-link href="/about/">เกี่ยวกับแอพนี้</f7-link>
                                 •
-                                <a>นโยบายความเป็นส่วนตัว</a>
+                                <f7-link href="#" @click="openSite('https://devpixels.xyz/legal/th/privacy/apps/rywlatest/')">นโยบายความเป็นส่วนตัว</f7-link>
                             </p>
                         </div>
                     </f7-tab>
@@ -108,8 +108,13 @@ import { onMounted, ref } from "vue";
 import store from '@/js/store.js';
 import { f7 } from "framework7-vue"
 import { Preferences } from "@capacitor/preferences"
+import { Browser } from '@capacitor/browser';
 
 const userData = ref(null)
+
+const openSite = async (url) => {
+  await Browser.open({ url });
+}
 
 const landingSetDone = async () => {
     await Preferences.set({ key: "landingDone", value: "1" })

@@ -21,6 +21,9 @@
             </f7-block>
 
             <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
+            <div class="text-align-center text-muted" v-if="isLoaded && behaviours.length == 0">
+                เอี่ยมอ่อง...
+            </div>
             <f7-list strong inset>
                 <div class="text-align-center" v-if="!isLoaded">
                     <f7-preloader />
