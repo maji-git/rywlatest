@@ -11,6 +11,10 @@ const store = createStore({
       username: import.meta.env.VITE_LOGIN_USERNAME | "",
       password: import.meta.env.VITE_LOGIN_PASSWORD | ""
     },
+    notify: {
+      enabled: false,
+      token: ""
+    },
     teacherData: null,
     teacherGroups: {
       [100]: "ฝ่ายบริหาร",

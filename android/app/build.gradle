@@ -30,11 +30,6 @@ repositories {
     }
 }
 
-plugins {
-    id 'com.android.application'
-    id 'com.google.gms.google-services' version '4.4.0' apply false
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
@@ -45,8 +40,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
-    implementation platform('com.google.firebase:firebase-bom:32.4.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
 
 apply from: 'capacitor.build.gradle'

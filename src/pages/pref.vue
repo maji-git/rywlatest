@@ -1,9 +1,15 @@
 <template>
-    <f7-page name="การตั้งค่า">
+    <f7-page name="การตั้งค่า" @page:beforein="prefStateLoad">
         <f7-navbar title="การตั้งค่า" back-link="Back"></f7-navbar>
 
         <f7-block>
             <f7-list>
+                <f7-list-item title="รับการแจ้งเตือน">
+                    <template #after>
+                        <f7-toggle class="no-fastclick" v-model:checked="notifyUserToggle" @click="onNotifyToggled" />
+                    </template>
+                </f7-list-item>
+
                 <f7-list-button @click="rerunApp">รีเซ็ตแอพ</f7-list-button>
                 <f7-list-button @click="openLanding">เปิด Landing</f7-list-button>
             </f7-list>
@@ -13,17 +19,39 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import { enableNotify, disableNotify } from '@/js/services/notifications.js';
 import store from '@/js/store.js';
-import { useStore, f7 } from "framework7-vue"
+
+import { f7 } from "framework7-vue"
+
+const notifyUserToggle = ref(false)
 
 const rerunApp = () => {
     location.reload()
+}
+
+const onNotifyToggled = async (state) => {
+    const val = !notifyUserToggle.value
+
+    if (val) {
+        const res = await enableNotify()
+
+        if (!res.success) {
+            notifyUserToggle.value = !notifyUserToggle.value
+        }
+    } else {
+        disableNotify()
+    }
 }
 
 const openLanding = () => {
     f7.popup.open("#landing-popup")
 }
 
-onMounted(() => {
-})
+const prefStateLoad = () => {
+    console.log(store.state.notify.enabled)
+    if (store.state.notify.enabled) {
+        notifyUserToggle.value = true
+    }
+}
 </script>

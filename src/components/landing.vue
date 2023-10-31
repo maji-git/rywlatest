@@ -58,7 +58,8 @@
                         </f7-block>
 
                         <div class="landing-actions">
-                            <f7-button @click="openLogin" tab-link="#landing-tab-empty" class="w-100 mb-2" fill>ลงชื่อเข้าใช้</f7-button>
+                            <f7-button @click="openLogin" tab-link="#landing-tab-empty" class="w-100 mb-2"
+                                fill>ลงชื่อเข้าใช้</f7-button>
                             <f7-button popup-close @click="landingSetDone" class="w-100">ใช้โดยไม่ลงชื่อเข้าใช้</f7-button>
                             <f7-button tab-link="#landing-tab-2" class="w-100">กลับไป</f7-button>
                         </div>
@@ -87,12 +88,13 @@
                         </f7-block>
 
                         <div class="landing-actions">
-                            <f7-button tab-link="#landing-welcome-preload" @click="startReload" class="w-100 mb-2" fill>มาเริ่มกันเลย!</f7-button>
+                            <f7-button tab-link="#landing-welcome-preload" @click="startReload" class="w-100 mb-2"
+                                fill>มาเริ่มกันเลย!</f7-button>
                         </div>
                     </f7-tab>
 
                     <f7-tab id="landing-welcome-preload" class="landing-page" tab-active>
-                        <f7-preloader/>
+                        <f7-preloader />
                         <i class="mt-2">รอสักครู่...</i>
                     </f7-tab>
                 </f7-tabs>
@@ -109,15 +111,15 @@ import { Preferences } from "@capacitor/preferences"
 
 const userData = ref(null)
 
-const landingSetDone = async() => {
-    await Preferences.set({key: "landingDone", value: "1"})
+const landingSetDone = async () => {
+    await Preferences.set({ key: "landingDone", value: "1" })
 }
 
 const openLogin = async () => {
     const ls = f7.loginScreen.open("#info-register-screen")
-    
+
     ls.once('close', () => {
-        if (store.state.userData) {
+        if (store.state.userData && store.state.userData["firstname"] != "") {
             userData.value = store.state.userData
             f7.popup.open("#landing-welcome-popup")
 

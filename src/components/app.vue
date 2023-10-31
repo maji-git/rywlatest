@@ -33,6 +33,7 @@
     </f7-views>
 
     <LandingPopup/>
+    <NotifyPopup/>
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -61,12 +62,14 @@
 import { ref, onMounted } from 'vue';
 import { f7, f7ready } from 'framework7-vue';
 import LandingPopup from "./landing.vue"
+import NotifyPopup from "./notify-popup.vue"
 
 import { getDevice } from 'framework7/lite-bundle';
 import capacitorApp from '../js/capacitor-app.js';
 import routes from '../js/routes.js';
 import store from '@/js/store.js';
 import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthState } from "@/js/lib/stdsession.js"
+import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
 import { Preferences } from "@capacitor/preferences"
 
 const device = getDevice();
@@ -127,11 +130,16 @@ onMounted(() => {
     }
 
     loadFromPreferences()
+    notifyLoadPrefs()
 
     const firstTime = await Preferences.get({key: "landingDone"})
+    const notifyPrompted = await Preferences.get({key: "notifyPrompted"})
 
     if (firstTime.value !== "1") {
       f7.popup.open("#landing-popup")
+    } else if (notifyPrompted.value !== "1") {
+      f7.popup.open("#notify-popup")
+      Preferences.set({key: "notifyPrompted", value: "1"})
     }
   });
 });
