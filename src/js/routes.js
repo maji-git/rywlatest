@@ -18,6 +18,7 @@ import CalendarPage from '../pages/calendar.vue';
 import TeachersPage from '../pages/teachers.vue';
 import PreferencesPage from '../pages/pref.vue';
 import AttendeePage from '../pages/attendee.vue';
+import NotificationsPage from '../pages/notifications.vue';
 
 var routes = [
   {
@@ -27,6 +28,10 @@ var routes = [
   {
     path: '/news/',
     component: NewsPage,
+  },
+  {
+    path: '/notifications/',
+    component: NotificationsPage,
   },
   {
     path: '/events/',

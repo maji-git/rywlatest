@@ -1,6 +1,6 @@
 <template>
     <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMore">
-        <f7-navbar title="ปฏิทินโรงเรียน" back-link="Back">
+        <f7-navbar title="ปฏิทินโรงเรียน">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
                     icon-md="material:search" />

@@ -1,6 +1,6 @@
 <template>
   <f7-page name="settings">
-    <f7-navbar title="เกี่ยวกับฉัน"></f7-navbar>
+    <f7-navbar title="เกี่ยวกับฉัน" back-link="Back"></f7-navbar>
 
     <br>
     <div class="text-align-center" v-if="userData != null">

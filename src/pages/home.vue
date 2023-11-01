@@ -1,19 +1,16 @@
 <template>
   <f7-page name="home" ptr :ptr-mousewheel="true" @ptr:refresh="loadData">
 
-    <!--
     <f7-navbar large :sliding="false">
       <f7-nav-left>
-        <f7-link icon-ios="f7:menu" icon-md="material:menu" panel-open="left"></f7-link>
+        <f7-link href="/notifications/" icon-md="material:notifications"></f7-link>
       </f7-nav-left>
 
-      <f7-nav-title sliding>RYW Latest</f7-nav-title>
+      <f7-nav-title class="text-center" sliding>RYW Latest</f7-nav-title>
 
       <f7-nav-right>
-        <f7-link icon-md="material:notifications"></f7-link>
-
-        <div v-if="store.state.userData" class="user-avatar"
-          :style="`background-image: url(${store.state.userData.headshot})`"></div>
+        <f7-link href="/settings/" v-if="store.state.userData" class="user-avatar"
+          :style="`background-image: url(${store.state.userData.headshot})`"></f7-link>
       </f7-nav-right>
 
       <f7-nav-title-large>
@@ -22,11 +19,16 @@
 
       </f7-nav-title-large>
     </f7-navbar>
-  -->
 
+    <!--
     <div class="home-head">
       <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1"
         style="height: 80px;position: relative;top: 8px;" ref="logoAnim" />
+    </div>
+    -->
+
+    <div class="alert alert-warn" v-if="!isOnline">
+      ไม่มีอินเตอร์เน็ต
     </div>
 
     <swiper-container :pagination="true" class="swiper-multiple" :space-between="50" :slides-per-view="'auto'">
@@ -54,10 +56,6 @@
           <f7-icon material="newspaper"></f7-icon>
           <p>ข่าวสารโรงเรียน</p>
         </f7-button>
-        <f7-button tonal href="/calendar/" color="orange" class="block-action-btn">
-          <f7-icon material="calendar_month"></f7-icon>
-          <p>ตารางกิจกรรม</p>
-        </f7-button>
         <f7-button tonal href="/attendee/" color="blue" class="block-action-btn" v-if="store.state.userData">
           <f7-icon material="meeting_room"></f7-icon>
           <p>บันทึกการมาโรงเรียน</p>
@@ -66,11 +64,11 @@
           <f7-icon material="scoreboard"></f7-icon>
           <p>ดูผลการเรียน</p>
         </f7-button>
-      </div>
-      <f7-button tonal href="/teachers/" color="red" class="block-action-btn" v-if="store.state.userData">
+        <f7-button tonal href="/teachers/" color="orange" class="block-action-btn" v-if="store.state.userData">
         <f7-icon material="school"></f7-icon>
         <p>ข้อมูลคุณครู</p>
       </f7-button>
+      </div>
     </f7-block>
 
     <f7-block strong inset v-if="store.state.userData != null">
@@ -132,9 +130,19 @@ const banners = ref([])
 const logoAnim = ref()
 const isLoading = ref(false)
 const checkedIn = ref(false)
+const isOnline = ref(true)
 const checkedInTime = ref("")
 
 const loadData = async (done) => {
+  isOnline.value = navigator.onLine
+
+  if (!navigator.onLine) {
+    if (done) {
+      done()
+    }
+    return
+  }
+
   isLoading.value = true
   checkedIn.value = false
 

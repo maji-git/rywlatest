@@ -1,39 +1,32 @@
 <template>
   <f7-app v-bind="f7params">
 
-    <!-- Left panel with cover effect-->
-    <f7-panel left cover dark>
-      <f7-view>
-        <f7-page>
-          <f7-navbar title="RYW Latest"></f7-navbar>
-          <f7-block>Left panel content goes here</f7-block>
-        </f7-page>
-      </f7-view>
-    </f7-panel>
-
-
     <!-- Views/Tabs container -->
     <f7-views tabs class="safe-areas">
       <!-- Tabbar for switching views-tabs -->
       <f7-toolbar tabbar icons bottom>
         <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
-          <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face" text="พฤติกรรม"></f7-link>
-          <!--<f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>-->
-          <!--<f7-link tab-link="#view-sports" icon-ios="f7:sports_soccer" icon-md="material:sports_soccer" text="กีฬาสี"></f7-link>-->
-          <f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>
+        <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face"
+          text="พฤติกรรม"></f7-link>
+        <f7-link tab-link="#view-calendar" icon-ios="f7:calendar_month" icon-md="material:calendar_month"
+          text="ตารางกิจกรรม"></f7-link>
+        <!--<f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>-->
+        <!--<f7-link tab-link="#view-sports" icon-ios="f7:sports_soccer" icon-md="material:sports_soccer" text="กีฬาสี"></f7-link>-->
+        <!--<f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>-->
       </f7-toolbar>
 
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
       <f7-view id="view-behavior" name="behaviour" tab url="/behaviour/"></f7-view>
+      <f7-view id="view-calendar" name="calendar" tab url="/calendar/"></f7-view>
       <f7-view id="view-docs" name="docs" tab url="/docs/"></f7-view>
       <f7-view id="view-sports" name="sports" tab url="/sports/"></f7-view>
       <f7-view id="view-settings" name="settings" tab url="/settings/"></f7-view>
 
     </f7-views>
 
-    <LandingPopup/>
-    <NotifyPopup/>
+    <LandingPopup />
+    <NotifyPopup />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -106,7 +99,7 @@ const infoSubmitted = async () => {
     f7.dialog.confirm(`คุณใช่ ${studentData.firstname} ${studentData.surname} จากห้อง ${studentData.mathayom}/${studentData.room} หรือไม่?`, () => {
       f7.toast.create({ text: "บันทึกข้อมูลเสร็จสิ้น!", closeTimeout: 2000, closeButton: true }).open()
       store.state.userData = studentData
-      Preferences.set({key: "landingDone", value: "1"})
+      Preferences.set({ key: "landingDone", value: "1" })
       saveToPreferences()
 
       f7.loginScreen.close()
@@ -133,14 +126,14 @@ onMounted(() => {
     waitForMessages()
     notifyLoadPrefs()
 
-    const firstTime = await Preferences.get({key: "landingDone"})
-    const notifyPrompted = await Preferences.get({key: "notifyPrompted"})
+    const firstTime = await Preferences.get({ key: "landingDone" })
+    const notifyPrompted = await Preferences.get({ key: "notifyPrompted" })
 
     if (firstTime.value !== "1") {
       f7.popup.open("#landing-popup")
     } else if (notifyPrompted.value !== "1") {
       f7.popup.open("#notify-popup")
-      Preferences.set({key: "notifyPrompted", value: "1"})
+      Preferences.set({ key: "notifyPrompted", value: "1" })
     }
   });
 });
