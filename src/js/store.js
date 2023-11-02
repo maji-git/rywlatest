@@ -15,6 +15,7 @@ const store = createStore({
       enabled: false,
       token: ""
     },
+    newNotify: false,
     teacherData: null,
     teacherGroups: {
       [100]: "ฝ่ายบริหาร",
@@ -87,6 +88,9 @@ const store = createStore({
         return null
       }
       return state.userData.sessionID;
+    },
+    newNotify({ state }) {
+      return state.newNotify
     }
   },
   actions: {

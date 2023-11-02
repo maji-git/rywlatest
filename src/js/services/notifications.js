@@ -3,6 +3,8 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import store from '@/js/store.js';
 import { Preferences } from "@capacitor/preferences"
 
+const notifications = []
+
 export async function saveToPrefs() {
     await Preferences.set({ key: "notifyData", value: JSON.stringify(store.state.notify) })
 }
@@ -15,8 +17,14 @@ export async function loadPrefs() {
     }
 }
 
+export function getNotifications() {
+    return notifications
+}
+
 export function waitForMessages() {
     FirebaseMessaging.addListener("notificationReceived", async (data) => {
+        store.state.newNotify = true
+        notifications.push(data.notification)
         const notifs = await LocalNotifications.schedule({
             notifications: [
                 {

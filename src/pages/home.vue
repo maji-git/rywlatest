@@ -3,7 +3,11 @@
 
     <f7-navbar large :sliding="false">
       <f7-nav-left>
-        <f7-link href="/notifications/" icon-md="material:notifications"></f7-link>
+        <f7-link href="/notifications/">
+          <f7-icon ios="f7:notifications" md="material:notifications">
+            <f7-badge color="red" v-if="newNotify"></f7-badge>
+          </f7-icon>
+        </f7-link>
       </f7-nav-left>
 
       <f7-nav-title class="text-center" sliding>RYW Latest</f7-nav-title>
@@ -119,10 +123,13 @@ import { Browser } from '@capacitor/browser';
 import store from '@/js/store.js';
 import { LottieAnimation } from "lottie-web-vue"
 import LogoTextJSON from "@/assets/lottie/logo-text.json"
+import { f7, useStore } from 'framework7-vue';
 
 const openSite = async (url) => {
   await Browser.open({ url });
 }
+
+const newNotify = useStore('newNotify');
 
 const annoucements = ref({})
 const behaviourData = ref({})
