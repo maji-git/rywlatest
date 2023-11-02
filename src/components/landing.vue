@@ -49,7 +49,7 @@
                     <f7-tab id="landing-tab-3" class="landing-page">
                         <f7-block class="text-align-center landing-container">
                             <div class="landing-img">
-                                <img src="@/assets/landing/landing-user.svg" class="img-field">
+                                <img src="@/assets/landing/landing-user.png" class="img-field img-shadow-sm">
                             </div>
                             <div class="landing-content">
                                 <h1>ต้องการลงชื่อเข้าใช้ไหม?</h1>

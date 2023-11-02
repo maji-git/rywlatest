@@ -65,9 +65,9 @@
           <p>ดูผลการเรียน</p>
         </f7-button>
         <f7-button tonal href="/teachers/" color="orange" class="block-action-btn" v-if="store.state.userData">
-        <f7-icon material="school"></f7-icon>
-        <p>ข้อมูลคุณครู</p>
-      </f7-button>
+          <f7-icon material="school"></f7-icon>
+          <p>ข้อมูลคุณครู</p>
+        </f7-button>
       </div>
     </f7-block>
 
@@ -149,23 +149,24 @@ const loadData = async (done) => {
   logoAnim.value.setDirection(-1)
   logoAnim.value.play()
 
-  annoucements.value = (await getAnnouncements()).slice(0, 5);
+  try { annoucements.value = (await getAnnouncements()).slice(0, 5) } catch (err) { console.error(err) }
   if (store.state.userData) {
-    behaviourData.value = await getBehaviourData()
-
+    try { behaviourData.value = await getBehaviourData() } catch (err) { console.error(err) }
 
     const today = new Date()
-    const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
+    try {
+      const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
 
-    if (attendeeData[0]) {
-      if (attendeeData[0].date.getDate() == today.getDate()) {
-        checkedIn.value = true
-        checkedInTime.value = attendeeData[0].entranceTime
+      if (attendeeData[0]) {
+        if (attendeeData[0].date.getDate() == today.getDate()) {
+          checkedIn.value = true
+          checkedInTime.value = attendeeData[0].entranceTime
+        }
       }
-    }
+    } catch (err) { console.error(err) }
   }
 
-  banners.value = await getBanners()
+  try { banners.value = await getBanners() } catch (err) { console.error(err) }
 
   logoAnim.value.setDirection(1)
   logoAnim.value.play()
