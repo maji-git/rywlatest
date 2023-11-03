@@ -13,8 +13,8 @@
       <f7-nav-title class="text-center" sliding>RYW Latest</f7-nav-title>
 
       <f7-nav-right>
-        <f7-link href="/settings/" v-if="store.state.userData" class="user-avatar"
-          :style="`background-image: url(${store.state.userData.headshot})`"></f7-link>
+        <f7-link href="/settings/" v-if="userData" class="user-avatar"
+          :style="`background-image: url(${userData.headshot})`"></f7-link>
       </f7-nav-right>
 
       <f7-nav-title-large>
@@ -44,14 +44,15 @@
     <f7-photo-browser ref="page" :photos="banners" :thumbs="banners" type="page" page-back-link-text="Back">
     </f7-photo-browser>
 
-    <f7-block class="text-align-center" v-if="store.state.userData == null && !isLoading">
+    <f7-block class="text-align-center" v-if="userData == null && !isLoading">
       <p>ทำการกรอกข้อมูลพื้นฐานเพื่อใช้งานระบบได้มากขึ้น</p>
       <f7-button fill login-screen-open="#info-register-screen">กรอกข้อมูล</f7-button>
     </f7-block>
 
     <f7-block strong inset color="green">
       <strong><f7-icon material="lightbulb" size="20"></f7-icon> แอพนี้อยู่ในระหว่างการทดสอบ</strong>
-      ถ้าเจอบัค หรือมีไอเดียดีๆ ก็ผ่ากส่งมาได้ที่ devpixelsrecords@gmail.com 😺
+      ถ้าเจอบัค หรือมีไอเดียดีๆ ก็ผ่ากส่งมาได้ที่ IG <f7-link
+        @click="openSite('https://www.instagram.com/devpoxl')">@devpoxl</f7-link> 😺
     </f7-block>
 
     <f7-block>
@@ -60,29 +61,29 @@
           <f7-icon material="newspaper"></f7-icon>
           <p>ข่าวสารโรงเรียน</p>
         </f7-button>
-        <f7-button tonal href="/attendee/" color="blue" class="block-action-btn" v-if="store.state.userData">
+        <f7-button tonal href="/attendee/" color="blue" class="block-action-btn" v-if="userData">
           <f7-icon material="meeting_room"></f7-icon>
           <p>บันทึกการมาโรงเรียน</p>
         </f7-button>
-        <f7-button tonal href="/watpol/" color="green" class="block-action-btn" v-if="store.state.userData">
+        <f7-button tonal href="/watpol/" color="green" class="block-action-btn" v-if="userData">
           <f7-icon material="scoreboard"></f7-icon>
           <p>ดูผลการเรียน</p>
         </f7-button>
-        <f7-button tonal href="/teachers/" color="orange" class="block-action-btn" v-if="store.state.userData">
+        <f7-button tonal href="/teachers/" color="orange" class="block-action-btn" v-if="userData">
           <f7-icon material="school"></f7-icon>
           <p>ข้อมูลคุณครู</p>
         </f7-button>
       </div>
     </f7-block>
 
-    <f7-block strong inset v-if="store.state.userData != null">
+    <f7-block strong inset v-if="userData != null">
       <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
       <h1
         :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'var(--f7-color-teal)' : 'var(--f7-color-deeporange)'};`"
         :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
     </f7-block>
 
-    <f7-block strong inset v-if="store.state.userData != null">
+    <f7-block strong inset v-if="userData != null && !isHoliday">
       <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
       <div class="display-flex align-items-center" style="color: var(--f7-color-teal);" v-if="checkedIn">
         <f7-icon material="check_circle" size="40"></f7-icon>
@@ -111,6 +112,8 @@
       <f7-link href="/news/">ดูทั้งหมด</f7-link>
     </div>
 
+    <page-end />
+
     <br>
   </f7-page>
 </template>
@@ -129,7 +132,8 @@ const openSite = async (url) => {
   await Browser.open({ url });
 }
 
-const newNotify = useStore('newNotify');
+const newNotify = useStore('newNotify')
+const userData = useStore('userData')
 
 const annoucements = ref({})
 const behaviourData = ref({})
@@ -137,6 +141,7 @@ const banners = ref([])
 const logoAnim = ref()
 const isLoading = ref(false)
 const checkedIn = ref(false)
+const isHoliday = ref(false)
 const isOnline = ref(true)
 const checkedInTime = ref("")
 
@@ -161,16 +166,25 @@ const loadData = async (done) => {
     try { behaviourData.value = await getBehaviourData() } catch (err) { console.error(err) }
 
     const today = new Date()
-    try {
-      const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
 
-      if (attendeeData[0]) {
-        if (attendeeData[0].date.getDate() == today.getDate()) {
-          checkedIn.value = true
-          checkedInTime.value = attendeeData[0].entranceTime
+    // Check Holidays
+    if (today.getDay() == 6 || today.getDay() == 7) {
+      isHoliday.value = true
+    } else {
+      isHoliday.value = false
+
+      // Not holiday, check for attendee
+      try {
+        const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
+
+        if (attendeeData[0]) {
+          if (attendeeData[0].date.getDate() == today.getDate()) {
+            checkedIn.value = true
+            checkedInTime.value = attendeeData[0].entranceTime
+          }
         }
-      }
-    } catch (err) { console.error(err) }
+      } catch (err) { console.error(err) }
+    }
   }
 
   try { banners.value = await getBanners() } catch (err) { console.error(err) }

@@ -3,10 +3,22 @@
         <f7-navbar title="วัดผล" back-link="Back"></f7-navbar>
 
         <f7-list strong-ios dividers-ios inset-ios>
-            <f7-list-input label="รหัสผ่าน" type="text" placeholder="ใส่รหัสผ่าน..." :value="passwordInput" @input="passwordInput = $event.target.value"
-                clear-button></f7-list-input>
-            <f7-block>
-                <f7-button tonal @click="loadGrades">เช็คเกรด</f7-button>
+            <f7-list-input label="รหัสผ่าน" type="text" placeholder="ใส่รหัสผ่าน..." :value="passwordInput"
+                @input="passwordInput = $event.target.value" clear-button></f7-list-input>
+            <f7-block class="mt-2">
+                <f7-segmented tag="p" strong>
+                    <f7-button :active="currentServer === 0" @click="currentServer = 0">Server 1</f7-button>
+                    <f7-button :active="currentServer === 1" @click="currentServer = 1">Server 2</f7-button>
+                    <f7-button :active="currentServer === 2" @click="currentServer = 2">Server 3</f7-button>
+                    <f7-button :active="currentServer === 3" @click="currentServer = 3">Custom</f7-button>
+                </f7-segmented>
+
+                <f7-input label="ที่อยู่เซิร์ฟเวอร์" class="animate__animated animate__fadeIn animate__faster" type="url" placeholder="ที่อยู่เซิร์ฟเวอร์" v-if="currentServer == 3"
+                    :value="userServer" @input="userServer = $event.target.value" clear-button></f7-input>
+
+                <f7-block class="mt-4" v-if="!requesting">
+                    <f7-button tonal @click="loadGrades">เช็คเกรด</f7-button>
+                </f7-block>
             </f7-block>
         </f7-list>
 
@@ -80,16 +92,15 @@
         </f7-list>
 
         <f7-block inset v-if="gradesData">
-            <div class="grid grid-cols-2 grid-gap">
+            <div class="grid grid-cols-1 grid-gap">
                 <f7-button tonal @click="exportCSV">เปิด CSV</f7-button>
-                <f7-button tonal>ดาวน์โหลดรูปภาพ</f7-button>
             </div>
         </f7-block>
     </f7-page>
 </template>
   
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { getTermResults } from "@/js/lib/watpol.js"
 import store from '@/js/store.js';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
@@ -99,11 +110,13 @@ const gradesData = ref(null)
 const passwordInput = ref()
 const errorData = ref(null)
 const isLoaded = ref(true)
+const currentServer = ref(1)
+const userServer = ref()
+const requesting = ref(false)
 
 const exportCSV = async () => {
     let result = "รหัส,ชื่อวิชา,ประเภท,หน่วยกิต,รวมหน่วย,กลางภาค,ปลายภาค,รวม,เกรด,แก้ตัว,คุณฯ,อ่าน,ครู\n"
 
-    console.log(gradesData.value.result.grades)
     for (const grade of gradesData.value.result.grades) {
         console.log(grade)
         for (const [key, value] of Object.entries(grade)) {
@@ -135,14 +148,30 @@ const exportCSV = async () => {
 
 const loadGrades = async () => {
     isLoaded.value = false
+    requesting.value = true
     errorData.value = null
-    console.log("passwordInput.value", passwordInput.value)
-    const data = await getTermResults(store.state.userData.studentID, passwordInput.value)
-    if (data.success) {
-        gradesData.value = data
-    } else {
-        errorData.value = data.err
+    try {
+        let targetServer = ""
+
+        if (currentServer.value != 3) {
+            targetServer = store.state.watpolServers[currentServer.value]
+        } else {
+            targetServer = userServer.value
+        }
+
+        console.log("Server Target: ", targetServer)
+
+        const data = await getTermResults(store.state.userData.studentID, passwordInput.value, targetServer)
+        if (data.success) {
+            gradesData.value = data
+        } else {
+            errorData.value = data.err
+        }
+    } catch (err) {
+        errorData.value = err
     }
+
     isLoaded.value = true
+    requesting.value = false
 }
 </script>

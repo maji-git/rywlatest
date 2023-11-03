@@ -19,6 +19,8 @@ import '../css/app.css';
 import App from '../components/app.vue';
 import store from "./store.js"
 
+import PageEnd from '@/components/page-end.vue'
+
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
 
@@ -27,6 +29,8 @@ const app = createApp(App);
 
 // Register Framework7 Vue components
 registerComponents(app);
+
+app.component('page-end', PageEnd);
 
 StatusBar.setStyle({ style: Style.Dark });
 

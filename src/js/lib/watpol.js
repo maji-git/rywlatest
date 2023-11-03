@@ -2,21 +2,17 @@ import axios from "axios"
 import { stripHtml } from "string-strip-html";
 import { CapacitorHttp } from '@capacitor/core';
 
-const url = "http://svwatpol2.rayongwit.ac.th:8080/"
-
-export async function getTermResults(username, password) {
+export async function getTermResults(username, password, server = "http://svwatpol2.rayongwit.ac.th:8080/") {
     const respre = await CapacitorHttp.get({
-        url: url
+        url: server
     });
+
+    if (respre['error']) {
+        throw "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้"
+    }
+
     const parserpre = new DOMParser()
     const documentpre = parserpre.parseFromString(respre.data, "text/html")
-
-    console.log(respre.data)
-    console.log(username)
-    console.log(password)
-    console.log(documentpre.querySelector("#__VIEWSTATE").getAttribute("value"))
-    console.log(documentpre.querySelector("#__VIEWSTATEGENERATOR").getAttribute("value"))
-    console.log(documentpre.querySelector("#__EVENTVALIDATION").getAttribute("value"))
 
     const formData = new FormData();
     formData.set('ctl00$ContentPlaceHolder1$TextBox1', username);
@@ -25,10 +21,8 @@ export async function getTermResults(username, password) {
     formData.set('__VIEWSTATE', documentpre.querySelector("#__VIEWSTATE").getAttribute("value"));
     formData.set('__VIEWSTATEGENERATOR',  documentpre.querySelector("#__VIEWSTATEGENERATOR").getAttribute("value"));
     formData.set('__EVENTVALIDATION',  documentpre.querySelector("#__EVENTVALIDATION").getAttribute("value"));
-    console.log(formData)
 
     const loginPayload = new URLSearchParams(formData);
-    console.log("loginPayload.toString()", loginPayload.toString())
 
     const res = await CapacitorHttp.request({
         url: url,
@@ -38,7 +32,7 @@ export async function getTermResults(username, password) {
             "Content-Type": "application/x-www-form-urlencoded",
         }
     });
-    console.log(res.data)
+
     const parser = new DOMParser()
     const dom = parser.parseFromString(res.data, "text/html")
     const gradeSubjects = []
