@@ -1,6 +1,5 @@
 // Import Vue
 import { createApp } from 'vue';
-import { StatusBar, Style } from '@capacitor/status-bar';
 
 // Import Framework7
 import Framework7 from 'framework7/lite-bundle';
@@ -31,8 +30,6 @@ const app = createApp(App);
 registerComponents(app);
 
 app.component('page-end', PageEnd);
-
-StatusBar.setStyle({ style: Style.Dark });
 
 console.log(store)
 
