@@ -168,7 +168,7 @@ const loadData = async (done) => {
     const today = new Date()
 
     // Check Holidays
-    if (today.getDay() == 6 || today.getDay() == 7) {
+    if (today.getDay() == 6 || today.getDay() == 0) {
       isHoliday.value = true
     } else {
       isHoliday.value = false
