@@ -9,15 +9,20 @@
             <div class="text-align-center">
                 <h4>คะแนนพฤติกรรม</h4>
                 <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA" border-width="7" />
-                <f7-gauge v-else type="circle" value="100" size="300"
-                    :border-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'" border-width="7"
-                    :value-text="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? ':D' : '!'" value-font-size="100"
-                    :value-text-color="behaviourStatus == 'ไม่มีคะแนนพฤติกรรม' ? '#3CDB83' : '#FF7A00'"
+                <f7-gauge v-if="behaviourFixData && behaviourFixData.status" type="circle" value="100" size="300"
+                    border-color="#3CDB83" border-width="7"
+                    value-text=":D" value-font-size="100"
+                    value-text-color="#3CDB83"
                     :label-text="behaviourStatus" />
+
+                <f7-gauge v-if="behaviourFixData && !behaviourFixData.status" value-font-size="60" type="circle" :value="behaviourFixData.fixed / behaviourFixData.score" size="300" border-bg-color="#FF7A00" border-color="#3CDB83" border-width="7" :value-text="`${(behaviourFixData.fixed / behaviourFixData.score) * 100}%`" :label-text="`คะแนนที่แก้ไขแล้ว (${behaviourFixData.fixed}/${behaviourFixData.score})`" />
             </div>
 
             <f7-block>
-                <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
+                <div class="grid grid-cols-2 grid-gap">
+                    <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
+                    <f7-button tonal @click="printLatePaper">ดาวน์โหลดใบแก้มาสาย</f7-button>
+                        </div>
             </f7-block>
 
             <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
@@ -91,7 +96,7 @@
   
 <script setup>
 import { ref } from "vue";
-import { getStdFixPDF, getBehaviourData } from "@/js/lib/stdsession.js"
+import { getStdFixPDF, getBehaviourData, getStdLatePDF, getFixStatus } from "@/js/lib/stdsession.js"
 import { resolveImg } from "@/js/utils/img.js"
 import writeBlob from "capacitor-blob-writer";
 import { Directory } from "@capacitor/filesystem";
@@ -102,6 +107,7 @@ import store from '@/js/store.js';
 
 const behaviourStatus = ref("-")
 const behaviours = ref([])
+const behaviourFixData = ref(null)
 const previewData = ref({})
 const isLoaded = ref(false)
 const isLoggedin = ref(false)
@@ -137,6 +143,8 @@ const previewInfo = (index) => {
 
 const loadData = async (done) => {
     isLoaded.value = false
+    behaviourFixData.value = null
+
     if (store.state.userData) {
         isLoggedin.value = true
     } else {
@@ -145,7 +153,12 @@ const loadData = async (done) => {
     const data = await getBehaviourData()
     behaviours.value = data.history
     behaviourStatus.value = data.status
+
+    behaviourFixData.value = await getFixStatus()
+    console.log(behaviourFixData.value)
+
     isLoaded.value = true
+
     if (done) {
         done()
     }
@@ -156,6 +169,21 @@ const printPaper = async () => {
     if (data) {
         const blo = await writeBlob({
             path: "ryw-stdfix.pdf",
+            directory: Directory.Cache,
+            blob: data
+        })
+
+        FileOpener.open({
+            filePath: blo
+        })
+    }
+}
+
+const printLatePaper = async () => {
+    const data = await getStdLatePDF()
+    if (data) {
+        const blo = await writeBlob({
+            path: "ryw-latefix.pdf",
             directory: Directory.Cache,
             blob: data
         })

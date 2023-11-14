@@ -8,6 +8,7 @@ import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
 const url = "https://rayongwit.ac.th/student/index.php"
 const stdPrintUrl = "https://rayongwit.ac.th/student/print.php"
+const stdPrintLateUrl = "https://rayongwit.ac.th/student/printlate.php"
 const stdHistoryUrl = "https://rayongwit.ac.th/student/stdhistory.php"
 const teacherTelUrl = "https://rayongwit.ac.th/student/telteacher.php"
 
@@ -33,7 +34,7 @@ export async function reauthenticate() {
     return store.state.userData['sessionID']
 }
 
-export async function getStdFixPDF() {
+export async function getDocPDF(targetURL) {
     const sessionID = await reauthenticate()
 
     if (sessionID) {
@@ -43,14 +44,14 @@ export async function getStdFixPDF() {
         prog.setProgress(0)
 
         const stdPrint = await CapacitorHttp.get({
-            url: stdPrintUrl,
+            url: targetURL,
             headers: {
                 "Cookie": sessionID
             }
         });
 
         const tempElement = document.createElement("div")
-        tempElement.innerHTML = `${stdPrint.data.replace("../", "https://rayongwit.ac.th/")}<style>* {font-family: Arial !important;}</style>`
+        tempElement.innerHTML = `${stdPrint.data.replace("../", "https://rayongwit.ac.th/")}<style>* {font-family: Sarabun !important;}</style>`
 
         let i = 0
         let queryAll = tempElement.querySelectorAll("img")
@@ -74,15 +75,15 @@ export async function getStdFixPDF() {
 
         // Format Text
         for (const p of tempElement.querySelectorAll("p")) {
-            p.style.fontSize = "10.72px"
+            p.style.fontSize = "14px"
         }
 
         for (const p of tempElement.querySelectorAll("strong")) {
-            p.style.fontSize = "10.72px"
+            p.style.fontSize = "14px"
         }
 
         for (const p of tempElement.querySelectorAll("td")) {
-            p.style.fontSize = "14px"
+            p.style.fontSize = "12px"
         }
 
         tempElement.querySelector(".navbar").remove()
@@ -91,10 +92,10 @@ export async function getStdFixPDF() {
         console.log(tempElement.innerHTML)
 
         const opt = {
-            margin: 0.3,
+            margin: 0.5,
             filename: "stdfix.pdf",
             image: { type: "jpeg", quality: 1 },
-            html2canvas: { scale: 2, useCORS: true, dpi: 300 },
+            html2canvas: { scale: 8, useCORS: true, dpi: 300 },
             jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
         };
 
@@ -108,6 +109,14 @@ export async function getStdFixPDF() {
 
         return data
     }
+}
+
+export async function getStdFixPDF() {
+    return await getDocPDF(stdPrintUrl)
+}
+
+export async function getStdLatePDF() {
+    return await getDocPDF(stdPrintLateUrl)
 }
 
 export async function getBehaviourData() {
@@ -142,7 +151,8 @@ export async function getBehaviourData() {
 
         return {
             status: dom.querySelector("h5:nth-child(3) strong p:nth-child(3)")?.textContent,
-            history: history
+            history: history,
+            dom: dom
         }
     }
 }
@@ -299,6 +309,35 @@ export async function getInfo() {
     }
 
     return null
+}
+
+export async function getFixStatus() {
+    const sessionID = await reauthenticate()
+
+    if (sessionID) {
+        const fixStatus = await getBehaviourData()
+
+        if (fixStatus.status.startsWith("คะแนนพฤติกรรมสะสม")) {
+            const stdPrint = await CapacitorHttp.get({
+                url: stdPrintUrl,
+                headers: {
+                    "Cookie": sessionID
+                }
+            });
+            const parser = new DOMParser()
+            const dom = parser.parseFromString(stdPrint.data, "text/html")
+    
+            return {
+                score: dom.querySelector("p[style='color:red;display:inline-block;float: left;']")?.innerHTML?.replace(/\D/g,''),
+                fixed: dom.querySelector("p[style='color:green;']")?.innerHTML?.replace(/\D/g,''),
+                status: false
+            }
+        } else {
+            return {
+                status: true
+            }
+        }
+    }
 }
 
 export function setToState(username, password) {
