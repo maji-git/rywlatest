@@ -80,7 +80,8 @@ const f7params = {
   },
   statusbar: {
     enabled: true,
-    androidBackgroundColor: "#EAF1F9",
+    androidBackgroundColor: (window.darkMode ? "#252A30": "#EAF1F9"),
+    androidTextColor: (window.darkMode ? "white": "black"),
     iosBackgroundColor: "#EAF1F9",
   },
 };
@@ -120,6 +121,10 @@ onMounted(() => {
   f7ready(async () => {
     if (device.capacitor) {
       capacitorApp.init(f7);
+    }
+
+    if (window.darkMode) {
+      document.querySelector("#framework7-root").classList.add("dark")
     }
 
     loadFromPreferences()

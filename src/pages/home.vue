@@ -18,7 +18,9 @@
       </f7-nav-right>
 
       <f7-nav-title-large>
-        <LottieAnimation :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
+        <LottieAnimation v-if="!darkMode" :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
+          ref="logoAnim" />
+        <LottieAnimation v-if="darkMode" :animation-data="LogoTextDarkJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
           ref="logoAnim" />
 
       </f7-nav-title-large>
@@ -126,6 +128,7 @@ import { Browser } from '@capacitor/browser';
 import store from '@/js/store.js';
 import { LottieAnimation } from "lottie-web-vue"
 import LogoTextJSON from "@/assets/lottie/logo-text.json"
+import LogoTextDarkJSON from "@/assets/lottie/logo-text-dark.json"
 import { f7, useStore } from 'framework7-vue';
 
 const openSite = async (url) => {
@@ -135,6 +138,7 @@ const openSite = async (url) => {
 const newNotify = useStore('newNotify')
 const userData = useStore('userData')
 
+const targetLogoText = ref(LogoTextJSON)
 const annoucements = ref({})
 const behaviourData = ref({})
 const banners = ref([])
@@ -143,6 +147,7 @@ const isLoading = ref(false)
 const checkedIn = ref(false)
 const isHoliday = ref(false)
 const isOnline = ref(true)
+const darkMode = ref(window.darkMode)
 const checkedInTime = ref("")
 
 const loadData = async (done) => {
@@ -199,6 +204,10 @@ const loadData = async (done) => {
 }
 
 onMounted(() => {
+  if (window.darkMode) {
+    targetLogoText.value = LogoTextDarkJSON
+  }
+
   loadData()
 })
 </script>

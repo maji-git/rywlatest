@@ -32,6 +32,11 @@ registerComponents(app);
 app.component('page-end', PageEnd);
 
 console.log(store)
+console.log("RYW Latest Started")
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    window.darkMode = true
+}
 
 // Mount the app
 app.mount('#app');
