@@ -18,3 +18,22 @@ export function thaiToDate(str) {
 
     return new Date(finalStr)
 }
+
+export function timeStrToDate(str, timeRef) {
+    const d = new Date(timeRef.getTime())
+    d.setHours(str.split(":")[0])
+    d.setMinutes(str.split(":")[1])
+
+    return d
+}
+
+export function inbetweenTime(startTime, endTime, dateTime) {
+    const startDate = timeStrToDate(startTime, dateTime)
+    const endDate = timeStrToDate(endTime, dateTime)
+
+    return startDate < dateTime && endDate > dateTime
+}
+
+export function getPeriod(dateTime) {
+
+}

@@ -75,6 +75,10 @@
           <f7-icon material="school"></f7-icon>
           <p>ข้อมูลคุณครู</p>
         </f7-button>
+        <f7-button tonal href="/rooms/" color="red" class="block-action-btn">
+          <f7-icon material="school"></f7-icon>
+          <p>ห้อง</p>
+        </f7-button>
       </div>
     </f7-block>
 

@@ -19,6 +19,7 @@ import TeachersPage from '../pages/teachers.vue';
 import PreferencesPage from '../pages/pref.vue';
 import AttendeePage from '../pages/attendee.vue';
 import NotificationsPage from '../pages/notifications.vue';
+import RoomsPage from '../pages/rooms.vue';
 
 var routes = [
   {
@@ -72,6 +73,10 @@ var routes = [
   {
     path: '/about/',
     component: AboutPage,
+  },
+  {
+    path: '/rooms/',
+    component: RoomsPage,
   },
   {
     path: '/settings/',
