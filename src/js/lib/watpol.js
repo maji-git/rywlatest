@@ -25,7 +25,7 @@ export async function getTermResults(username, password, server = "http://svwatp
     const loginPayload = new URLSearchParams(formData);
 
     const res = await CapacitorHttp.request({
-        url: url,
+        url: server,
         method: 'POST',
         data: loginPayload.toString(),
         headers: {
