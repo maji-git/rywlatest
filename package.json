@@ -35,6 +35,7 @@
     "@capacitor/preferences": "^5.0.6",
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "^5.0.6",
+    "@capawesome/capacitor-app-update": "^5.0.1",
     "@ionic-native/printer": "^5.36.0",
     "axios": "^1.5.1",
     "capacitor-blob-writer": "^1.1.14",

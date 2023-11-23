@@ -27,6 +27,7 @@
 
     <LandingPopup />
     <NotifyPopup />
+    <UpdatePopup />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -56,6 +57,8 @@ import { ref, onMounted } from 'vue';
 import { f7, f7ready } from 'framework7-vue';
 import LandingPopup from "./landing.vue"
 import NotifyPopup from "./notify-popup.vue"
+import UpdatePopup from "./update-popup.vue"
+import { AppUpdate } from '@capawesome/capacitor-app-update';
 
 import { getDevice } from 'framework7/lite-bundle';
 import capacitorApp from '../js/capacitor-app.js';
@@ -145,6 +148,11 @@ onMounted(() => {
     } else if (notifyPrompted.value !== "1") {
       f7.popup.open("#notify-popup")
       Preferences.set({ key: "notifyPrompted", value: "1" })
+    }
+
+    const result = await AppUpdate.getAppUpdateInfo()
+    if (result.availableVersion != result.currentVersion) {
+      f7.sheet.open("#update-sheet")
     }
   });
 });

@@ -3,6 +3,7 @@
     <f7-navbar title="เกี่ยวกับแอพนี้" back-link="Back"></f7-navbar>
     <f7-block>
       <img src="@/assets/mai.png" class="img-field">
+      <h1 class="text-center">RYW Latest {{ appVersion }}</h1>
       <p>
         &nbsp;&nbsp;&nbsp;&nbsp;สวัสดีฮะ!
       </p>
@@ -24,6 +25,9 @@
 
 <script setup>
 import { Browser } from '@capacitor/browser';
+import { ref } from 'vue';
+
+const appVersion = ref(__APP_VERSION__)
 
 const openSite = async (url) => {
   await Browser.open({ url });
