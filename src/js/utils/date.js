@@ -1,3 +1,5 @@
+import store from '@/js/store.js';
+
 const monthEng = {
     "ม.ค.": "January", "ก.พ.": "February", "มี.ค.": "March", "เม.ย.": "April", "พ.ค.": "May", "มิ.ย.": "June", "ก.ค.": "July", "ส.ค.": "August", "ก.ย.": "September", "ต.ค.": "October", "พ.ย.": "November", "ธ.ค.": "December"
 }
@@ -48,5 +50,14 @@ export function getPeriod(dateTime) {
         return -1
     }
 
-    
+    let i = 0
+
+    for (const period of store.state.periodTimes) {
+        if (inbetweenTime(period[0], period[1], dateTime)) {
+            return i
+        }
+        i++
+    }
+
+    return -1
 }

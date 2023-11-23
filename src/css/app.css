@@ -6,11 +6,20 @@
 
 * {
     font-family: 'Prompt';
+    user-select: none;
 }
 
 .img-field {
     max-width: 100%;
     height: auto;
+}
+
+.block-title {
+    overflow: visible;
+}
+
+.photo-browser-standalone {
+    z-index: 9999999;
 }
 
 .rounded {
@@ -159,4 +168,13 @@
     .landing-page {
         height: calc(100% - 110px);
     }
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
 }
