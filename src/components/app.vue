@@ -123,6 +123,12 @@ onMounted(() => {
       capacitorApp.init(f7);
     }
 
+    document.querySelector("#preload-splash").classList.add("loaded")
+    
+    setTimeout(() => {
+      document.querySelector("#preload-splash").remove()
+    }, 2000);
+
     if (window.darkMode) {
       document.querySelector("#framework7-root").classList.add("dark")
     }

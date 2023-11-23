@@ -31,12 +31,26 @@ registerComponents(app);
 
 app.component('page-end', PageEnd);
 
-console.log(store)
 console.log("RYW Latest Started")
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     window.darkMode = true
 }
 
-// Mount the app
-app.mount('#app');
+async function preStartup() {
+    const res = await fetch("https://rywlatest.web.app/app/meta.json")
+    const metadata = await res.json()
+
+    console.log(metadata)
+
+    for (const [key, value] of Object.entries(metadata.storeData)) {
+        store.state[key] = value
+    }
+
+    console.log(store.state)
+
+    // Mount the app
+    app.mount('#app')
+}
+
+preStartup()

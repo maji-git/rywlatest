@@ -34,6 +34,19 @@ export function inbetweenTime(startTime, endTime, dateTime) {
     return startDate < dateTime && endDate > dateTime
 }
 
-export function getPeriod(dateTime) {
+/**
+ * Check if the day is weekend
+ * @param {Date} dateTime 
+ * @returns {bool}
+ */
+export function isWeekend(dateTime) {
+    return dateTime.getDay() == 0 || dateTime.getDay() == 6
+}
 
+export function getPeriod(dateTime) {
+    if (isWeekend(dateTime)) {
+        return -1
+    }
+
+    
 }
