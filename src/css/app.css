@@ -6,6 +6,8 @@
 
 * {
     font-family: 'Prompt';
+    -moz-user-select: none;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -177,4 +179,20 @@
 .flex-end {
     display: flex;
     justify-content: flex-end;
+}
+
+.doc-title-collapse {
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.doc-item {
+    transition: transform 0.5s, opacity 0.5s;
+    transition-delay: 0.2s;
+}
+
+.doc-item:active {
+    transform: scale(1.05);
+    opacity: 0.7;
 }

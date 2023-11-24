@@ -9,9 +9,9 @@
           text="หน้าหลัก"></f7-link>
         <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face"
           text="พฤติกรรม"></f7-link>
+        <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
         <f7-link tab-link="#view-calendar" icon-ios="f7:calendar_month" icon-md="material:calendar_month"
           text="ตารางกิจกรรม"></f7-link>
-        <!--<f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>-->
         <!--<f7-link tab-link="#view-sports" icon-ios="f7:sports_soccer" icon-md="material:sports_soccer" text="กีฬาสี"></f7-link>-->
         <!--<f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>-->
       </f7-toolbar>
@@ -77,6 +77,9 @@ const f7params = {
   },
   store: store,
   routes: routes,
+  touch: {
+    tapHold: true
+  },
   input: {
     scrollIntoViewOnFocus: device.capacitor,
     scrollIntoViewCentered: device.capacitor,

@@ -1,6 +1,6 @@
 import { CapacitorHttp } from '@capacitor/core';
 
-export async function resolveImg(targetURL) {
+export async function downloadFile(targetURL) {
     const db = await CapacitorHttp.get({
         url: targetURL,
         responseType: "arraybuffer"
@@ -9,7 +9,7 @@ export async function resolveImg(targetURL) {
     return `data:${db.headers['Content-Type']};base64,${db.data.replace("\n", "")}`
 }
 
-function dataURItoBlob(dataURI) {
+export function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
     // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
     let byteString = atob(dataURI.split(',')[1]);
@@ -33,8 +33,8 @@ function dataURItoBlob(dataURI) {
     return blob;
 }
 
-export async function resolveImgBlob(targetURL) {
-    const db = await resolveImg(targetURL)
+export async function downloadFileBlob(targetURL) {
+    const db = await downloadFile(targetURL)
 
     return dataURItoBlob(db)
 }

@@ -2,7 +2,7 @@ import { CapacitorHttp } from '@capacitor/core';
 import store from '@/js/store.js';
 import { f7 } from 'framework7-vue';
 import html2pdf from 'html2pdf.js'
-import { resolveImg } from '../utils/img';
+import { downloadFile } from '../utils/downloader.js';
 import { thaiToDate } from '../utils/date';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
@@ -69,7 +69,7 @@ export async function getDocPDF(targetURL) {
                 targetURL = "https://rayongwit.ac.th/student/logo.png"
             }
 
-            const resolved = await resolveImg(targetURL)
+            const resolved = await downloadFile(targetURL)
             imgs.src = resolved
         }
 

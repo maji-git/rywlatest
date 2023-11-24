@@ -29,10 +29,12 @@
     "@capacitor/browser": "^5.1.0",
     "@capacitor/core": "^5.5.0",
     "@capacitor/filesystem": "^5.1.4",
+    "@capacitor/haptics": "^5.0.6",
     "@capacitor/ios": "^5.5.0",
     "@capacitor/keyboard": "^5.0.6",
     "@capacitor/local-notifications": "^5.0.6",
     "@capacitor/preferences": "^5.0.6",
+    "@capacitor/share": "^5.0.6",
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "^5.0.6",
     "@capawesome/capacitor-app-update": "^5.0.1",
@@ -56,7 +58,8 @@
     "skeleton-elements": "^4.0.1",
     "string-strip-html": "^13.4.3",
     "swiper": "^10.3.1",
-    "vue": "^3.3.5"
+    "vue": "^3.3.5",
+    "vue3-touch-events": "^4.1.8"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.1",

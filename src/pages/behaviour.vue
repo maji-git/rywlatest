@@ -99,7 +99,7 @@
 <script setup>
 import { ref } from "vue";
 import { getStdFixPDF, getBehaviourData, getStdLatePDF, getFixStatus } from "@/js/lib/stdsession.js"
-import { resolveImg } from "@/js/utils/img.js"
+import { downloadFile } from "@/js/utils/downloader.js"
 import writeBlob from "capacitor-blob-writer";
 import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"
@@ -119,7 +119,7 @@ const saveImage = async () => {
     loadDialog.open()
 
     try {
-        const imgURL = await resolveImg(previewData.value.evidence)
+        const imgURL = await downloadFile(previewData.value.evidence)
         const albums = await Media.getAlbums()
         const targetAlbum = albums.albums.find((e) => e.name == "Download").identifier
 
