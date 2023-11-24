@@ -33,11 +33,16 @@
               <p class="m-0">ห้องเรียน</p>
               <h1 class="m-0">{{ previewRoomCode }}</h1>
 
+              <!--
               <div class="display-flex mt-1">
+                <f7-link color="orange" class="mr-3">
+                  <f7-icon material="star"></f7-icon>
+                </f7-link>
                 <f7-link color="red">
                   <f7-icon material="flag"></f7-icon>
                 </f7-link>
               </div>
+              -->
             </div>
             <div>
               <f7-block v-if="previewIsAvailable" strong inset color="green" class="m-0 block-action-btn">
@@ -50,7 +55,7 @@
                 <p>ใช้อยู่</p>
               </f7-block>
 
-              <i class="display-block text-center text-muted mt-2">(เลื่อนลงเพื่อดูเพิ่มเติม)</i>
+              <i class="display-block text-center text-muted mt-2">(เลื่อนขี้นเพื่อดูเพิ่มเติม)</i>
             </div>
           </div>
         </f7-block>
