@@ -19,6 +19,7 @@ import App from '../components/app.vue';
 import store from "./store.js"
 
 import PageEnd from '@/components/page-end.vue'
+import ChipIcon from '@/components/chip-icon.vue'
 
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
@@ -30,6 +31,7 @@ const app = createApp(App);
 registerComponents(app);
 
 app.component('page-end', PageEnd);
+app.component('chip-icon', ChipIcon);
 
 console.log("RYW Latest Started")
 

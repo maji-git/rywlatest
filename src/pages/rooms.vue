@@ -14,13 +14,42 @@
       ข้อมูลอาจจะไม่ตรงกัน
     </f7-block>
 
-    <f7-list>
+    <f7-block strong-ios outline-ios>
+      <f7-chip text="กรอง" id="filters-chip" outline @click="openFilters">
+        <template #media>
+          <chip-icon>
+            <f7-icon material="filter_alt" size="14" color="black"></f7-icon>
+          </chip-icon>
+        </template>
+      </f7-chip>
+
+      <f7-chip text="ห้องว่าง" color="green" class="animate__animated animate__bounceIn" deleteable
+        @delete="removeFilter('free')" v-if="filters.includes('free')">
+        <template #media>
+          <chip-icon>
+            <f7-icon material="check" size="14" color="black"></f7-icon>
+          </chip-icon>
+        </template>
+      </f7-chip>
+
+      <f7-chip text="ห้องใช้อยู่" color="red" class="animate__animated animate__bounceIn" deleteable
+        @delete="removeFilter('busy')" v-if="filters.includes('busy')">
+        <template #media>
+          <chip-icon>
+            <f7-icon material="close" size="14" color="black"></f7-icon>
+          </chip-icon>
+        </template>
+      </f7-chip>
+    </f7-block>
+
+    <f7-list class="list-fadein">
       <f7-list-item v-for="(item, index) in availabilites" key="index" :title="index" @click="previewInfo(index)"
-        :badge="isAvailable(item) ? 'ว่าง' : 'ใช้อยู่'" :badge-color="isAvailable(item) ? 'green' : 'red'">
+        :badge="isAvailable(item) ? 'ว่าง' : 'ใช้อยู่'" :badge-color="isAvailable(item) ? 'green' : 'red'" link="#">
       </f7-list-item>
     </f7-list>
 
-    <f7-photo-browser ref="roomPreview" :photos="[`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`]" :thumbs="[`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`]" page-back-link-text="Back">
+    <f7-photo-browser ref="roomPreview" :photos="[`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`]"
+      :thumbs="[`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`]" page-back-link-text="Back">
     </f7-photo-browser>
 
     <f7-sheet id="room-info" swipe-to-close swipe-to-step style="height: auto;">
@@ -84,11 +113,27 @@
         <div class="block mt-1">
           <f7-block-title>ตารางสำหรับห้องนี้</f7-block-title>
 
-          <img class="img-field rounded" :src="`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`" @click="$refs.roomPreview.open()">
+          <img class="img-field rounded" :src="`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`"
+            @click="$refs.roomPreview.open()">
         </div>
       </f7-block>
 
     </f7-sheet>
+
+    <f7-popover id="filter-options">
+      <f7-list>
+        <f7-list-item popover-close title="ห้องว่าง" @click="addFilter(`free`)">
+          <template #media>
+            <f7-icon material="check" size="20"></f7-icon>
+          </template>
+        </f7-list-item>
+        <f7-list-item popover-close title="ห้องใช้อยู่" @click="addFilter(`busy`)">
+          <template #media>
+            <f7-icon material="close" size="20"></f7-icon>
+          </template>
+        </f7-list-item>
+      </f7-list>
+    </f7-popover>
 
   </f7-page>
 </template>
@@ -109,6 +154,27 @@ const today = ref(new Date())
 const todayIndex = ref(0)
 
 const searching = ref(false)
+const filters = ref([])
+
+const openFilters = () => {
+  f7.popover.open("#filter-options", `#filters-chip`)
+}
+
+const addFilter = (filterName) => {
+  f7.popover.close("#filter-options")
+
+  if (!filters.value.includes(filterName)) {
+    filters.value.push(filterName)
+    loadData()
+  }
+}
+
+const removeFilter = (filterName) => {
+  if (filters.value.includes(filterName)) {
+    filters.value = filters.value.filter(e => e !== filterName)
+    loadData()
+  }
+}
 
 const toggleSwipeStep = () => {
   f7.sheet.stepToggle('#room-info')
@@ -150,7 +216,28 @@ const loadData = async (done) => {
   todayIndex.value = today.value.getDay() - 1
 
   currentPeriod.value = getPeriod(new Date())
-  availabilites.value = await getAvailabilites()
+  const data = await getAvailabilites()
+  let processed = {}
+
+  if (filters.value.length > 0) {
+    for (const [key, value] of Object.entries(data)) {
+      if (isAvailable(value)) {
+        if (filters.value.includes("free")) {
+          processed[key] = value
+        }
+      } else {
+        if (filters.value.includes("busy")) {
+          processed[key] = value
+        }
+      }
+    }
+  } else {
+    processed = data
+  }
+
+  console.log(processed)
+
+  availabilites.value = processed
   originAData.value = availabilites.value
 
   if (done) {
