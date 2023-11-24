@@ -14,8 +14,8 @@
 
         <div class="timeline">
             <div class="timeline-item" v-for="event in events">
-                <div class="timeline-item-date">{{ event.utc_start_date_details.day }} <small>{{
-                    monthsName[event.utc_start_date_details.month - 1] }}</small></div>
+                <div class="timeline-item-date">{{ event.start_date_details.day }} <small>{{
+                    monthsName[event.start_date_details.month - 1] }}</small></div>
                 <div class="timeline-item-divider"></div>
                 <div class="timeline-item-content">
                     <div class="timeline-item-inner">{{ decodeHTMLEntities(event.title) }}</div>
