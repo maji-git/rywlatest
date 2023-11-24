@@ -32,6 +32,9 @@ export default async () => {
     server: {
       host: true,
     },
+    optimizeDeps: {
+      exclude: ['tesseract-wasm']
+    },  
     define: {
       '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
     }

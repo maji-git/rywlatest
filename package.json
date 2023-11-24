@@ -41,6 +41,7 @@
     "@ionic-native/printer": "^5.36.0",
     "axios": "^1.5.1",
     "capacitor-blob-writer": "^1.1.14",
+    "capacitor-document-scanner": "^2.0.0",
     "capacitor-secure-storage-plugin": "^0.9.0",
     "dom7": "^4.0.6",
     "firebase": "^10.5.2",
@@ -58,6 +59,7 @@
     "skeleton-elements": "^4.0.1",
     "string-strip-html": "^13.4.3",
     "swiper": "^10.3.1",
+    "tesseract-wasm": "^0.10.0",
     "vue": "^3.3.5",
     "vue3-touch-events": "^4.1.8"
   },

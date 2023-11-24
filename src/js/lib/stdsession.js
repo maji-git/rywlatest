@@ -348,6 +348,7 @@ export function setToState(username, password) {
 export function clearAuthState() {
     store.state.authData.username = ""
     store.state.authData.password = ""
+    store.state.userData = null
 }
 
 export async function saveToPreferences() {
