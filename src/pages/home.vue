@@ -56,11 +56,7 @@
       <f7-button fill login-screen-open="#info-register-screen">กรอกข้อมูล</f7-button>
     </f7-block>
 
-    <f7-block strong inset color="green">
-      <strong><f7-icon material="lightbulb" size="20"></f7-icon> แอพนี้อยู่ในระหว่างการทดสอบ</strong>
-      ถ้าเจอบัค หรือมีไอเดียดีๆ ก็ผ่ากส่งมาได้ที่ IG <f7-link
-        @click="openSite('https://www.instagram.com/devpoxl')">@devpoxl</f7-link> 😺
-    </f7-block>
+    <f7-block v-if="store.state.wideAlerts?.enabled" strong inset :color="store.state.wideAlerts.colour" v-html="store.state.wideAlerts.msg"></f7-block>
 
     <f7-block>
       <div class="grid grid-cols-2 grid-gap mb-3">
