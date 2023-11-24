@@ -13,12 +13,12 @@
       <f7-list>
         <f7-block-title class="p-4 mb-0 doc-title-collapse">{{ holdedDoc['title'] ?? "" }}</f7-block-title>
 
-        <f7-list-item @click="openDoc(holdedDoc)" popover-close title="เปิด">
+        <f7-list-item @click="openDoc(holdedDoc)" link="#" popover-close title="เปิด">
           <template #media>
             <f7-icon material="open_in_new" size="20"></f7-icon>
           </template>
         </f7-list-item>
-        <f7-list-item @click="shareDoc(holdedDoc)" popover-close title="แชร์">
+        <f7-list-item @click="shareDoc(holdedDoc)" link="#" popover-close title="แชร์">
           <template #media>
             <f7-icon material="share" size="20"></f7-icon>
           </template>
