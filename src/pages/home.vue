@@ -15,13 +15,18 @@
       <f7-nav-right>
         <f7-link href="/settings/" v-if="userData" class="user-avatar"
           :style="`background-image: url(${userData.headshot})`"></f7-link>
+
+        <f7-link href="/settings/" v-else>
+          <f7-icon ios="f7:user" md="material:account_circle">
+          </f7-icon>
+        </f7-link>
       </f7-nav-right>
 
       <f7-nav-title-large>
-        <LottieAnimation v-if="!darkMode" :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
-          ref="logoAnim" />
-        <LottieAnimation v-if="darkMode" :animation-data="LogoTextDarkJSON" :auto-play="false" :loop="false" :speed="1" style="height: 80px;"
-          ref="logoAnim" />
+        <LottieAnimation v-if="!darkMode" :animation-data="LogoTextJSON" :auto-play="false" :loop="false" :speed="1"
+          style="height: 80px;" ref="logoAnim" />
+        <LottieAnimation v-if="darkMode" :animation-data="LogoTextDarkJSON" :auto-play="false" :loop="false" :speed="1"
+          style="height: 80px;" ref="logoAnim" />
 
       </f7-nav-title-large>
     </f7-navbar>
