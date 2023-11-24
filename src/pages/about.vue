@@ -20,6 +20,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;แอพสร้างโดยปกป้องเอง (สักคนจากสมารทคอม)
       </p>
     </f7-block>
+    <page-end/>
   </f7-page>
 </template>
 
