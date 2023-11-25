@@ -1,4 +1,4 @@
 export async function getDocs() {
-    const res = await fetch("https://rywlatest.web.app/app/docs.json")
+    const res = await fetch(`${window.rywlAPIs.rywl}/app/docs.json`)
     return (await res.json())
 }

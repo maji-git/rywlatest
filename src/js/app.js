@@ -49,6 +49,11 @@ async function preStartup() {
         store.state[key] = value
     }
 
+    window.rywlAPIs = {
+        main: "https://rayongwit.ac.th",
+        rywl: "https://rywlatest.web.app",
+    }
+
     console.log(store.state)
 
     // Mount the app

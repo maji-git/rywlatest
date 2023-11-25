@@ -1,5 +1,5 @@
 <template>
-    <f7-sheet id="update-sheet" push swipe-to-close style="height: auto;">
+    <f7-sheet id="update-sheet" push style="height: auto;">
         <!-- Scrollable sheet content -->
         <f7-page-content>
             <f7-block>

@@ -6,19 +6,13 @@ import { downloadFile } from '../utils/downloader.js';
 import { thaiToDate } from '../utils/date';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 
-const url = "https://rayongwit.ac.th/student/index.php"
-const stdPrintUrl = "https://rayongwit.ac.th/student/print.php"
-const stdPrintLateUrl = "https://rayongwit.ac.th/student/printlate.php"
-const stdHistoryUrl = "https://rayongwit.ac.th/student/stdhistory.php"
-const teacherTelUrl = "https://rayongwit.ac.th/student/telteacher.php"
-
 export async function reauthenticate() {
     if (store.state.authData.username == "" || store.state.authData.password == "") {
         return
     }
 
     await CapacitorHttp.post({
-        url: url,
+        url: `${window.rywlAPIs.main}/student/index.php`,
         data: `username=${store.state.authData.username}&password=${store.state.authData.password}`,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -112,11 +106,11 @@ export async function getDocPDF(targetURL) {
 }
 
 export async function getStdFixPDF() {
-    return await getDocPDF(stdPrintUrl)
+    return await getDocPDF(`${window.rywlAPIs.main}/student/print.php`)
 }
 
 export async function getStdLatePDF() {
-    return await getDocPDF(stdPrintLateUrl)
+    return await getDocPDF(`${window.rywlAPIs.main}/student/printlate.php`)
 }
 
 export async function getBehaviourData() {
@@ -124,7 +118,7 @@ export async function getBehaviourData() {
 
     if (sessionID) {
         const stdPrint = await CapacitorHttp.get({
-            url: stdHistoryUrl,
+            url: `${window.rywlAPIs.main}/student/stdhistory.php`,
             headers: {
                 "Cookie": sessionID
             }
@@ -161,7 +155,7 @@ export async function getTeachersTel() {
     const sessionID = await reauthenticate()
 
     const stdPrint = await CapacitorHttp.get({
-        url: teacherTelUrl,
+        url: `${window.rywlAPIs.main}/student/telteacher.php`,
         headers: {
             "Cookie": sessionID
         }
@@ -187,7 +181,7 @@ export async function getAttendees(month = 11) {
     const sessionID = await reauthenticate()
 
     const stdPrint = await CapacitorHttp.post({
-        url: url,
+        url: `${window.rywlAPIs.main}/student/index.php`,
         data: `cl=${month}`,
         headers: {
             "Cookie": sessionID,
@@ -225,7 +219,7 @@ export async function getInfo() {
 
     if (sessionID) {
         const stdPrint = await CapacitorHttp.get({
-            url: stdPrintUrl,
+            url: `${window.rywlAPIs.main}/student/print.php`,
             headers: {
                 "Cookie": sessionID
             }
@@ -319,7 +313,7 @@ export async function getFixStatus() {
 
         if (fixStatus.status.startsWith("คะแนนพฤติกรรมสะสม")) {
             const stdPrint = await CapacitorHttp.get({
-                url: stdPrintUrl,
+                url: `${window.rywlAPIs.main}/student/print.php`,
                 headers: {
                     "Cookie": sessionID
                 }

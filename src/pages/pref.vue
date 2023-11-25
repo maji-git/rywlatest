@@ -3,15 +3,28 @@
         <f7-navbar title="การตั้งค่า" back-link="Back"></f7-navbar>
 
         <f7-block>
-            <f7-list>
+            <f7-list accordion-list>
                 <f7-list-item title="รับการแจ้งเตือน">
                     <template #after>
                         <f7-toggle class="no-fastclick" v-model:checked="notifyUserToggle" @click="onNotifyToggled" />
                     </template>
                 </f7-list-item>
 
-                <f7-list-button @click="rerunApp">รีเซ็ตแอพ</f7-list-button>
-                <f7-list-button @click="openLanding">เปิด Landing</f7-list-button>
+                <f7-list-item accordion-item title="สำหรับผู้พัฒนา">
+                    <f7-accordion>
+                        <f7-accordion-item>
+                            <f7-accordion-content>
+                                <f7-list>
+                                    <f7-list-button tonal @click="rerunApp">เริ่มแอพใหม่</f7-list-button>
+                                    <f7-list-button tonal popup-open="#landing-popup">เปิด Landing</f7-list-button>
+                                    <f7-list-button tonal sheet-open="#update-sheet">เปิด Update Prompt</f7-list-button>
+                                    <f7-list-button tonal popup-open="#notify-popup">เปิด Notifications Prompt</f7-list-button>
+                                </f7-list>
+                            </f7-accordion-content>
+                        </f7-accordion-item>
+                    </f7-accordion>
+                </f7-list-item>
+
             </f7-list>
         </f7-block>
     </f7-page>
@@ -40,10 +53,6 @@ const onNotifyToggled = async () => {
     } else {
         disableNotify()
     }
-}
-
-const openLanding = () => {
-    f7.popup.open("#landing-popup")
 }
 
 const prefStateLoad = () => {
