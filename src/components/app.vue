@@ -28,6 +28,7 @@
     <LandingPopup />
     <NotifyPopup />
     <UpdatePopup />
+    <ChangelogsPopup />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -61,6 +62,7 @@ import { f7, f7ready } from 'framework7-vue';
 import LandingPopup from "./landing.vue"
 import NotifyPopup from "./notify-popup.vue"
 import UpdatePopup from "./update-popup.vue"
+import ChangelogsPopup from "./changelogs-notice.vue"
 import { AppUpdate } from '@capawesome/capacitor-app-update';
 
 import { getDevice } from 'framework7/lite-bundle';
@@ -133,7 +135,7 @@ const cardScan = async () => {
         let cardIDResult = 0
 
         for (const textLi of processedText.split("\n")) {
-          const numOnly = textLi.replace(/\D/g,'')
+          const numOnly = textLi.replace(/\D/g, '')
 
           if (numOnly.length == 5) {
             foundInfos++
@@ -143,7 +145,7 @@ const cardScan = async () => {
 
           if (numOnly.length == 13) {
             foundInfos++
-            cardIDResult = textLi.replace(/\D/g,'')
+            cardIDResult = textLi.replace(/\D/g, '')
 
             console.log("FOUND CARD ID", cardIDResult)
 
@@ -222,17 +224,28 @@ onMounted(() => {
     const firstTime = await Preferences.get({ key: "landingDone" })
     const notifyPrompted = await Preferences.get({ key: "notifyPrompted" })
 
+    const appUpdateInfo = await AppUpdate.getAppUpdateInfo()
+
+    window.pref = Preferences
+
     if (firstTime.value !== "1") {
       f7.popup.open("#landing-popup")
+      Preferences.set({ key: "changelogLatest", value: appUpdateInfo.currentVersion.toString() })
     } else if (notifyPrompted.value !== "1") {
       f7.popup.open("#notify-popup")
       Preferences.set({ key: "notifyPrompted", value: "1" })
+    } else {
+      if (appUpdateInfo.availableVersion != appUpdateInfo.currentVersion) {
+        f7.sheet.open("#update-sheet")
+      } else {
+        const prefChangelog = await Preferences.get({ key: "changelogLatest" })
+
+        if (prefChangelog.value != appUpdateInfo.currentVersion) {
+          f7.popup.open("#changelogs-popup")
+        }
+      }
     }
 
-    const result = await AppUpdate.getAppUpdateInfo()
-    if (result.availableVersion != result.currentVersion) {
-      f7.sheet.open("#update-sheet")
-    }
   });
 });
 </script>

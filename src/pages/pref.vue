@@ -19,6 +19,7 @@
                                     <f7-list-button tonal popup-open="#landing-popup">เปิด Landing</f7-list-button>
                                     <f7-list-button tonal sheet-open="#update-sheet">เปิด Update Prompt</f7-list-button>
                                     <f7-list-button tonal popup-open="#notify-popup">เปิด Notifications Prompt</f7-list-button>
+                                    <f7-list-button tonal popup-open="#changelogs-popup">เปิด Chagelogs</f7-list-button>
                                 </f7-list>
                             </f7-accordion-content>
                         </f7-accordion-item>
