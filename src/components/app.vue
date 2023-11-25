@@ -7,8 +7,10 @@
       <f7-toolbar tabbar icons bottom>
         <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
+
         <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face"
           text="พฤติกรรม"></f7-link>
+
         <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
         <f7-link tab-link="#view-calendar" icon-ios="f7:calendar_month" icon-md="material:calendar_month"
           text="ตารางกิจกรรม"></f7-link>
@@ -45,15 +47,40 @@
             <f7-list-button title="ค้นหา" @click="infoSubmitted"></f7-list-button>
             <f7-list-button title="ปิด" @click="closeInfoRegister"></f7-list-button>
 
-            <f7-list-button title="ลงชื่อด้วยบัตรนักเรียน" @click="cardScan"></f7-list-button>
+            <f7-list-button title="ลงชื่อด้วยบัตรนักเรียน" sheet-open="#card-scan-sheet"></f7-list-button>
 
             <f7-block-footer>
-              ข้อมูลนี้จะนำไปใช้ในการลงชื่อเข้าใช้ต่างๆ จะไม่มีการส่งข้อมูลออกทั้งสิ้น
+              ข้อมูลนี้จะนำไปใช้ในการลงชื่อเข้าใช้ต่างๆ กับระบบโรงเรียน จะไม่มีการส่งข้อมูลออกทั้งสิ้น
             </f7-block-footer>
           </f7-list>
         </f7-page>
       </f7-view>
     </f7-login-screen>
+
+    <f7-sheet id="card-scan-sheet" style="height: auto;">
+        <!-- Scrollable sheet content -->
+        <f7-page-content>
+            <f7-block>
+                <div class="text-center">
+                    <h1>ลงชื่อเข้าใช้ด้วยบัตรนักเรียน</h1>
+                    <p>ตัวแอพจะทำการดึงข้อมูลที่จำเป็นออกมาจากบัตร เพื่อให้การสแกนทำงานให้ดีที่สุด เราขอแนะนำให้ทำตามขั้นตอนดังนี้:</p>
+                </div>
+
+                <f7-block strong inset>
+                  <ol>
+                    <li>ให้ถ่ายรูปบัตรจากมุมบน</li>
+                    <li>แนะนำให้สีพื้นหลังเป็นสีที่ตัดกับสีของบัตร ตัวแอพจะได้จัดตรวจจับอัตโนมัติ</li>
+                    <li>ถ่ายให้ข้อความบนบัตรเห็นชัด (โดยเฉพาะเลขประจำตัวต่างๆ)</li>
+                    <li>ถ้าแอพไม่สามารถตรวจจับบัตรได้ ให้ลองลากจุด 4 จุดให้คลุมตัวบัตร</li>
+                  </ol>
+                </f7-block>
+
+                <f7-button sheet-close @click="cardScan" tonal>โอเค</f7-button>
+            </f7-block>
+        </f7-page-content>
+    </f7-sheet>
+
+
   </f7-app>
 </template>
 <script setup>
