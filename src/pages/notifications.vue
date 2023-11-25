@@ -2,8 +2,9 @@
   <f7-page name="notifications">
     <f7-navbar title="การแจ้งเตือน" back-link="Back"></f7-navbar>
 
-    <div class="text-muted text-center" v-if="notifications.length == 0">
-      <p>ยังไม่มีการแจ้งเตือน...</p>
+    <div class="text-muted text-align-center mt-4" v-if="notifications.length == 0">
+      <img src="@/assets/doddles/speaker.png?v=2" height="200">
+      <p class="m-0">ยังไม่มีการแจ้งเตือนใหม่ๆ...</p>
     </div>
 
     <f7-block strong inset v-for="n in notifications">

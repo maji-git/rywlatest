@@ -59,7 +59,7 @@
     <f7-block v-if="store.state.wideAlerts?.enabled" strong inset :color="store.state.wideAlerts.colour" v-html="store.state.wideAlerts.msg"></f7-block>
 
     <f7-block>
-      <div class="grid grid-cols-2 grid-gap mb-3">
+      <div class="grid grid-cols-2 medium-grid-cols-5 grid-gap mb-3">
         <f7-button tonal href="/news/" color="purple" class="block-action-btn">
           <f7-icon material="newspaper"></f7-icon>
           <p>ข่าวสารโรงเรียน</p>
