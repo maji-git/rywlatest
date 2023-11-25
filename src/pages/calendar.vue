@@ -47,6 +47,7 @@
                 </f7-block>
                 <f7-block class="mb-3" inset strong v-html="previewEventInfo.description"></f7-block>
 
+                <!--
                 <div class="grid grid-cols-2 grid-gap block mt-0">
 
                     <f7-button tonal color="red" class="block-action-btn" @click="addToCalendar">
@@ -59,6 +60,7 @@
                         <p>เปิดหน้าเว็บ</p>
                     </f7-button>
                 </div>
+                -->
 
                 <br/>
             </div>
