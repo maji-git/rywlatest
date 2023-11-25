@@ -15,10 +15,10 @@
     </f7-block>
 
     <f7-block strong-ios outline-ios>
-      <f7-chip text="กรอง" id="filters-chip" outline @click="openFilters">
+      <f7-chip text="กรอง" id="filters-chip" color="blue" outline @click="openFilters">
         <template #media>
           <chip-icon>
-            <f7-icon material="filter_alt" size="14" color="black"></f7-icon>
+            <f7-icon material="filter_alt" class="color-blue" size="14"></f7-icon>
           </chip-icon>
         </template>
       </f7-chip>
@@ -27,7 +27,7 @@
         @delete="removeFilter('free')" v-if="filters.includes('free')">
         <template #media>
           <chip-icon>
-            <f7-icon material="check" size="14" color="black"></f7-icon>
+            <f7-icon material="check" class="color-green" size="14"></f7-icon>
           </chip-icon>
         </template>
       </f7-chip>
@@ -36,7 +36,7 @@
         @delete="removeFilter('busy')" v-if="filters.includes('busy')">
         <template #media>
           <chip-icon>
-            <f7-icon material="close" size="14" color="black"></f7-icon>
+            <f7-icon material="close" class="color-red" size="14"></f7-icon>
           </chip-icon>
         </template>
       </f7-chip>
@@ -195,6 +195,10 @@ const isAvailable = (item) => {
   if (!item) {
     return false
   }
+  if (!item[todayIndex.value]) {
+    return true
+  }
+
   const d = item[todayIndex.value][currentPeriod.value]
 
   if (d && d == 1) {
