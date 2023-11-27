@@ -1,4 +1,4 @@
-import { CapacitorHttp } from '@capacitor/core';
+import { RYWLHttp } from '../utils/http.js';
 import store from '@/js/store.js';
 import { f7 } from 'framework7-vue';
 import html2pdf from 'html2pdf.js'
@@ -11,7 +11,7 @@ export async function reauthenticate() {
         return
     }
 
-    await CapacitorHttp.post({
+    const respo = await RYWLHttp.post({
         url: `${window.rywlAPIs.main}/student/index.php`,
         data: `username=${store.state.authData.username}&password=${store.state.authData.password}`,
         headers: {
@@ -23,9 +23,19 @@ export async function reauthenticate() {
         store.state.userData = {}
     }
 
-    store.state.userData['sessionID'] = document.cookie + "; path=/"
+    let sessionID = ""
 
-    return store.state.userData['sessionID']
+    if (window['rywlUseProxy']) {
+        sessionID = document.cookie
+    } else {
+        sessionID = document.cookie + "; path=/"
+    }
+
+    console.log(sessionID)
+
+    store.state.userData['sessionID'] = sessionID
+
+    return sessionID
 }
 
 export async function getDocPDF(targetURL) {
@@ -37,7 +47,7 @@ export async function getDocPDF(targetURL) {
         prog.open()
         prog.setProgress(0)
 
-        const stdPrint = await CapacitorHttp.get({
+        const stdPrint = await RYWLHttp.get({
             url: targetURL,
             headers: {
                 "Cookie": sessionID
@@ -117,7 +127,7 @@ export async function getBehaviourData() {
     const sessionID = await reauthenticate()
 
     if (sessionID) {
-        const stdPrint = await CapacitorHttp.get({
+        const stdPrint = await RYWLHttp.get({
             url: `${window.rywlAPIs.main}/student/stdhistory.php`,
             headers: {
                 "Cookie": sessionID
@@ -154,7 +164,7 @@ export async function getBehaviourData() {
 export async function getTeachersTel() {
     const sessionID = await reauthenticate()
 
-    const stdPrint = await CapacitorHttp.get({
+    const stdPrint = await RYWLHttp.get({
         url: `${window.rywlAPIs.main}/student/telteacher.php`,
         headers: {
             "Cookie": sessionID
@@ -180,7 +190,7 @@ export async function getTeachersTel() {
 export async function getAttendees(month = 11) {
     const sessionID = await reauthenticate()
 
-    const stdPrint = await CapacitorHttp.post({
+    const stdPrint = await RYWLHttp.post({
         url: `${window.rywlAPIs.main}/student/index.php`,
         data: `cl=${month}`,
         headers: {
@@ -217,8 +227,10 @@ export async function getAttendees(month = 11) {
 export async function getInfo() {
     const sessionID = await reauthenticate()
 
+    console.log(sessionID)
+
     if (sessionID) {
-        const stdPrint = await CapacitorHttp.get({
+        const stdPrint = await RYWLHttp.get({
             url: `${window.rywlAPIs.main}/student/print.php`,
             headers: {
                 "Cookie": sessionID
@@ -312,7 +324,7 @@ export async function getFixStatus() {
         const fixStatus = await getBehaviourData()
 
         if (fixStatus.status.startsWith("คะแนนพฤติกรรมสะสม")) {
-            const stdPrint = await CapacitorHttp.get({
+            const stdPrint = await RYWLHttp.get({
                 url: `${window.rywlAPIs.main}/student/print.php`,
                 headers: {
                     "Cookie": sessionID

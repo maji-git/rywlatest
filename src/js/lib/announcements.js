@@ -1,8 +1,8 @@
 import { stripHtml } from "string-strip-html";
-import { CapacitorHttp } from '@capacitor/core';
+import { RYWLHttp } from '../utils/http.js';
 
 export async function getAnnouncements() {
-  const res = await CapacitorHttp.get({
+  const res = await RYWLHttp.get({
     url: `${window.rywlAPIs.main}/%E0%B8%82%E0%B9%88%E0%B8%B2%E0%B8%A7%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%8A%E0%B8%B2%E0%B8%AA%E0%B8%B1%E0%B8%A1%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B8%98%E0%B9%8C/`
   });
 
@@ -28,7 +28,7 @@ export async function getAnnouncements() {
 }
 
 export async function getBanners() {
-  const res = await CapacitorHttp.get({
+  const res = await RYWLHttp.get({
     url: `${window.rywlAPIs.main}/home/`
   });
 

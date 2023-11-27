@@ -1,9 +1,9 @@
 import axios from "axios"
 import { stripHtml } from "string-strip-html";
-import { CapacitorHttp } from '@capacitor/core';
+import { RYWLHttp } from '../utils/http.js';
 
 export async function getTermResults(username, password, server = "http://svwatpol2.rayongwit.ac.th:8080/") {
-    const respre = await CapacitorHttp.get({
+    const respre = await RYWLHttp.get({
         url: server
     });
 
@@ -24,7 +24,7 @@ export async function getTermResults(username, password, server = "http://svwatp
 
     const loginPayload = new URLSearchParams(formData);
 
-    const res = await CapacitorHttp.request({
+    const res = await RYWLHttp.request({
         url: server,
         method: 'POST',
         data: loginPayload.toString(),
