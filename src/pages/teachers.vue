@@ -25,43 +25,34 @@
             </f7-list-item>
         </f7-list>
 
-        <f7-popup id="teacher-info">
-            <f7-view>
-                <f7-page>
-                    <f7-navbar title="">
-                        <f7-nav-right>
-                            <f7-link popup-close>ปิด</f7-link>
-                        </f7-nav-right>
-                    </f7-navbar>
-                    <f7-block>
-                        <div class="block">
-                            <h1 class="text-center">{{ previewData.name }}</h1>
-                        </div>
-                    </f7-block>
+        <f7-sheet id="teacher-info" backdrop swipe-to-close swipe-to-step style="height: auto;">
+            <f7-block>
+                <div class="block">
+                    <h1 class="text-center">{{ previewData.name }}</h1>
+                </div>
+            </f7-block>
 
-                    <f7-block inset>
-                        <f7-block-title>หมายเหตุ</f7-block-title>
-                        <f7-block strong>
-                            <p v-if="previewData.room">ครูประจำชั้นห้องที่ {{ previewData.room }}</p>
-                        </f7-block>
-                    </f7-block>
+            <f7-block inset>
+                <f7-block-title>หมายเหตุ</f7-block-title>
+                <f7-block strong>
+                    <p v-if="previewData.room">ครูประจำชั้นห้องที่ {{ previewData.room }}</p>
+                </f7-block>
+            </f7-block>
 
-                    <f7-block inset>
-                        <div class="grid grid-cols-2 grid-gap">
-                            <f7-button tonal color="green" class="block-action-btn" @click="callTeacher(previewData.tel)">
-                                <f7-icon material="call"></f7-icon>
-                                <p>โทร</p>
-                            </f7-button>
-                            <f7-button tonal color="orange" class="block-action-btn"
-                                @click="createContact(previewData.name, previewData.tel)">
-                                <f7-icon material="import_contacts"></f7-icon>
-                                <p>เพื่มไปยังรายชื่อ</p>
-                            </f7-button>
-                        </div>
-                    </f7-block>
-                </f7-page>
-            </f7-view>
-        </f7-popup>
+            <f7-block inset>
+                <div class="grid grid-cols-2 grid-gap">
+                    <f7-button tonal color="green" class="block-action-btn" @click="callTeacher(previewData.tel)">
+                        <f7-icon material="call"></f7-icon>
+                        <p>โทร</p>
+                    </f7-button>
+                    <f7-button tonal color="orange" class="block-action-btn"
+                        @click="createContact(previewData.name, previewData.tel)">
+                        <f7-icon material="import_contacts"></f7-icon>
+                        <p>เพื่มไปยังรายชื่อ</p>
+                    </f7-button>
+                </div>
+            </f7-block>
+        </f7-sheet>
 
     </f7-page>
 </template>
@@ -85,10 +76,10 @@ const callTeacher = (tel) => {
 
 const previewInfo = (data) => {
     previewData.value = data
-    f7.popup.open("#teacher-info")
+    f7.sheet.open("#teacher-info")
 }
 
-const searchRequest = async(event) => {
+const searchRequest = async (event) => {
     teachers.value = teachersData.value.filter((e) => e.name.toLowerCase().includes(event.target.value.toLowerCase()))
 }
 

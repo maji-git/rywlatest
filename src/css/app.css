@@ -245,12 +245,12 @@
     }
 }
 
-.ios .block-action-btn {
+.block-action-btn {
     background-color: var(--f7-md-secondary-container);
     color: var(--f7-md-on-primary-container);
 }
 
-.ios .badge {
+.badge {
     background-color: var(--f7-md-secondary-container);
     color: var(--f7-md-on-primary-container);
 }
