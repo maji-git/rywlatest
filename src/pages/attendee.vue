@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="attendee of attendees">
+                    <tr v-for="attendee of attendees" :class="{'color-orange tr-color': attendee.comment == 'มาสาย'}">
                         <td class="label-cell">{{ attendee.dateTxt }}</td>
                         <td class="numeric-cell">{{ attendee.entranceTime }}</td>
                         <td class="numeric-cell">{{ attendee.exitTime }}</td>

@@ -254,3 +254,8 @@
     background-color: var(--f7-md-secondary-container);
     color: var(--f7-md-on-primary-container);
 }
+
+.tr-color {
+    background-color: var(--f7-md-secondary-container);
+    color: var(--f7-md-on-primary-container);
+}
