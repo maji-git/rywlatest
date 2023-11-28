@@ -106,7 +106,7 @@ import { OCRClient } from 'tesseract-wasm';
 const device = getDevice();
 const f7params = {
   name: 'คือ...!!!',
-  theme: 'ios',
+  theme: 'auto',
   colors: {
     primary: '#235B95',
   },
