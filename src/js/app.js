@@ -49,19 +49,19 @@ async function preStartup() {
         store.state[key] = value
     }
 
-    /*
     window.rywlAPIs = {
         main: "https://rayongwit.ac.th",
         rywl: "https://rywlatest.web.app",
     }
-    */
 
+    /*
     window.rywlAPIs = {
         main: "http://192.168.1.170:3000",
         rywl: "https://rywlatest.web.app",
     }
 
     window.rywlUseProxy = true
+    */
 
     console.log(store.state)
 
