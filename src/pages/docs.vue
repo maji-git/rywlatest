@@ -15,12 +15,12 @@
 
         <f7-list-item @click="openDoc(holdedDoc)" link="#" popover-close title="เปิด">
           <template #media>
-            <f7-icon material="open_in_new" size="20"></f7-icon>
+            <f7-icon ios="f7:link" md="material:open_in_new" size="20"></f7-icon>
           </template>
         </f7-list-item>
         <f7-list-item @click="shareDoc(holdedDoc)" link="#" popover-close title="แชร์">
           <template #media>
-            <f7-icon material="share" size="20"></f7-icon>
+            <f7-icon ios="f7:arrow_up_square" md="material:share" size="20"></f7-icon>
           </template>
         </f7-list-item>
       </f7-list>

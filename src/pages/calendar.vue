@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <f7-sheet id="event-info" swipe-to-close swipe-to-step style="height: auto;" v-if="previewEventInfo">
+        <f7-sheet id="event-info" backdrop swipe-to-close swipe-to-step style="height: auto;" v-if="previewEventInfo">
 
             <div class="sheet-modal-swipe-step">
                 <f7-block>
@@ -45,7 +45,7 @@
                         </p>
                     </div>
                 </f7-block>
-                <f7-block class="mb-3" inset strong v-html="previewEventInfo.description"></f7-block>
+                <f7-block class="mb-3" inset strong outline-ios v-html="previewEventInfo.description"></f7-block>
 
                 <!--
                 <div class="grid grid-cols-2 grid-gap block mt-0">

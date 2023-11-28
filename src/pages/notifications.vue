@@ -3,7 +3,7 @@
     <f7-navbar title="การแจ้งเตือน" back-link="Back"></f7-navbar>
 
     <div class="text-muted text-align-center mt-4" v-if="notifications.length == 0">
-      <img src="@/assets/doddles/speaker.png?v=2" height="200">
+      <img src="@/assets/doddles/speaker.png?v=2" height="200" class="doddle">
       <p class="m-0">ยังไม่มีการแจ้งเตือนใหม่ๆ...</p>
     </div>
 

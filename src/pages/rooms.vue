@@ -9,12 +9,12 @@
         @searchbar:enable="searching = true" @searchbar:disable="loadData" @search="searchRequest" />
     </f7-navbar>
 
-    <f7-block strong inset color="orange" v-if="currentPeriod == -1">
+    <f7-block outline-ios strong inset color="orange" v-if="currentPeriod == -1">
       <strong><f7-icon material="warning" size="20"></f7-icon> เวลานอกตารางเรียน</strong>
       ข้อมูลอาจจะไม่ตรงกัน
     </f7-block>
 
-    <f7-block strong-ios outline-ios>
+    <f7-block>
       <f7-chip text="กรอง" id="filters-chip" color="blue" outline @click="openFilters">
         <template #media>
           <chip-icon>
@@ -52,7 +52,7 @@
       :thumbs="[`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`]" page-back-link-text="Back">
     </f7-photo-browser>
 
-    <f7-sheet id="room-info" swipe-to-close swipe-to-step style="height: auto;">
+    <f7-sheet id="room-info" swipe-to-close swipe-to-step backdrop style="height: auto;">
       <div class="swipe-handler" @click="toggleSwipeStep"></div>
 
       <div class="sheet-modal-swipe-step">

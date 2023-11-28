@@ -4,7 +4,7 @@
     <f7-navbar large :sliding="false">
       <f7-nav-left>
         <f7-link href="/notifications/">
-          <f7-icon ios="f7:notifications" md="material:notifications">
+          <f7-icon ios="f7:bell" md="material:notifications">
             <f7-badge color="red" v-if="newNotify"></f7-badge>
           </f7-icon>
         </f7-link>
@@ -17,7 +17,7 @@
           :style="`background-image: url(${userData.headshot})`"></f7-link>
 
         <f7-link href="/settings/" v-else>
-          <f7-icon ios="f7:user" md="material:account_circle">
+          <f7-icon ios="f7:person" md="material:account_circle">
           </f7-icon>
         </f7-link>
       </f7-nav-right>
