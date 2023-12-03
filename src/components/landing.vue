@@ -19,7 +19,7 @@
                             <p class="text-center text-muted">
                                 <f7-link href="/about/">เกี่ยวกับแอพนี้</f7-link>
                                 •
-                                <f7-link href="#" @click="openSite('https://devpixels.xyz/legal/th/privacy/apps/rywlatest/')">นโยบายความเป็นส่วนตัว</f7-link>
+                                <f7-link href="#" @click="openSite('https://rywlatest.web.app/legal/privacy')">นโยบายความเป็นส่วนตัว</f7-link>
                             </p>
                         </div>
                     </f7-tab>
