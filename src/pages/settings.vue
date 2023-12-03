@@ -44,6 +44,7 @@
         <f7-list-button link="/prefs/" fill>การตั้งค่า</f7-list-button>
         <f7-list-button link="/about/" fill>เกี่ยวกับแอพนี้</f7-list-button>
         <f7-list-button fill v-if="userData != null" color="red" @click="clearUserdata">ลงชื่อออก</f7-list-button>
+        <f7-list-button fill @click="clearAllData">ล้างข้อมูลออกทั้งหมด</f7-list-button>
       </f7-list>
     </f7-block>
   </f7-page>
@@ -54,14 +55,16 @@ import { onMounted, ref } from "vue";
 import { clearAuthState, saveToPreferences } from "@/js/lib/stdsession.js"
 import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
+import { Preferences } from "@capacitor/preferences";
 const userData = useStore(store, "userData")
 
-const rerunApp = () => {
-  location.reload()
-}
+const clearAllData = () => {
+  f7.dialog.confirm("คุณต้องการลบข้อมูลทั้งหมดหรือไม่? (จะทำการรีเซ็ตทั้งแอพ)", async () => {
+    f7.dialog.close()
+    await Preferences.clear()
 
-const openLanding = () => {
-  f7.popup.open("#landing-popup")
+    window.location.reload()
+  })
 }
 
 const clearUserdata = () => {
