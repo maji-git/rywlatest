@@ -6,7 +6,7 @@ const monthEng = {
 
 export function thaiToDate(str) {
     let finalStr = ""
-    const splitStr = str.split(" ")
+    const splitStr = str.replace("  ", " ").split(" ")
 
     finalStr = `${parseInt(splitStr[0])} ${splitStr[1]} `
 
@@ -24,7 +24,7 @@ export function thaiToDate(str) {
 
     if (timeStrIndex != -1) {
         finalStr += ` ${splitStr[timeStrIndex + 1].replace(".", ":")}`
-    }
+    }    
 
     return new Date(finalStr)
 }
