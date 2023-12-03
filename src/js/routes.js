@@ -20,6 +20,7 @@ import PreferencesPage from '../pages/pref.vue';
 import AttendeePage from '../pages/attendee.vue';
 import NotificationsPage from '../pages/notifications.vue';
 import RoomsPage from '../pages/rooms.vue';
+import QuotaPage from '../pages/quota.vue';
 
 var routes = [
   {
@@ -79,8 +80,15 @@ var routes = [
     component: RoomsPage,
   },
   {
+    path: '/quota/',
+    component: QuotaPage,
+  },
+  {
     path: '/settings/',
     component: SettingsPage,
+    options: {
+      transition: 'f7-dive',
+    },
   },
   {
     path: '(.*)',

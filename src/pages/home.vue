@@ -80,8 +80,12 @@
           <f7-icon material="sensor_door"></f7-icon>
           <p>ห้อง</p>
         </f7-button>
-        <f7-button tonal color="black" class="block-action-btn text-muted">
-        </f7-button>
+
+        <!--<f7-button tonal href="/quota/" color="tint" class="block-action-btn">
+          <f7-icon material="meeting_room"></f7-icon>
+          <p>โควตา</p>
+        </f7-button>-->
+
       </div>
     </f7-block>
 

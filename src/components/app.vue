@@ -47,7 +47,7 @@
             <f7-list-button title="ค้นหา" @click="infoSubmitted"></f7-list-button>
             <f7-list-button title="ปิด" @click="closeInfoRegister"></f7-list-button>
 
-            <f7-list-button title="ลงชื่อด้วยบัตรนักเรียน" sheet-open="#card-scan-sheet"></f7-list-button>
+            <!--<f7-list-button title="ลงชื่อด้วยบัตรนักเรียน" sheet-open="#card-scan-sheet"></f7-list-button>-->
 
             <f7-block-footer>
               ข้อมูลนี้จะนำไปใช้ในการลงชื่อเข้าใช้ต่างๆ กับระบบโรงเรียน จะไม่มีการส่งข้อมูลออกทั้งสิ้น

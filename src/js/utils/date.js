@@ -6,7 +6,7 @@ const monthEng = {
 
 export function thaiToDate(str) {
     let finalStr = ""
-    const splitStr = str.replace("  ", " ").split(" ")
+    const splitStr = str.replace("  ", " ").split(" ").filter((e) => e != '')
 
     finalStr = `${parseInt(splitStr[0])} ${splitStr[1]} `
 
@@ -24,7 +24,10 @@ export function thaiToDate(str) {
 
     if (timeStrIndex != -1) {
         finalStr += ` ${splitStr[timeStrIndex + 1].replace(".", ":")}`
-    }    
+    }
+
+    console.log(splitStr)
+    console.log(finalStr)
 
     return new Date(finalStr)
 }
@@ -68,4 +71,11 @@ export function getPeriod(dateTime) {
     }
 
     return -1
+}
+
+export function formatDate(dateTime) {
+    return new Intl.DateTimeFormat('th', {
+        dateStyle: 'short',
+        timeStyle: "short"
+    }).format(dateTime)
 }
