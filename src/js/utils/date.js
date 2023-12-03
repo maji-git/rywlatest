@@ -10,6 +10,7 @@ export function thaiToDate(str) {
 
     finalStr = `${parseInt(splitStr[0])} ${splitStr[1]} `
 
+    // parse date
     for (const [key, value] of Object.entries(monthEng)) {
         finalStr = finalStr.replace(key, value)
     }
@@ -17,6 +18,13 @@ export function thaiToDate(str) {
     let yr = parseInt(`25${splitStr[2]}`) - 543
 
     finalStr += yr
+
+    // parse time if included
+    const timeStrIndex = splitStr.findIndex((e) => e == "เวลา")
+
+    if (timeStrIndex != -1) {
+        finalStr += ` ${splitStr[timeStrIndex + 1].replace(".", ":")}`
+    }
 
     return new Date(finalStr)
 }
