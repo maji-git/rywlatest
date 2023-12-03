@@ -14,6 +14,13 @@ export async function loadPrefs() {
 
     if (res.value) {
         store.state.notify = JSON.parse(res.value)
+
+        if (store.state.userData && !store.state.notify['room_subbed']) {
+            console.log("Subbed to level")
+            await FirebaseMessaging.subscribeToTopic({ topic: `level_${store.state.userData.mathayom}` });
+            store.state.notify['room_subbed'] = true
+            saveToPrefs()
+        }
     }
 }
 
@@ -49,6 +56,9 @@ export function enableNotify() {
         if (permRes.receive === 'granted') {
             const token = await FirebaseMessaging.getToken()
             await FirebaseMessaging.subscribeToTopic({ topic: 'all' });
+            if (store.state.userData) {
+                await FirebaseMessaging.subscribeToTopic({ topic: `level_${store.state.userData.mathayom}` });
+            }
 
             console.log("Notify Service Enabled")
             console.log(token.token)

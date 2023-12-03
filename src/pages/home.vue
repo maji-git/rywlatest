@@ -141,6 +141,7 @@ import { LottieAnimation } from "lottie-web-vue"
 import LogoTextJSON from "@/assets/lottie/logo-text.json"
 import LogoTextDarkJSON from "@/assets/lottie/logo-text-dark.json"
 import { f7, useStore } from 'framework7-vue';
+import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
 
 const openSite = async (url) => {
   await Browser.open({ url });
@@ -169,6 +170,10 @@ const loadData = async (done) => {
       done()
     }
     return
+  }
+
+  if (store.state.userData) {
+    notifyLoadPrefs()
   }
 
   isLoading.value = true
