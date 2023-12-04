@@ -31,6 +31,7 @@
     <NotifyPopup />
     <UpdatePopup />
     <ChangelogsPopup />
+    <ProxyPopup />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -89,6 +90,7 @@ import { f7, f7ready } from 'framework7-vue';
 import LandingPopup from "./landing.vue"
 import NotifyPopup from "./notify-popup.vue"
 import UpdatePopup from "./update-popup.vue"
+import ProxyPopup from "./proxy-popup.vue"
 import ChangelogsPopup from "./changelogs-notice.vue"
 import { AppUpdate } from '@capawesome/capacitor-app-update';
 

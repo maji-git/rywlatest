@@ -44,7 +44,7 @@
         <f7-list-button link="/prefs/" fill>การตั้งค่า</f7-list-button>
         <f7-list-button link="/about/" fill>เกี่ยวกับแอพนี้</f7-list-button>
         <f7-list-button fill v-if="userData != null" color="red" @click="clearUserdata">ลงชื่อออก</f7-list-button>
-        <f7-list-button fill @click="clearAllData">ล้างข้อมูลออกทั้งหมด</f7-list-button>
+        <f7-list-button fill @click="clearAllData" color="red">ล้างข้อมูลออกทั้งหมด</f7-list-button>
       </f7-list>
     </f7-block>
   </f7-page>
@@ -61,18 +61,32 @@ const userData = useStore(store, "userData")
 const clearAllData = () => {
   f7.dialog.confirm("คุณต้องการลบข้อมูลทั้งหมดหรือไม่? (จะทำการรีเซ็ตทั้งแอพ)", async () => {
     f7.dialog.close()
-    await Preferences.clear()
+
+    console.log("Clearing user data...")
+    
+    const allKeys = await Preferences.keys()
+
+    for (const k of allKeys.keys) {
+      await Preferences.remove({key: k})
+    }
+
+    await Preferences.remove({ key: "landingDone" })
+    await Preferences.remove({ key: "changelogLatest" })
+    await Preferences.remove({ key: "notifyPrompted" })
+    await Preferences.remove({ key: "changelogLatest" })
+    await Preferences.remove({ key: "landingDone" })
+    await Preferences.remove({ key: "notifyData" })
 
     window.location.reload()
   })
 }
 
 const clearUserdata = () => {
-  f7.dialog.confirm("คุณต้องการที่จะลงชื่อออกหรือไม่?", () => {
+  f7.dialog.confirm("คุณต้องการที่จะลงชื่อออกหรือไม่?", async () => {
     f7.dialog.close()
     store.state.userData = null
     clearAuthState()
-    saveToPreferences()
+    await saveToPreferences()
 
     window.location.reload()
   })

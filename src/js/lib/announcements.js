@@ -29,7 +29,7 @@ export async function getAnnouncements() {
 
 export async function getBanners() {
   const res = await RYWLHttp.get({
-    url: `${window.rywlAPIs.main}/home/`
+    url: `${window.rywlAPIs.main}/`
   });
 
   const parser = new DOMParser()

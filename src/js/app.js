@@ -40,6 +40,7 @@ console.log("RYW Latest Started")
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     window.darkMode = true
+    document.querySelector("#theme-color-meta").setAttribute("content", "#121212")
 }
 
 async function preStartup() {
