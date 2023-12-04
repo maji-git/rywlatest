@@ -1,6 +1,6 @@
 <template>
   <f7-page name="notifications">
-    <f7-navbar title="การแจ้งเตือน" back-link="Back"></f7-navbar>
+    <f7-navbar title="การแจ้งเตือน" back-link="ย้อนกลับ"></f7-navbar>
 
     <div class="text-muted text-align-center mt-4" v-if="notifications.length == 0">
       <img src="@/assets/doddles/speaker.png?v=2" height="200" class="doddle">

@@ -1,6 +1,6 @@
 <template>
     <f7-page name="news" ptr :ptr-mousewheel="true" @ptr:refresh="loadAnnouncements">
-        <f7-navbar title="ข่าวสารทางโรงเรียน" back-link="Back"></f7-navbar>
+        <f7-navbar title="ข่าวสารทางโรงเรียน" back-link="ย้อนกลับ"></f7-navbar>
         <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
         <div class="text-align-center" v-if="!isLoaded">
             <f7-preloader />

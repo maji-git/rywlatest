@@ -1,6 +1,6 @@
 <template>
     <f7-page name="watpol">
-        <f7-navbar title="วัดผล" back-link="Back"></f7-navbar>
+        <f7-navbar title="วัดผล" back-link="ย้อนกลับ"></f7-navbar>
 
         <f7-list strong-ios dividers-ios inset-ios>
             <f7-list-input label="รหัสผ่าน" type="text" placeholder="ใส่รหัสผ่าน..." :value="passwordInput"

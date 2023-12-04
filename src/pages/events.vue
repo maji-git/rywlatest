@@ -1,6 +1,6 @@
 <template>
     <f7-page name="events" ptr :ptr-mousewheel="true" @ptr:refresh="">
-        <f7-navbar title="ค้นหากิจกรรม/รางวัล" back-link="Back"></f7-navbar>
+        <f7-navbar title="ค้นหากิจกรรม/รางวัล" back-link="ย้อนกลับ"></f7-navbar>
 
         <f7-block-title>กรองข้อมูล</f7-block-title>
         <f7-list strong-ios outline-ios dividers-ios>

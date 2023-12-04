@@ -1,6 +1,6 @@
 <template>
     <f7-page name="attendee" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
-        <f7-navbar title="บันทึกการมาโรงเรียน" back-link="Back"></f7-navbar>
+        <f7-navbar title="บันทึกการมาโรงเรียน" back-link="ย้อนกลับ"></f7-navbar>
 
         <f7-block-title>การบันทึกในวันนี้</f7-block-title>
         <f7-block class="animate__animated animate__bounceIn" strong inset color="green" v-if="checkedIn">

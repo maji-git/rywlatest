@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar title="Dynamic Route" back-link="Back"></f7-navbar>
+    <f7-navbar title="Dynamic Route" back-link="ย้อนกลับ"></f7-navbar>
     <f7-block strong inset>
       <ul>
         <li><b>Url:</b> {{ f7route.url }}</li>

@@ -20,7 +20,7 @@
         </f7-list-item>
         <f7-list-item @click="shareDoc(holdedDoc)" link="#" popover-close title="แชร์">
           <template #media>
-            <f7-icon ios="f7:arrow_up_square" md="material:share" size="20"></f7-icon>
+            <f7-icon ios="material:ios_share" md="material:share" size="20"></f7-icon>
           </template>
         </f7-list-item>
       </f7-list>
@@ -46,7 +46,7 @@ const holdedDoc = ref({})
 const openDoc = async (doc) => {
   f7.popover.close("#docs-options")
 
-  if (doc.isPDF) {
+  if (doc.isPDF && window.isNative) {
     f7.preloader.show()
     const data = await downloadFileBlob(doc.source)
 
@@ -71,13 +71,21 @@ const openDoc = async (doc) => {
 const shareDoc = async (doc) => {
   f7.popover.close("#docs-options")
 
-  await Share.share({
-    url: doc.source
-  })
+  if (window.isNative) {
+    await Share.share({
+      url: doc.source
+    })
+  } else {
+    navigator.share({
+      title: "่แชร์ลิงค์เอกสาร",
+      text: doc.title,
+      url: doc.source,
+    })
+  }
 }
 
 const holdOptions = (doc) => {
-  Haptics.vibrate({duration: 40})
+  Haptics.vibrate({ duration: 40 })
   holdedDoc.value = doc
   f7.popover.open("#docs-options", `.doc-item[title="${doc.title}"]`)
 }

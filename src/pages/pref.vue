@@ -1,6 +1,6 @@
 <template>
     <f7-page name="การตั้งค่า" @page:beforein="prefStateLoad">
-        <f7-navbar title="การตั้งค่า" back-link="Back"></f7-navbar>
+        <f7-navbar title="การตั้งค่า" back-link="ย้อนกลับ"></f7-navbar>
 
         <f7-block>
             <f7-list accordion-list>

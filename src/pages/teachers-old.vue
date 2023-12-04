@@ -1,6 +1,6 @@
 <template>
     <f7-page name="about">
-        <f7-navbar title="ข้อมูลคุณครู" back-link="Back">
+        <f7-navbar title="ข้อมูลคุณครู" back-link="ย้อนกลับ">
         </f7-navbar>
 
         <f7-block>

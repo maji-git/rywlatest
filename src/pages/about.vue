@@ -1,6 +1,6 @@
 <template>
   <f7-page name="about">
-    <f7-navbar title="เกี่ยวกับแอพนี้" back-link="Back"></f7-navbar>
+    <f7-navbar title="เกี่ยวกับแอพนี้" back-link="ย้อนกลับ"></f7-navbar>
     <f7-block>
       <img src="@/assets/mai.png" class="img-field">
       <h1 class="text-center">RYW Latest {{ appVersion }}</h1>

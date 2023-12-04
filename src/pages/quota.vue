@@ -1,6 +1,6 @@
 <template>
     <f7-page name="quota" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
-        <f7-navbar title="โควตา" back-link="Back"></f7-navbar>
+        <f7-navbar title="โควตา" back-link="ย้อนกลับ"></f7-navbar>
 
         <f7-block strong inset color="red" v-if="false">
             <strong><f7-icon material="warning" size="20"></f7-icon> ชื่อไม่ตรงกัน</strong>
