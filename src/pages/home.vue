@@ -56,11 +56,12 @@
       <f7-button fill login-screen-open="#info-register-screen">กรอกข้อมูล</f7-button>
     </f7-block>
 
-    <f7-block v-if="store.state.wideAlerts?.enabled" strong inset :color="store.state.wideAlerts.colour" v-html="store.state.wideAlerts.msg"></f7-block>
+    <f7-block v-if="store.state.wideAlerts?.enabled" strong inset :color="store.state.wideAlerts.colour"
+      v-html="store.state.wideAlerts.msg"></f7-block>
 
     <f7-block>
       <div class="grid grid-cols-2 medium-grid-cols-5 grid-gap mb-3">
-        <f7-button tonal href="/news/" color="purple" class="block-action-btn">
+        <f7-button tonal href="/news/" color="purple" class="block-action-btn" v-if="isNative">
           <f7-icon material="newspaper"></f7-icon>
           <p>ข่าวสารโรงเรียน</p>
         </f7-button>
@@ -111,18 +112,20 @@
       <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
     </f7-block>
 
-    <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
-    <div class="text-align-center" v-if="isLoading">
-      <f7-preloader />
-    </div>
-    <f7-list strong inset>
-      <ul>
-        <f7-list-item media-item v-for="(item, index) in annoucements" :key="index" link="#" :title="item.title"
-          :subtitle="item.date" @click="openSite(item.article)"></f7-list-item>
-      </ul>
-    </f7-list>
-    <div class="text-align-center">
-      <f7-link href="/news/">ดูทั้งหมด</f7-link>
+    <div v-if="isNative">
+      <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
+      <div class="text-align-center" v-if="isLoading">
+        <f7-preloader />
+      </div>
+      <f7-list strong inset>
+        <ul>
+          <f7-list-item media-item v-for="(item, index) in annoucements" :key="index" link="#" :title="item.title"
+            :subtitle="item.date" @click="openSite(item.article)"></f7-list-item>
+        </ul>
+      </f7-list>
+      <div class="text-align-center">
+        <f7-link href="/news/">ดูทั้งหมด</f7-link>
+      </div>
     </div>
 
     <page-end />
@@ -160,7 +163,33 @@ const checkedIn = ref(false)
 const isHoliday = ref(false)
 const isOnline = ref(true)
 const darkMode = ref(window.darkMode)
+const isNative = ref(window.isNative)
 const checkedInTime = ref("")
+
+const loadBehaviour = async () => {
+  try { behaviourData.value = await getBehaviourData() } catch (err) { console.error(err) }
+
+  const today = new Date()
+
+  // Check Holidays
+  if (today.getDay() == 6 || today.getDay() == 0) {
+    isHoliday.value = true
+  } else {
+    isHoliday.value = false
+
+    // Not holiday, check for attendee
+    try {
+      const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
+
+      if (attendeeData[0]) {
+        if (attendeeData[0].date.getDate() == today.getDate()) {
+          checkedIn.value = true
+          checkedInTime.value = attendeeData[0].entranceTime
+        }
+      }
+    } catch (err) { console.error(err) }
+  }
+}
 
 const loadData = async (done) => {
   isOnline.value = navigator.onLine
@@ -182,30 +211,12 @@ const loadData = async (done) => {
   logoAnim.value.setDirection(-1)
   logoAnim.value.play()
 
-  try { annoucements.value = (await getAnnouncements()).slice(0, 5) } catch (err) { console.error(err) }
+  if (window.isNative) {
+    try { annoucements.value = (await getAnnouncements()).slice(0, 5) } catch (err) { console.error(err) }
+  }
+
   if (store.state.userData) {
-    try { behaviourData.value = await getBehaviourData() } catch (err) { console.error(err) }
-
-    const today = new Date()
-
-    // Check Holidays
-    if (today.getDay() == 6 || today.getDay() == 0) {
-      isHoliday.value = true
-    } else {
-      isHoliday.value = false
-
-      // Not holiday, check for attendee
-      try {
-        const attendeeData = (await getAttendees(today.getMonth() + 1)).reverse()
-
-        if (attendeeData[0]) {
-          if (attendeeData[0].date.getDate() == today.getDate()) {
-            checkedIn.value = true
-            checkedInTime.value = attendeeData[0].entranceTime
-          }
-        }
-      } catch (err) { console.error(err) }
-    }
+    await loadBehaviour()
   }
 
   try { banners.value = await getBanners() } catch (err) { console.error(err) }

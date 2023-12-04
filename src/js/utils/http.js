@@ -1,38 +1,24 @@
 import { CapacitorHttp } from '@capacitor/core';
+import axios from "axios"
 
 const doTheJob = async (method, options) => {
     if (window['rywlUseProxy']) {
-        console.log(options['headers'])
-
-        const headers = new Headers()
-        if (options['headers']) {
-            for (const [key, value] of Object.entries(options['headers'])) {
-                headers.set(key, value)
+        const res = await axios.request({
+            url: options.url,
+            method: "POST",
+            data: {
+                method: method,
+                data: options["data"],
+                headers: options["headers"],
             }
-        }
-
-        const res = await fetch(options.url, {
-            method: method,
-            body: options['data'],
-            mode: "cors",
-            headers: headers,
-            credentials: 'include'
         })
 
-        const resHeaders = {}
-
-        for (const header of res.headers) {
-            console.log(header[0], header[1])
-            resHeaders[header[0]] = header[1]
-        }
-
-        console.log(resHeaders)
-
         return {
-            data: (await res.text()),
-            headers: resHeaders,
+            data: res.data.data,
+            headers: {},
+            cookie: res.data["set-cookie"],
             status: res.status,
-            url: res.url
+            url: options.url
         }
     } else {
         return (await CapacitorHttp[method](options))

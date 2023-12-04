@@ -1,5 +1,6 @@
 // Import Vue
 import { createApp } from 'vue';
+import { loadFromPreferences } from "./lib/stdsession.js"
 
 // Import Framework7
 import Framework7 from 'framework7/lite-bundle';
@@ -20,6 +21,8 @@ import store from "./store.js"
 
 import PageEnd from '@/components/page-end.vue'
 import ChipIcon from '@/components/chip-icon.vue'
+
+import { Capacitor } from '@capacitor/core';
 
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
@@ -43,27 +46,31 @@ async function preStartup() {
     const res = await fetch("https://rywlatest.web.app/app/meta.json")
     const metadata = await res.json()
 
-    console.log(metadata)
+    window.isNative = Capacitor.isNativePlatform()
 
     for (const [key, value] of Object.entries(metadata.storeData)) {
         store.state[key] = value
     }
 
-    window.rywlAPIs = {
-        main: "https://rayongwit.ac.th",
-        rywl: "https://rywlatest.web.app",
+    if (window.isNative) {
+        console.log("Is native, Connecting Directly...")
+
+        window.rywlAPIs = {
+            main: "https://rayongwit.ac.th",
+            rywl: "https://rywlatest.web.app",
+        }
+    } else {
+        console.log("Is web, Connecting via Proxy...")
+
+        window.rywlAPIs = {
+            main: "https://rywproxy.deno.dev",
+            rywl: "https://rywlatest.web.app",
+        }
+    
+        window.rywlUseProxy = true
     }
 
-    /*
-    window.rywlAPIs = {
-        main: "http://192.168.1.170:3000",
-        rywl: "https://rywlatest.web.app",
-    }
-
-    window.rywlUseProxy = true
-    */
-
-    console.log(store.state)
+    try { await loadFromPreferences() } catch(err) { console.error("Failed to load user data", err)}
 
     // Mount the app
     app.mount('#app')

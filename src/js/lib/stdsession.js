@@ -26,11 +26,12 @@ export async function reauthenticate() {
     let sessionID = ""
 
     if (window['rywlUseProxy']) {
-        sessionID = document.cookie
+        sessionID = respo.cookie
     } else {
         sessionID = document.cookie + "; path=/"
     }
 
+    console.log(document.cookie)
     console.log(sessionID)
 
     store.state.userData['sessionID'] = sessionID
