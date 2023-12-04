@@ -4,7 +4,7 @@
 
     <f7-block class="grid grid-cols-2 grid-gap">
       <div v-for="doc in docs" @click="openDoc(doc)" @taphold="holdOptions(doc)" class="doc-item" :title="doc.title">
-        <img :src="`https://rywlatest.web.app/app/doc-thumbnails/${doc.thumbnail}`" class="img-field rounded shadow">
+        <img :src="`https://rywlatest.web.app/app/doc-thumbnails/${doc.thumbnail}`" class="img-field rounded shadow img-uncopyable">
         <p>{{ doc.title }}</p>
       </div>
     </f7-block>

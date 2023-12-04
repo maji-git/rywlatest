@@ -6,9 +6,16 @@
 
 * {
     font-family: 'Prompt';
+}
+
+*:not(img) {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+}
+
+img:not(.img-uncopyable) {
+    -webkit-touch-callout: default
 }
 
 .ios *:not(.icon) {

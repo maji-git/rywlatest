@@ -17,6 +17,7 @@ const store = createStore({
     },
     newNotify: false,
     teacherData: null,
+    notifyVapidKey: "BM9D5rXwYlVApFKH9Dh80aieKWQVhplozvTMNJ-3P3p_07-sizoKzttMouKO4_kEgxgcI6WqwlBq5-uF-yCOo4s"
   },
   getters: {
     userData({ state }) {

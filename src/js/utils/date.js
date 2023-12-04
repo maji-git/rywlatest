@@ -26,9 +26,6 @@ export function thaiToDate(str) {
         finalStr += ` ${splitStr[timeStrIndex + 1].replace(".", ":")}`
     }
 
-    console.log(splitStr)
-    console.log(finalStr)
-
     return new Date(finalStr)
 }
 

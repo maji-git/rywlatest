@@ -22,6 +22,8 @@ import store from "./store.js"
 import PageEnd from '@/components/page-end.vue'
 import ChipIcon from '@/components/chip-icon.vue'
 
+import { initializeApp } from "firebase/app"
+
 import { Capacitor } from '@capacitor/core';
 
 // Init Framework7-Vue Plugin
@@ -37,6 +39,16 @@ app.component('page-end', PageEnd);
 app.component('chip-icon', ChipIcon);
 
 console.log("RYW Latest Started")
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDfTB_fOPDaYw2KCMCQ5aHJbO4DT4vb7ik",
+    authDomain: "rywlatest.firebaseapp.com",
+    projectId: "rywlatest",
+    storageBucket: "rywlatest.appspot.com",
+    messagingSenderId: "675000735085",
+    appId: "1:675000735085:web:076602a4febe8c24def664",
+    measurementId: "G-VW7KQ5L3NF",
+};
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     window.darkMode = true
@@ -67,11 +79,19 @@ async function preStartup() {
             main: "https://rywproxy.deno.dev",
             rywl: "https://rywlatest.web.app",
         }
-    
+
         window.rywlUseProxy = true
+
+        /*
+        console.log("Registering Firebase FCM")
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
+
+        console.log("Connecting Firebase...")
+        initializeApp(firebaseConfig)
+        */
     }
 
-    try { await loadFromPreferences() } catch(err) { console.error("Failed to load user data", err)}
+    try { await loadFromPreferences() } catch (err) { console.error("Failed to load user data", err) }
 
     // Mount the app
     app.mount('#app')
