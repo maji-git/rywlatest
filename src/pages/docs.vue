@@ -32,8 +32,7 @@
 import { getDocs } from "@/js/lib/docs.js"
 import { onMounted, ref } from "vue"
 import { downloadFileBlob } from '@/js/utils/downloader.js'
-import writeBlob from "capacitor-blob-writer"
-import { Directory } from "@capacitor/filesystem"
+import { openBlob } from "@/js/utils/opener.js"
 import { FileOpener } from "@capacitor-community/file-opener"
 import { f7 } from "framework7-vue"
 import { Browser } from "@capacitor/browser"
@@ -46,19 +45,11 @@ const holdedDoc = ref({})
 const openDoc = async (doc) => {
   f7.popover.close("#docs-options")
 
-  if (doc.isPDF && window.isNative) {
+  if (doc.isPDF) {
     f7.preloader.show()
     const data = await downloadFileBlob(doc.source)
 
-    const blobFile = await writeBlob({
-      path: `${doc.title}.pdf`,
-      directory: Directory.Cache,
-      blob: data
-    })
-
-    FileOpener.open({
-      filePath: blobFile
-    })
+    openBlob(data, `${doc.title}.pdf`)
 
     f7.preloader.hide()
   } else {

@@ -84,7 +84,7 @@
                         </f7-list>
                     </f7-block>
 
-                    <f7-block inset>
+                    <f7-block inset v-if="isNative">
                         <div class="grid grid-cols-2 grid-gap">
                             <f7-button tonal v-if="previewData.evidence" @click="saveImage">บันทึกรูปภาพ</f7-button>
                             <f7-button tonal @click="printPaper">พิมพ์ใบแก้คะแนน</f7-button>
@@ -100,8 +100,7 @@
 import { ref } from "vue";
 import { getStdFixPDF, getBehaviourData, getStdLatePDF, getFixStatus } from "@/js/lib/stdsession.js"
 import { downloadFile } from "@/js/utils/downloader.js"
-import writeBlob from "capacitor-blob-writer";
-import { Directory } from "@capacitor/filesystem";
+import { openBlob } from "@/js/utils/opener.js"
 import { FileOpener } from "@capacitor-community/file-opener"
 import { Media } from "@capacitor-community/media"
 import { f7 } from 'framework7-vue';
@@ -170,30 +169,14 @@ const loadData = async (done) => {
 const printPaper = async () => {
     const data = await getStdFixPDF()
     if (data) {
-        const blo = await writeBlob({
-            path: "ryw-stdfix.pdf",
-            directory: Directory.Cache,
-            blob: data
-        })
-
-        FileOpener.open({
-            filePath: blo
-        })
+        openBlob(data, "ryw-stdfix.pdf")
     }
 }
 
 const printLatePaper = async () => {
     const data = await getStdLatePDF()
     if (data) {
-        const blo = await writeBlob({
-            path: "ryw-latefix.pdf",
-            directory: Directory.Cache,
-            blob: data
-        })
-
-        FileOpener.open({
-            filePath: blo
-        })
+        openBlob(data, "ryw-latefix.pdf")
     }
 }
 </script>

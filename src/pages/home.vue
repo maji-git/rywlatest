@@ -169,7 +169,6 @@ const checkedIn = ref(false)
 const isHoliday = ref(false)
 const isOnline = ref(true)
 const darkMode = ref(window.darkMode)
-const isNative = ref(window.isNative)
 const checkedInTime = ref("")
 
 const loadBehaviour = async () => {

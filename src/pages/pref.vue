@@ -37,15 +37,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { enableNotify, disableNotify } from '@/js/services/notifications.js';
 import store from '@/js/store.js';
 
-import { f7 } from "framework7-vue"
-
 const notifyUserToggle = ref(false)
-
-const isNative = ref(window.isNative)
 
 const rerunApp = () => {
     location.reload()

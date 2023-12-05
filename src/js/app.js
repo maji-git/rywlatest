@@ -79,6 +79,8 @@ async function preStartup() {
         store.state[key] = value
     }
 
+    app.config.globalProperties.isNative = window.isNative
+
     if (window.isNative) {
         Logger.info("Connecting Directly...")
 

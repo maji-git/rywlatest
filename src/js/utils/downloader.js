@@ -3,8 +3,12 @@ import { CapacitorHttp } from '@capacitor/core';
 export async function downloadFile(targetURL) {
     let destination = targetURL
     if (!window.isNative) {
-        destination = destination.replace("https://rayongwit.ac.th", window.rywlAPIs.main)
+        destination = destination.replace("https://rayongwit.ac.th", window.rywlAPIs.main + "/serve")
     }
+
+    console.log(destination)
+
+    //http://localhost:3000
 
     const db = await CapacitorHttp.get({
         url: destination,

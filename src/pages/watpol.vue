@@ -10,11 +10,12 @@
                     <f7-button :active="currentServer === 0" @click="currentServer = 0">Server 1</f7-button>
                     <f7-button :active="currentServer === 1" @click="currentServer = 1">Server 2</f7-button>
                     <f7-button :active="currentServer === 2" @click="currentServer = 2">Server 3</f7-button>
-                    <f7-button :active="currentServer === 3" @click="currentServer = 3">Custom</f7-button>
+                    <f7-button v-if="isNative" :active="currentServer === 3" @click="currentServer = 3">Custom</f7-button>
                 </f7-segmented>
 
-                <f7-input label="ที่อยู่เซิร์ฟเวอร์" class="animate__animated animate__fadeIn animate__faster" type="url" placeholder="ที่อยู่เซิร์ฟเวอร์" v-if="currentServer == 3"
-                    :value="userServer" @input="userServer = $event.target.value" clear-button></f7-input>
+                <f7-input label="ที่อยู่เซิร์ฟเวอร์" class="animate__animated animate__fadeIn animate__faster" type="url"
+                    placeholder="ที่อยู่เซิร์ฟเวอร์" v-if="currentServer == 3" :value="userServer"
+                    @input="userServer = $event.target.value" clear-button></f7-input>
 
                 <f7-block class="mt-4" v-if="!requesting">
                     <f7-button tonal @click="loadGrades">เช็คเกรด</f7-button>
@@ -114,6 +115,7 @@ const isLoaded = ref(true)
 const currentServer = ref(1)
 const userServer = ref()
 const requesting = ref(false)
+const isNative = ref(window.isNative)
 
 const exportCSV = async () => {
     let result = "รหัส,ชื่อวิชา,ประเภท,หน่วยกิต,รวมหน่วย,กลางภาค,ปลายภาค,รวม,เกรด,แก้ตัว,คุณฯ,อ่าน,ครู\n"
@@ -153,10 +155,14 @@ const loadGrades = async () => {
     try {
         let targetServer = ""
 
-        if (currentServer.value != 3) {
-            targetServer = store.state.watpolServers[currentServer.value]
+        if (window.isNative) {
+            if (currentServer.value != 3) {
+                targetServer = store.state.watpolServers[currentServer.value]
+            } else {
+                targetServer = userServer.value
+            }
         } else {
-            targetServer = userServer.value
+            targetServer = `${window.rywlAPIs.main}/watpol?server=${currentServer.value}`
         }
 
         Logger.info("Server Target: ", targetServer)

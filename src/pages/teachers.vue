@@ -1,6 +1,6 @@
 <template>
     <f7-page name="about" ptr :ptr-mousewheel="true" @ptr:refresh="listTeachers">
-        <f7-navbar title="ข้อมูลคุณครู" back-link="/">
+        <f7-navbar title="ข้อมูลคุณครู" back-link="ย้อนกลับ">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
                     icon-md="material:search" />
@@ -20,7 +20,7 @@
                     <f7-swipeout-button color="green" v-if="t.tel != '-'"
                         @click="callTeacher(t.tel)">โทร</f7-swipeout-button>
                     <f7-swipeout-button @click="createContact(t.name, t.tel)" color="orange"
-                        v-if="t.tel != '-'">บันทึก</f7-swipeout-button>
+                        v-if="t.tel != '-' && isNative">บันทึก</f7-swipeout-button>
                 </f7-swipeout-actions>
             </f7-list-item>
         </f7-list>
@@ -40,12 +40,12 @@
             </f7-block>
 
             <f7-block inset>
-                <div class="grid grid-cols-2 grid-gap">
+                <div class="grid grid-gap" :class="{'grid-cols-2': isNative}">
                     <f7-button tonal color="green" class="block-action-btn" @click="callTeacher(previewData.tel)">
                         <f7-icon material="call"></f7-icon>
                         <p>โทร</p>
                     </f7-button>
-                    <f7-button tonal color="orange" class="block-action-btn"
+                    <f7-button v-if="isNative" tonal color="orange" class="block-action-btn"
                         @click="createContact(previewData.name, previewData.tel)">
                         <f7-icon material="import_contacts"></f7-icon>
                         <p>เพื่มไปยังรายชื่อ</p>
