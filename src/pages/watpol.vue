@@ -105,6 +105,7 @@ import { getTermResults } from "@/js/lib/watpol.js"
 import store from '@/js/store.js';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { FileOpener } from "@capacitor-community/file-opener"
+import Logger from "js-logger"
 
 const gradesData = ref(null)
 const passwordInput = ref()
@@ -118,7 +119,6 @@ const exportCSV = async () => {
     let result = "รหัส,ชื่อวิชา,ประเภท,หน่วยกิต,รวมหน่วย,กลางภาค,ปลายภาค,รวม,เกรด,แก้ตัว,คุณฯ,อ่าน,ครู\n"
 
     for (const grade of gradesData.value.result.grades) {
-        console.log(grade)
         for (const [key, value] of Object.entries(grade)) {
             let displayData = value
             if (key == "grade") {
@@ -159,7 +159,7 @@ const loadGrades = async () => {
             targetServer = userServer.value
         }
 
-        console.log("Server Target: ", targetServer)
+        Logger.info("Server Target: ", targetServer)
 
         const data = await getTermResults(store.state.userData.studentID, passwordInput.value, targetServer)
         if (data.success) {

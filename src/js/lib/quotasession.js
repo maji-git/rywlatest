@@ -27,8 +27,6 @@ export async function reauthenticate() {
         sessionID = document.cookie + "; path=/"
     }
 
-    console.log(sessionID)
-
     return sessionID
 }
 

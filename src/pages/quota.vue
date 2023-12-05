@@ -41,7 +41,6 @@ const registerTimetable = ref({})
 
 const loadData = async (done) => {
     const d = await getTimetable()
-    console.log(d)
     registerTimetable.value = d
 
     if (done) {

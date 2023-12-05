@@ -150,6 +150,7 @@ import LogoTextJSON from "@/assets/lottie/logo-text.json"
 import LogoTextDarkJSON from "@/assets/lottie/logo-text-dark.json"
 import { f7, useStore } from 'framework7-vue';
 import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
+import Logger from "js-logger"
 
 const openSite = async (url) => {
   await Browser.open({ url });
@@ -172,7 +173,7 @@ const isNative = ref(window.isNative)
 const checkedInTime = ref("")
 
 const loadBehaviour = async () => {
-  try { behaviourData.value = await getBehaviourData() } catch (err) { console.error(err) }
+  try { behaviourData.value = await getBehaviourData() } catch (err) { Logger.error(err) }
 
   const today = new Date()
 
@@ -192,7 +193,7 @@ const loadBehaviour = async () => {
           checkedInTime.value = attendeeData[0].entranceTime
         }
       }
-    } catch (err) { console.error(err) }
+    } catch (err) { Logger.error(err) }
   }
 }
 
@@ -221,8 +222,8 @@ const loadData = async (done) => {
   }
 
   if (window.isNative) {
-    try { annoucements.value = (await getAnnouncements()).slice(0, 5) } catch (err) { console.error(err) }
-    try { banners.value = await getBanners() } catch (err) { console.error(err) }
+    try { annoucements.value = (await getAnnouncements()).slice(0, 5) } catch (err) { Logger.error(err) }
+    try { banners.value = await getBanners() } catch (err) { Logger.error(err) }
   }
 
   logoAnim.value.setDirection(1)

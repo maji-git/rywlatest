@@ -182,7 +182,6 @@ const toggleSwipeStep = () => {
 
 const searchRequest = async (event) => {
   availabilites.value = {}
-  console.log(originAData.value)
 
   for (const [key, value] of Object.entries(originAData.value)) {
     if (key.search(event.target.value) != -1) {
@@ -238,8 +237,6 @@ const loadData = async (done) => {
   } else {
     processed = data
   }
-
-  console.log(processed)
 
   availabilites.value = processed
   originAData.value = availabilites.value

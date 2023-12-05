@@ -92,6 +92,5 @@ const holdOptions = (doc) => {
 
 onMounted(async () => {
   docs.value = await getDocs()
-  console.log(docs.value)
 })
 </script>

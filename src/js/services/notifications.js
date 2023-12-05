@@ -3,6 +3,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import store from '@/js/store.js';
 import { Preferences } from "@capacitor/preferences"
 import { getMessaging, getToken, deleteToken, onMessage } from "firebase/messaging";
+import Logger from "js-logger"
 
 const notifications = []
 
@@ -17,7 +18,6 @@ export async function loadPrefs() {
         store.state.notify = JSON.parse(res.value)
 
         if (store.state.userData && !store.state.notify['room_subbed']) {
-            console.log("Subbed to level")
             await FirebaseMessaging.subscribeToTopic({ topic: `level_${store.state.userData.mathayom}` });
             store.state.notify['room_subbed'] = true
             saveToPrefs()
@@ -51,15 +51,12 @@ export function waitForMessages() {
         })
     } else {
         onMessage(getMessaging(), (data) => {
-            console.log(data)
             store.state.newNotify = true
             notifications.push(data.notification)
 
             const notification = new Notification(data.notification.title, {
                 body: data.notification.body
             });
-
-            console.log(notification)
         })
     }
 }
@@ -76,8 +73,7 @@ export function enableNotify() {
                     await FirebaseMessaging.subscribeToTopic({ topic: `level_${store.state.userData.mathayom}` });
                 }
 
-                console.log("Notify Service Enabled via Native")
-                console.log(token.token)
+                Logger.info("Notify Service Enabled via Native")
 
                 store.state.notify.enabled = true
                 store.state.notify.token = token.token
@@ -98,22 +94,22 @@ export function enableNotify() {
         return new Promise(async (resolve) => {
             const messaging = getMessaging()
 
-            console.log('Requesting permission...');
+            Logger.info('Requesting permission...');
             const permission = await Notification.requestPermission()
 
-            console.log(store.state.notifyVapidKey)
+            Logger.info(store.state.notifyVapidKey)
 
             if (permission == "granted") {
                 const token = await getToken(messaging, { vapidKey: store.state.notifyVapidKey ?? undefined });
 
                 if (token) {
 
-                    console.log("Subscribing to FCM Topics...")
+                    Logger.info("Subscribing to FCM Topics...")
 
                     await messaging.subscribeToTopic(token, "test");
 
-                    console.log("Notify Service Enabled via Firebase web FCM")
-                    console.log(token)
+                    Logger.info("Notify Service Enabled via Firebase web FCM")
+                    Logger.info(token)
 
                     store.state.notify.enabled = true
                     store.state.notify.token = token
@@ -139,7 +135,7 @@ export async function disableNotify() {
     } else {
         await deleteToken(getMessaging())
     }
-    console.log("Notify Service Disabled")
+    Logger.info("Notify Service Disabled")
     store.state.notify.enabled = false
     store.state.notify.token = ""
     saveToPrefs()

@@ -55,16 +55,14 @@ const onNotifyToggled = async () => {
     const val = !notifyUserToggle.value
 
     if (val) {
-        console.log("Requesting")
+        console.log("Requesting Notify Enable...")
         const res = await enableNotify()
-        console.log(res)
     } else {
         disableNotify()
     }
 }
 
 const prefStateLoad = () => {
-    console.log(store.state.notify.enabled)
     if (store.state.notify.enabled) {
         notifyUserToggle.value = true
     }

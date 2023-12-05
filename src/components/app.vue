@@ -157,8 +157,6 @@ const cardScan = async () => {
         const text = await ocr.getText();
         const processedText = text.trim().replaceAll(" ", "")
 
-        console.log(processedText)
-
         let foundInfos = 0
         let studentIDResult = 0
         let cardIDResult = 0
@@ -169,24 +167,17 @@ const cardScan = async () => {
           if (numOnly.length == 5) {
             foundInfos++
             studentIDResult = numOnly
-            console.log("FOUND STUDENT ID", studentIDResult)
           }
 
           if (numOnly.length == 13) {
             foundInfos++
             cardIDResult = textLi.replace(/\D/g, '')
-
-            console.log("FOUND CARD ID", cardIDResult)
-
           }
         }
 
         preloadDialog.close()
 
         if (foundInfos >= 2) {
-          console.log(studentIDResult)
-          console.log(cardIDResult)
-
           studentID.value = studentIDResult
           cardID.value = cardIDResult
 

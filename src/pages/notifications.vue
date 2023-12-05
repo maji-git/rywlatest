@@ -25,6 +25,5 @@ const notifications = ref([])
 onMounted(() => {
   store.state.newNotify = false
   notifications.value = getNotifications()
-  console.log(notifications.value)
 })
 </script>

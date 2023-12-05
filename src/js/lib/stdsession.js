@@ -31,9 +31,6 @@ export async function reauthenticate() {
         sessionID = document.cookie + "; path=/"
     }
 
-    console.log(document.cookie)
-    console.log(sessionID)
-
     store.state.userData['sessionID'] = sessionID
 
     return sessionID
@@ -93,8 +90,6 @@ export async function getDocPDF(targetURL) {
 
         tempElement.querySelector(".navbar").remove()
         tempElement.querySelector("button[onclick='window.print()']").remove()
-
-        console.log(tempElement.innerHTML)
 
         const opt = {
             margin: 0.5,
@@ -228,8 +223,6 @@ export async function getAttendees(month = 11) {
 export async function getInfo() {
     const sessionID = await reauthenticate()
 
-    console.log(sessionID)
-
     if (sessionID) {
         const stdPrint = await RYWLHttp.get({
             url: `${window.rywlAPIs.main}/student/print.php`,
@@ -247,8 +240,6 @@ export async function getInfo() {
         let studentNumber = ""
 
         for (const par of dom.querySelectorAll("p")) {
-            console.log(par.innerText)
-
             if (par.innerText?.includes("ชื่อผู้บำเพ็ญประโยชน์")) {
                 const splitd = par.textContent.trim().split("  ")
                 let namesplit = splitd[1].split("  ")

@@ -57,12 +57,13 @@ import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
 import { Preferences } from "@capacitor/preferences";
 const userData = useStore(store, "userData")
+import Logger from "js-logger"
 
 const clearAllData = () => {
   f7.dialog.confirm("คุณต้องการลบข้อมูลทั้งหมดหรือไม่? (จะทำการรีเซ็ตทั้งแอพ)", async () => {
     f7.dialog.close()
 
-    console.log("Clearing user data...")
+    Logger.info("Clearing user data...")
     
     const allKeys = await Preferences.keys()
 
@@ -93,6 +94,5 @@ const clearUserdata = () => {
 }
 
 onMounted(() => {
-  console.log(userData.value)
 })
 </script>

@@ -22,7 +22,7 @@ import store from "./store.js"
 import PageEnd from '@/components/page-end.vue'
 import ChipIcon from '@/components/chip-icon.vue'
 
-import { initializeApp } from "firebase/app"
+import Logger from "js-logger"
 
 import { Capacitor } from '@capacitor/core';
 
@@ -38,7 +38,19 @@ registerComponents(app);
 app.component('page-end', PageEnd);
 app.component('chip-icon', ChipIcon);
 
-console.log("RYW Latest Started")
+Logger.useDefaults()
+Logger.setHandler(Logger.createDefaultHandler({
+    formatter: function (messages, context) {
+        messages.unshift(`[${context.level.name}]`)
+    }
+}))
+
+console.log("------------")
+console.log(`%cRYW Latest ${__APP_VERSION__}`, "color:#FFC700; font-size:30px");
+console.log("Github:", "https://github.com/SK-Fast/rywlatest")
+console.log("IG:", "https://www.instagram.com/rywlatest/")
+console.log("Licensed under MIT License")
+console.log("------------")
 
 const firebaseConfig = {
     apiKey: "AIzaSyDfTB_fOPDaYw2KCMCQ5aHJbO4DT4vb7ik",
@@ -56,6 +68,8 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 }
 
 async function preStartup() {
+    Logger.info("Fetching app metadata...")
+
     const res = await fetch("https://rywlatest.web.app/app/meta.json")
     const metadata = await res.json()
 
@@ -66,14 +80,14 @@ async function preStartup() {
     }
 
     if (window.isNative) {
-        console.log("Is native, Connecting Directly...")
+        Logger.info("Connecting Directly...")
 
         window.rywlAPIs = {
             main: "https://rayongwit.ac.th",
             rywl: "https://rywlatest.web.app",
         }
     } else {
-        console.log("Is web, Connecting via Proxy...")
+        Logger.info("Connecting via Proxy...")
 
         window.rywlAPIs = {
             main: "https://rywproxy.deno.dev",
@@ -91,10 +105,13 @@ async function preStartup() {
         */
     }
 
-    try { await loadFromPreferences() } catch (err) { console.error("Failed to load user data", err) }
+    Logger.info("Loading user preferences...")
+    try { await loadFromPreferences() } catch (err) { Logger.error("Failed to load user data", err) }
 
     // Mount the app
     app.mount('#app')
+
+    Logger.info("Application view mounted")
 }
 
 preStartup()

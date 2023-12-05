@@ -106,6 +106,7 @@ import { FileOpener } from "@capacitor-community/file-opener"
 import { Media } from "@capacitor-community/media"
 import { f7 } from 'framework7-vue';
 import store from '@/js/store.js';
+import Logger from "js-logger"
 
 const behaviourStatus = ref("-")
 const behaviours = ref([])
@@ -132,6 +133,7 @@ const saveImage = async () => {
             filePath: res.filePath
         })
     } catch (err) {
+        Logger.error(err)
         f7.dialog.alert(`ข้อผิดผลาด: ${err}`).open()
     }
 
@@ -157,7 +159,6 @@ const loadData = async (done) => {
     behaviourStatus.value = data.status
 
     behaviourFixData.value = await getFixStatus()
-    console.log(behaviourFixData.value)
 
     isLoaded.value = true
 

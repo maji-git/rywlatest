@@ -2,8 +2,6 @@
 import { createStore } from 'framework7/lite';
 import { f7 } from 'framework7-vue';
 
-console.log("import.meta.env.VITE_LOGIN_USERNAME ", import.meta.env.VITE_LOGIN_USERNAME)
-
 const store = createStore({
   state: {
     userData: null,
