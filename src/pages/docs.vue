@@ -68,7 +68,7 @@ const shareDoc = async (doc) => {
     })
   } else {
     navigator.share({
-      title: "่แชร์ลิงค์เอกสาร",
+      title: "แชร์ลิงค์เอกสาร",
       text: doc.title,
       url: doc.source,
     })
