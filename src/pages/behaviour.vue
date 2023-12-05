@@ -20,7 +20,7 @@
                     :label-text="`คะแนนที่แก้ไขแล้ว (${behaviourFixData.fixed}/${behaviourFixData.score})`" />
             </div>
 
-            <f7-block>
+            <f7-block v-if="currentPlatform != 'Safari'">
                 <div class="grid grid-cols-2 grid-gap">
                     <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
                     <f7-button tonal @click="printLatePaper">ดาวน์โหลดใบแก้มาสาย</f7-button>

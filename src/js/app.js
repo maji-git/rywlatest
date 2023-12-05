@@ -24,6 +24,8 @@ import ChipIcon from '@/components/chip-icon.vue'
 
 import Logger from "js-logger"
 
+import platform from "platform"
+
 import { Capacitor } from '@capacitor/core';
 
 // Init Framework7-Vue Plugin
@@ -74,12 +76,16 @@ async function preStartup() {
     const metadata = await res.json()
 
     window.isNative = Capacitor.isNativePlatform()
+    window.currentPlatform = platform.name
+
+    Logger.info("Running on", platform.name)
 
     for (const [key, value] of Object.entries(metadata.storeData)) {
         store.state[key] = value
     }
 
     app.config.globalProperties.isNative = window.isNative
+    app.config.globalProperties.currentPlatform = window.currentPlatform
 
     if (window.isNative) {
         Logger.info("Connecting Directly...")
