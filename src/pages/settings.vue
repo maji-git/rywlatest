@@ -78,6 +78,9 @@ const clearAllData = () => {
     await Preferences.remove({ key: "landingDone" })
     await Preferences.remove({ key: "notifyData" })
 
+    clearAuthState()
+    await saveToPreferences()
+    
     window.location.reload()
   })
 }

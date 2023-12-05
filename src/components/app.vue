@@ -32,6 +32,7 @@
     <UpdatePopup />
     <ChangelogsPopup />
     <ProxyPopup />
+    <PwaInstallPrompt />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -59,29 +60,28 @@
     </f7-login-screen>
 
     <f7-sheet id="card-scan-sheet" style="height: auto;">
-        <!-- Scrollable sheet content -->
-        <f7-page-content>
-            <f7-block>
-                <div class="text-center">
-                    <h1>ลงชื่อเข้าใช้ด้วยบัตรนักเรียน</h1>
-                    <p>ตัวแอพจะทำการดึงข้อมูลที่จำเป็นออกมาจากบัตร เพื่อให้การสแกนทำงานให้ดีที่สุด เราขอแนะนำให้ทำตามขั้นตอนดังนี้:</p>
-                </div>
+      <!-- Scrollable sheet content -->
+      <f7-page-content>
+        <f7-block>
+          <div class="text-center">
+            <h1>ลงชื่อเข้าใช้ด้วยบัตรนักเรียน</h1>
+            <p>ตัวแอพจะทำการดึงข้อมูลที่จำเป็นออกมาจากบัตร เพื่อให้การสแกนทำงานให้ดีที่สุด
+              เราขอแนะนำให้ทำตามขั้นตอนดังนี้:</p>
+          </div>
 
-                <f7-block strong inset>
-                  <ol>
-                    <li>ให้ถ่ายรูปบัตรจากมุมบน</li>
-                    <li>แนะนำให้สีพื้นหลังเป็นสีที่ตัดกับสีของบัตร ตัวแอพจะได้จัดตรวจจับอัตโนมัติ</li>
-                    <li>ถ่ายให้ข้อความบนบัตรเห็นชัด (โดยเฉพาะเลขประจำตัวต่างๆ)</li>
-                    <li>ถ้าแอพไม่สามารถตรวจจับบัตรได้ ให้ลองลากจุด 4 จุดให้คลุมตัวบัตร</li>
-                  </ol>
-                </f7-block>
+          <f7-block strong inset>
+            <ol>
+              <li>ให้ถ่ายรูปบัตรจากมุมบน</li>
+              <li>แนะนำให้สีพื้นหลังเป็นสีที่ตัดกับสีของบัตร ตัวแอพจะได้จัดตรวจจับอัตโนมัติ</li>
+              <li>ถ่ายให้ข้อความบนบัตรเห็นชัด (โดยเฉพาะเลขประจำตัวต่างๆ)</li>
+              <li>ถ้าแอพไม่สามารถตรวจจับบัตรได้ ให้ลองลากจุด 4 จุดให้คลุมตัวบัตร</li>
+            </ol>
+          </f7-block>
 
-                <f7-button sheet-close @click="cardScan" tonal>โอเค</f7-button>
-            </f7-block>
-        </f7-page-content>
+          <f7-button sheet-close @click="cardScan" tonal>โอเค</f7-button>
+        </f7-block>
+      </f7-page-content>
     </f7-sheet>
-
-
   </f7-app>
 </template>
 <script setup>
@@ -92,6 +92,7 @@ import NotifyPopup from "./notify-popup.vue"
 import UpdatePopup from "./update-popup.vue"
 import ProxyPopup from "./proxy-popup.vue"
 import ChangelogsPopup from "./changelogs-notice.vue"
+import PwaInstallPrompt from "./pwa-install-prompt.vue"
 import { AppUpdate } from '@capawesome/capacitor-app-update';
 
 import { getDevice } from 'framework7/lite-bundle';
@@ -104,6 +105,7 @@ import { Preferences } from "@capacitor/preferences"
 import { Capacitor } from '@capacitor/core'
 import { DocumentScanner } from 'capacitor-document-scanner'
 import { OCRClient } from 'tesseract-wasm';
+import Logger from 'js-logger';
 
 const device = getDevice();
 const f7params = {
@@ -237,31 +239,60 @@ onMounted(() => {
       document.querySelector("#framework7-root").classList.add("dark")
     }
 
-    loadFromPreferences()
-    waitForMessages()
-    notifyLoadPrefs()
+    try {
+      waitForMessages()
+      notifyLoadPrefs()
+    } catch (err) {
+      Logger.error(err)
+    }
 
-    const firstTime = await Preferences.get({ key: "landingDone" })
-    const notifyPrompted = await Preferences.get({ key: "notifyPrompted" })
+    let firstTime = "0"
+    try { firstTime = await Preferences.get({ key: "landingDone" }) } catch { }
 
-    const appUpdateInfo = await AppUpdate.getAppUpdateInfo()
+    let notifyPrompted = "0"
+    try { notifyPrompted = await Preferences.get({ key: "notifyPrompted" }) } catch { }
+
+    let appUpdateInfo;
+
+    if (window.isNative) {
+      appUpdateInfo = await AppUpdate.getAppUpdateInfo()
+    }
 
     window.pref = Preferences
 
-    if (firstTime.value !== "1") {
-      f7.popup.open("#landing-popup")
-      Preferences.set({ key: "changelogLatest", value: appUpdateInfo.currentVersion.toString() })
-    } else if (notifyPrompted.value !== "1") {
-      f7.popup.open("#notify-popup")
-      Preferences.set({ key: "notifyPrompted", value: "1" })
-    } else {
-      if (appUpdateInfo.availableVersion != appUpdateInfo.currentVersion) {
-        f7.sheet.open("#update-sheet")
-      } else {
-        const prefChangelog = await Preferences.get({ key: "changelogLatest" })
+    let pwaInstalled = window.matchMedia('(display-mode: standalone)').matches
+    if (import.meta.env.MODE == 'development') {
+      pwaInstalled = true
+    }
 
-        if (prefChangelog.value != appUpdateInfo.currentVersion) {
-          f7.popup.open("#changelogs-popup")
+    if (!pwaInstalled && !window.isNative) {
+      f7.popup.open("#pwa-install-popup")
+    }
+
+    if (pwaInstalled || window.isNative) {
+      if (firstTime.value !== "1") {
+        f7.popup.open("#landing-popup")
+
+        if (window.isNative) {
+          Preferences.set({ key: "changelogLatest", value: appUpdateInfo.currentVersion.toString() })
+        }
+
+      } else if (notifyPrompted.value !== "1") {
+        if (window.isNative) {
+          f7.popup.open("#notify-popup")
+          Preferences.set({ key: "notifyPrompted", value: "1" })
+        }
+      } else {
+        if (window.isNative) {
+          if (appUpdateInfo.availableVersion != appUpdateInfo.currentVersion) {
+            f7.sheet.open("#update-sheet")
+          } else {
+            const prefChangelog = await Preferences.get({ key: "changelogLatest" })
+
+            if (prefChangelog.value != appUpdateInfo.currentVersion) {
+              f7.popup.open("#changelogs-popup")
+            }
+          }
         }
       }
     }

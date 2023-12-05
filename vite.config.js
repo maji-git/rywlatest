@@ -16,10 +16,49 @@ const PUBLIC_DIR = path.resolve(__dirname, './public');
 const BUILD_DIR = path.resolve(__dirname, './www',);
 export default async () => {
 
-  return  {
+  return {
     plugins: [
-      vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.includes('swiper-') } } }),,
-
+      vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.includes('swiper-') } } }),
+      , VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.ico', 'logos/apple-touch-icon.png', 'logos/masked-icon.svg', './rive/logout.riv'],
+        manifest: {
+          name: 'Rayongwit Latest',
+          short_name: 'ล่าสุด ระยองวิทย์',
+          description: 'ไม่พลาดข่าวระยองวิทยาคม',
+          theme_color: '#FFF4CE',
+          icons: [
+            {
+              "src": "public/pwa/manifest-icon-192.maskable.png",
+              "sizes": "192x192",
+              "type": "image/png",
+              "purpose": "any"
+            },
+            {
+              "src": "public/pwa/manifest-icon-192.maskable.png",
+              "sizes": "192x192",
+              "type": "image/png",
+              "purpose": "maskable"
+            },
+            {
+              "src": "public/pwa/manifest-icon-512.maskable.png",
+              "sizes": "512x512",
+              "type": "image/png",
+              "purpose": "any"
+            },
+            {
+              "src": "public/pwa/manifest-icon-512.maskable.png",
+              "sizes": "512x512",
+              "type": "image/png",
+              "purpose": "maskable"
+            }
+          ],
+          workbox: {
+            navigateFallback: '/index.html',
+            navigateFallbackAllowlist: [/^(?!\/__)/]
+          }
+        }
+      })
     ],
     root: SRC_DIR,
     base: '',
@@ -47,7 +86,7 @@ export default async () => {
     },
     optimizeDeps: {
       exclude: ['tesseract-wasm']
-    },  
+    },
     define: {
       '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
     }

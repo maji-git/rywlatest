@@ -131,6 +131,7 @@ const loadMore = async () => {
 }
 
 onMounted(async () => {
-    loadMore()
+    await loadMore()
+    await loadMore()
 })
 </script>

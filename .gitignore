@@ -52,3 +52,6 @@ resources/windows/splash
 
 # Production build
 www/
+
+# Firebase Cache
+.firebase/

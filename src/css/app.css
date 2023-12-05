@@ -91,6 +91,9 @@ img:not(.img-uncopyable) {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
+
+    position: absolute;
+    bottom: 0;
 }
 
 .flex-space {
@@ -109,7 +112,6 @@ img:not(.img-uncopyable) {
 
 .landing-container>div {
     margin: 0;
-    height: 50%;
 }
 
 .text-muted {

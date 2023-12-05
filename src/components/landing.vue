@@ -19,7 +19,8 @@
                             <p class="text-center text-muted">
                                 <f7-link href="/about/">เกี่ยวกับแอพนี้</f7-link>
                                 •
-                                <f7-link href="#" @click="openSite('https://rywlatest.web.app/legal/privacy')">นโยบายความเป็นส่วนตัว</f7-link>
+                                <f7-link href="#"
+                                    @click="openSite('https://rywlatest.web.app/legal/privacy')">นโยบายความเป็นส่วนตัว</f7-link>
                             </p>
                         </div>
                     </f7-tab>
@@ -60,7 +61,7 @@
                         <div class="landing-actions">
                             <f7-button @click="openLogin" tab-link="#landing-tab-empty" class="w-100 mb-2"
                                 fill>ลงชื่อเข้าใช้</f7-button>
-                            <f7-button popup-close @click="landingSetDone" class="w-100">ใช้โดยไม่ลงชื่อเข้าใช้</f7-button>
+                            <f7-button popup-close tab-link="#landing-tab-1" @click="landingSetDone" class="w-100">ใช้แอพโดยไม่ลงชื่อเข้าใช้</f7-button>
                             <f7-button tab-link="#landing-tab-2" class="w-100">กลับไป</f7-button>
                         </div>
                     </f7-tab>
@@ -113,7 +114,7 @@ import { Browser } from '@capacitor/browser';
 const userData = ref(null)
 
 const openSite = async (url) => {
-  await Browser.open({ url });
+    await Browser.open({ url });
 }
 
 const landingSetDone = async () => {
