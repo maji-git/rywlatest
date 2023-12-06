@@ -72,7 +72,7 @@ export default async () => {
         output: {
           entryFileNames: `assets/[name]-${chunkPrefix}.js`,
           chunkFileNames: `assets/[name]-${chunkPrefix}.js`,
-          assetFileNames: `assets/[name].[ext]`
+          assetFileNames: `assets/[name]=${chunkPrefix}.[ext]`
         }
       },
     },
