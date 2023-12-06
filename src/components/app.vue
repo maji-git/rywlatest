@@ -262,7 +262,7 @@ onMounted(() => {
 
     let pwaInstalled = window.matchMedia('(display-mode: standalone)').matches
     if (import.meta.env.MODE == 'development') {
-      //pwaInstalled = true
+      pwaInstalled = true
     }
 
     if (!pwaInstalled && !window.isNative) {
