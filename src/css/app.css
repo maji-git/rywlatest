@@ -8,7 +8,7 @@
     font-family: 'Prompt';
 }
 
-*:not(img) {
+*:not(img, input) {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
