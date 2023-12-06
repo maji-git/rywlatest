@@ -77,9 +77,10 @@ async function preStartup() {
 
     window.isNative = Capacitor.isNativePlatform()
     window.currentPlatform = platform.name
-    window.isDesktop = (platform.os.family != "Android" || platform.os.family != "iOS")
+    window.isDesktop = (platform.os.family != "Android" && platform.os.family != "iOS")
 
     Logger.info("Running on", platform.name)
+    Logger.info("OS:", platform.os.family)
 
     for (const [key, value] of Object.entries(metadata.storeData)) {
         store.state[key] = value
