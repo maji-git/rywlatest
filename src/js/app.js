@@ -77,6 +77,7 @@ async function preStartup() {
 
     window.isNative = Capacitor.isNativePlatform()
     window.currentPlatform = platform.name
+    window.isDesktop = (platform.os.family != "Android" || platform.os.family != "iOS")
 
     Logger.info("Running on", platform.name)
 
@@ -84,6 +85,7 @@ async function preStartup() {
         store.state[key] = value
     }
 
+    app.config.globalProperties.isDesktop = window.isDesktop
     app.config.globalProperties.isNative = window.isNative
     app.config.globalProperties.currentPlatform = window.currentPlatform
 
