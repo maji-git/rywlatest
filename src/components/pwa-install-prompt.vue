@@ -6,9 +6,15 @@
                     <div class="text-center">
                         <img src="/pwa/apple-touch-icon.png" height="110" class="app-icon">
                         <h2>อีกไม่กี่ขั้นตอน!</h2>
-                        <p>เพิ่ม ล่าสุด ระยองวิทย์ ไปที่หน้าหลัก เพื่อให้เข้าถึงได้ง่ายขึ้น</p>
-                        <div class="divc">กดที่ <img src="/share-ios.png" class="m-2" height="25"> แล้ว
+                        <p> เพิ่ม ล่าสุด ระยองวิทย์ ไปที่หน้าหลัก เพื่อให้เข้าถึงได้ง่ายขึ้น</p>
+                        <div class="divc" v-if="inAppBrowserName == ''">กดที่ <img src="/share-ios.png" class="m-2" height="25"> แล้ว
                             “เพิ่มไปยังหน้าจอโฮม”</div>
+
+                            <div class="divc" v-if="inAppBrowserName == 'ig'">กดที่ <img src="/share-ios.png" class="m-2" height="25"> แล้ว
+                            “เปิดในเบราว์เซอร์ภายนอก”</div>
+                        
+                            <div class="divc" v-if="inAppBrowserName == 'line'">กดที่ <img src="/share-line.png" class="m-2" height="20"> แล้ว
+                            “เปิดในเบราว์เซอร์”</div>
                     </div>
                 </div>
 
@@ -34,7 +40,10 @@
                     </div>
                 </div>
 
-                <img v-if="currentPlatform == 'Safari'" src="/bubble-arrow.png?v=2" class="install-arrow" height="50">
+                <div v-if="currentPlatform == 'Safari'">
+                    <img src="/bubble-arrow.png?v=2" v-if="inAppBrowserName == '' || inAppBrowserName == 'ig'" class="install-arrow" height="50">
+                    <img src="/bubble-arrow.png?v=2" v-if="inAppBrowserName == 'line'" class="install-arrow install-arrow-line" height="50">
+                </div>
 
             </f7-page>
         </f7-view>
@@ -70,9 +79,13 @@ const openSite = async (url) => {
 }
 
 .divc {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
+    background-color: whitesmoke;
+    padding: 8px 32px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.077);
 }
 
 .install-arrow {
@@ -97,4 +110,10 @@ const openSite = async (url) => {
     100% {
         bottom: 10px;
     }
-}</style>
+}
+
+.install-arrow-line {
+    left: calc(100% - 38px) !important;
+    transform: none !important;
+}
+</style>

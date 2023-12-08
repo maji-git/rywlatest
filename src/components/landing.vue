@@ -5,16 +5,17 @@
                 <f7-tabs animated>
                     <f7-tab id="landing-tab-1" class="landing-page" tab-active>
                         <f7-block class="text-align-center landing-container">
-                            <div class="landing-img">
+                            <div class="landing-img landing-fadein">
                                 <img src="@/assets/landing/landing-head.svg" class="img-field">
                             </div>
                             <div class="landing-content">
-                                <h1 class="m-0">สวัสดีฮะ!</h1>
-                                <p>มาเริ่มกันเลยดีกว่า</p>
+                                <HelloTxt />
+
+                                <p class="landing-fadein">มาเริ่มกันเลยดีกว่า</p>
                             </div>
                         </f7-block>
 
-                        <div class="landing-actions">
+                        <div class="landing-actions landing-fadein">
                             <f7-button tab-link="#landing-tab-2" class="w-100 mb-2" fill>ไปต่อ</f7-button>
                             <p class="text-center text-muted">
                                 <f7-link href="/about/">เกี่ยวกับแอพนี้</f7-link>
@@ -61,7 +62,8 @@
                         <div class="landing-actions">
                             <f7-button @click="openLogin" tab-link="#landing-tab-empty" class="w-100 mb-2"
                                 fill>ลงชื่อเข้าใช้</f7-button>
-                            <f7-button popup-close tab-link="#landing-tab-1" @click="landingSetDone" class="w-100">ใช้แอพโดยไม่ลงชื่อเข้าใช้</f7-button>
+                            <f7-button popup-close tab-link="#landing-tab-1" @click="landingSetDone"
+                                class="w-100">ใช้แอพโดยไม่ลงชื่อเข้าใช้</f7-button>
                             <f7-button tab-link="#landing-tab-2" class="w-100">กลับไป</f7-button>
                         </div>
                     </f7-tab>
@@ -110,6 +112,7 @@ import store from '@/js/store.js';
 import { f7 } from "framework7-vue"
 import { Preferences } from "@capacitor/preferences"
 import { Browser } from '@capacitor/browser';
+import HelloTxt from './hello-txt.vue'
 
 const userData = ref(null)
 
@@ -147,3 +150,20 @@ const startReload = () => {
 onMounted(() => {
 })
 </script>
+
+<style scoped>
+.landing-fadein {
+    animation: landingFadein 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 4s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+
+@keyframes landingFadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+</style>

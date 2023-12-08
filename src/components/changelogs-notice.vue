@@ -32,8 +32,6 @@ const onChangelogOpen = async () => {
 }
 
 const onChangelogClose = async () => {
-    const result = await AppUpdate.getAppUpdateInfo()
-
-    Preferences.set({ key: "changelogLatest", value: result.currentVersion.toString() })
+    Preferences.set({ key: "changelogLatest", value: __APP_VERSION__ })
 }
 </script>

@@ -87,6 +87,13 @@
               <i class="display-block text-center text-muted mt-2">(เลื่อนขี้นเพื่อดูเพิ่มเติม)</i>
             </div>
           </div>
+
+          <div class="block mt-1">
+            <f7-block-title>ตารางสำหรับห้องนี้</f7-block-title>
+
+            <img class="img-field rounded" :src="`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`"
+              @click="$refs.roomPreview.open()">
+          </div>
         </f7-block>
       </div>
 
@@ -106,15 +113,6 @@
             </f7-block>
           </div>
 
-        </div>
-      </f7-block>
-
-      <f7-block class="sheet-modal-swipe-step">
-        <div class="block mt-1">
-          <f7-block-title>ตารางสำหรับห้องนี้</f7-block-title>
-
-          <img class="img-field rounded" :src="`https://rywlatest.web.app/app/room-tables/${previewRoomCode}.png`"
-            @click="$refs.roomPreview.open()">
         </div>
       </f7-block>
 

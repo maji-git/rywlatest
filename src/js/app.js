@@ -64,6 +64,11 @@ const firebaseConfig = {
     measurementId: "G-VW7KQ5L3NF",
 };
 
+const socialUserAgent = {
+    "line": "Line/",
+    "ig": "Instagram"
+}
+
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     window.darkMode = true
     document.querySelector("#theme-color-meta").setAttribute("content", "#121212")
@@ -75,10 +80,6 @@ async function preStartup() {
     const res = await fetch("https://rywlatest.web.app/app/meta.json")
     const metadata = await res.json()
 
-    window.isNative = Capacitor.isNativePlatform()
-    window.currentPlatform = platform.name
-    window.isDesktop = (platform.os.family != "Android" && platform.os.family != "iOS")
-
     Logger.info("Running on", platform.name)
     Logger.info("OS:", platform.os.family)
 
@@ -86,11 +87,24 @@ async function preStartup() {
         store.state[key] = value
     }
 
-    app.config.globalProperties.isDesktop = window.isDesktop
-    app.config.globalProperties.isNative = window.isNative
-    app.config.globalProperties.currentPlatform = window.currentPlatform
+    window.isNative = Capacitor.isNativePlatform()
 
-    if (window.isNative) {
+    app.config.globalProperties.isDesktop = (platform.os.family != "Android" && platform.os.family != "iOS")
+    app.config.globalProperties.isNative = window.isNative
+    app.config.globalProperties.currentPlatform = platform.name
+    app.config.globalProperties.userAgent = navigator.userAgent
+    app.config.globalProperties.inAppBrowserName = ""
+
+    for (const agent of navigator.userAgent.split(" ")) {
+        for (const [key, query] of Object.entries(socialUserAgent)) {
+            if (agent == query || agent.search(query) != -1) {
+                app.config.globalProperties.runningOnMedia = key
+                break
+            }
+        }
+    }
+
+    if (app.config.globalProperties.isNative) {
         Logger.info("Connecting Directly...")
 
         window.rywlAPIs = {

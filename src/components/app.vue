@@ -128,6 +128,7 @@ const f7params = {
     androidBackgroundColor: (window.darkMode ? "#252A30" : "#EAF1F9"),
     androidTextColor: (window.darkMode ? "white" : "black"),
     iosBackgroundColor: "#EAF1F9",
+    iosOverlaysWebView: true,
   },
 };
 
