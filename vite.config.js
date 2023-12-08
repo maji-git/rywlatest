@@ -24,7 +24,7 @@ export default async () => {
         includeAssets: ['favicon.ico', 'logos/apple-touch-icon.png', 'logos/masked-icon.svg', './rive/logout.riv'],
         manifest: {
           name: 'Rayongwit Latest',
-          short_name: 'ล่าสุด ระยองวิทย์',
+          short_name: 'RYW Latest',
           description: 'ไม่พลาดข่าวระยองวิทยาคม',
           theme_color: '#FFF4CE',
           icons: [
