@@ -266,7 +266,6 @@ onMounted(() => {
 
     if (pwaInstalled || window.isNative) {
       if (firstTime.value !== "1") {
-        landingPoped = true
         f7.popup.open("#landing-popup", true)
 
         if (window.isNative) {
