@@ -133,6 +133,8 @@
       </div>
     </div>
 
+    <div class="mb-5" v-if="currentPlatform == 'Safari'"></div>
+
     <page-end />
 
     <br>
