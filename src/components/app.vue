@@ -230,12 +230,6 @@ onMounted(() => {
       capacitorApp.init(f7);
     }
 
-    document.querySelector("#preload-splash").classList.add("loaded")
-
-    setTimeout(() => {
-      document.querySelector("#preload-splash").remove()
-    }, 2000);
-
     if (window.darkMode) {
       document.querySelector("#framework7-root").classList.add("dark")
     }
@@ -272,7 +266,8 @@ onMounted(() => {
 
     if (pwaInstalled || window.isNative) {
       if (firstTime.value !== "1") {
-        f7.popup.open("#landing-popup")
+        landingPoped = true
+        f7.popup.open("#landing-popup", true)
 
         if (window.isNative) {
           Preferences.set({ key: "changelogLatest", value: appUpdateInfo.currentVersion.toString() })
@@ -297,6 +292,14 @@ onMounted(() => {
         }
       }
     }
+
+    setTimeout(() => {
+      document.querySelector("#preload-splash").classList.add("loaded")
+
+      setTimeout(() => {
+        document.querySelector("#preload-splash").remove()
+      }, 1000);
+    }, 100);
 
   });
 });
