@@ -20,7 +20,7 @@
                     :label-text="`คะแนนที่แก้ไขแล้ว (${behaviourFixData.fixed}/${behaviourFixData.score})`" />
             </div>
 
-            <f7-block v-if="currentPlatform != 'Safari'">
+            <f7-block>
                 <div class="grid grid-cols-2 grid-gap">
                     <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
                     <f7-button tonal @click="printLatePaper">ดาวน์โหลดใบแก้มาสาย</f7-button>
@@ -84,7 +84,7 @@
                         </f7-list>
                     </f7-block>
 
-                    <f7-block inset v-if="isNative">
+                    <f7-block inset>
                         <div class="grid grid-cols-2 grid-gap">
                             <f7-button tonal v-if="previewData.evidence" @click="saveImage">บันทึกรูปภาพ</f7-button>
                             <f7-button tonal @click="printPaper">พิมพ์ใบแก้คะแนน</f7-button>
@@ -100,7 +100,7 @@
 import { ref } from "vue";
 import { getStdFixPDF, getBehaviourData, getStdLatePDF, getFixStatus } from "@/js/lib/stdsession.js"
 import { downloadFile } from "@/js/utils/downloader.js"
-import { openBlob } from "@/js/utils/opener.js"
+import { openBlob, openMedia } from "@/js/utils/opener.js"
 import { FileOpener } from "@capacitor-community/file-opener"
 import { Media } from "@capacitor-community/media"
 import { f7 } from 'framework7-vue';
@@ -120,17 +120,7 @@ const saveImage = async () => {
 
     try {
         const imgURL = await downloadFile(previewData.value.evidence)
-        const albums = await Media.getAlbums()
-        const targetAlbum = albums.albums.find((e) => e.name == "Download").identifier
-
-        const res = await Media.savePhoto({
-            path: imgURL,
-            albumIdentifier: targetAlbum
-        })
-
-        FileOpener.open({
-            filePath: res.filePath
-        })
+        await openMedia(imgURL)
     } catch (err) {
         Logger.error(err)
         f7.dialog.alert(`ข้อผิดผลาด: ${err}`).open()

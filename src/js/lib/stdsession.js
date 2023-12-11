@@ -76,16 +76,16 @@ export async function getDocPDF(targetURL) {
         }
 
         // Format Text
-        for (const p of tempElement.querySelectorAll("p")) {
-            p.style.fontSize = "14px"
-        }
-
-        for (const p of tempElement.querySelectorAll("strong")) {
+        for (const p of tempElement.querySelectorAll("p, strong")) {
             p.style.fontSize = "14px"
         }
 
         for (const p of tempElement.querySelectorAll("td")) {
             p.style.fontSize = "12px"
+        }
+
+        for (const p of tempElement.querySelectorAll("*")) {
+            p.style.fontFamily = "Sarabun"
         }
 
         tempElement.querySelector(".navbar").remove()
@@ -95,7 +95,7 @@ export async function getDocPDF(targetURL) {
             margin: 0.5,
             filename: "stdfix.pdf",
             image: { type: "jpeg", quality: 1 },
-            html2canvas: { scale: 8, useCORS: true, dpi: 300 },
+            html2canvas: { scale: 4, useCORS: true, dpi: 300 },
             jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
         };
 
@@ -107,7 +107,9 @@ export async function getDocPDF(targetURL) {
 
         prog.close()
 
-        return data
+        const finalBlob = data.slice(0, data.size, "application/octet-stream")
+
+        return finalBlob
     }
 }
 
