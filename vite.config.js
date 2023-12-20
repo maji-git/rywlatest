@@ -21,12 +21,14 @@ export default async () => {
       vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.includes('swiper-') } } }),
       , VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'logos/apple-touch-icon.png', 'logos/masked-icon.svg', './rive/logout.riv'],
+        includeAssets: ['favicon.ico', 'logos/apple-touch-icon.png', 'logos/masked-icon.svg', './rive/logout.riv', "**/*"],
         manifest: {
           name: 'Rayongwit Latest',
           short_name: 'RYW Latest',
           description: 'ไม่พลาดข่าวระยองวิทยาคม',
           theme_color: '#FFF4CE',
+          scope: "/",
+          start_url: "/",
           icons: [
             {
               "src": "public/pwa/manifest-icon-192.maskable.png",
@@ -55,7 +57,8 @@ export default async () => {
           ],
           workbox: {
             navigateFallback: '/index.html',
-            navigateFallbackAllowlist: [/^(?!\/__)/]
+            navigateFallbackAllowlist: [/^(?!\/__)/],
+            globPatterns: ["**/*"]
           }
         }
       })
