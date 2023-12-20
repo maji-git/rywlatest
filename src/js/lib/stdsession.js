@@ -366,6 +366,7 @@ export async function loadFromPreferences() {
     if (loginDB.value) {
         const loginData = JSON.parse(loginDB.value)
         store.state.authData = loginData
+
         store.state.userData = await getInfo()
     }
 }

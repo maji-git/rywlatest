@@ -1,5 +1,5 @@
 <template>
-  <f7-page name="home" ptr :ptr-mousewheel="true" @ptr:refresh="loadData">
+  <f7-page name="home" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:beforein="beforeLoadIn">
 
     <f7-navbar large :sliding="false">
       <f7-nav-left>
@@ -19,7 +19,7 @@
 
       <f7-nav-right>
         <f7-link href="/settings/" v-if="userData" class="user-avatar"
-          :style="`background-image: url(${userData.headshot})`"></f7-link>
+          :style="`background-image: url(${userPfp})`"></f7-link>
 
         <f7-link href="/settings/" v-else>
           <f7-icon ios="f7:person" md="material:account_circle">
@@ -172,6 +172,7 @@ const isHoliday = ref(false)
 const isOnline = ref(true)
 const darkMode = ref(window.darkMode)
 const checkedInTime = ref("")
+const userPfp = ref("")
 
 const loadBehaviour = async () => {
   try { behaviourData.value = await getBehaviourData() } catch (err) { Logger.error(err) }
@@ -196,6 +197,10 @@ const loadBehaviour = async () => {
       }
     } catch (err) { Logger.error(err) }
   }
+}
+
+const beforeLoadIn = () => {
+  userPfp.value = store.getters.preferredPfp.value
 }
 
 const loadData = async (done) => {

@@ -5,6 +5,9 @@ import { f7 } from 'framework7-vue';
 const store = createStore({
   state: {
     userData: null,
+    extraUserData: {
+      preferredPfp: "default"
+    },
     authData: {
       username: import.meta.env.VITE_LOGIN_USERNAME | "",
       password: import.meta.env.VITE_LOGIN_PASSWORD | ""
@@ -15,6 +18,7 @@ const store = createStore({
     },
     newNotify: false,
     teacherData: null,
+    defaultPfps: ["/external-assets/pfp/boy_1.png", "/external-assets/pfp/girl_1.png", "/external-assets/pfp/josh.png"],
     notifyVapidKey: "BM9D5rXwYlVApFKH9Dh80aieKWQVhplozvTMNJ-3P3p_07-sizoKzttMouKO4_kEgxgcI6WqwlBq5-uF-yCOo4s"
   },
   getters: {
@@ -23,6 +27,13 @@ const store = createStore({
         return null
       }
       return state.userData;
+    },
+    preferredPfp({ state }) {
+      if (state.extraUserData.preferredPfp == "default") {
+        return state.userData["headshot"]
+      }
+
+      return state.extraUserData.preferredPfp
     },
     sessionID({ state }) {
       if (state.userData == null) {
