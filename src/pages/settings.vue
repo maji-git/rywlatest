@@ -111,28 +111,24 @@ const clearUserdata = () => {
 }
 
 const pfpRequestChange = (i) => {
-  console.log(i)
-
   const targetPfpSource = swipePfp.value.querySelectorAll("swiper-slide")[swipePfp.value.swiper.activeIndex]?.getAttribute("source")
 
   if (targetPfpSource) {
     store.state.extraUserData.preferredPfp = targetPfpSource
+
+    Preferences.set({key: "extraUserData", value: JSON.stringify(store.state.extraUserData)})
   }
 }
 
 onMounted(() => {
-  console.log(swipePfp.value.swiper)
   swipePfp.value.addEventListener('swiper-slidechange', pfpRequestChange);
 
   const allSlides = Array.from(swipePfp.value.querySelectorAll(`swiper-slide`))
   const targetPfpEl = swipePfp.value.querySelector(`swiper-slide[source='${store.state.extraUserData.preferredPfp}']`)
 
-  console.log(targetPfpEl)
-
   if (targetPfpEl) {
     swipePfp.value.swiper.slideTo(allSlides.indexOf(targetPfpEl))
   }
-
 })
 </script>
 

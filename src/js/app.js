@@ -1,6 +1,7 @@
 // Import Vue
 import { createApp } from 'vue';
 import { loadFromPreferences } from "./lib/stdsession.js"
+import { Preferences } from '@capacitor/preferences';
 
 // Import Framework7
 import Framework7 from 'framework7/lite-bundle';
@@ -27,6 +28,7 @@ import Logger from "js-logger"
 import platform from "platform"
 
 import { Capacitor } from '@capacitor/core';
+import { fixData } from './datafix.js';
 
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
@@ -132,7 +134,10 @@ async function preStartup() {
 
     Logger.info("Loading user preferences...")
     try { await loadFromPreferences() } catch (err) { Logger.error("Failed to load user data", err) }
+    try { store.state.extraUserData = JSON.parse((await Preferences.get({key: "extraUserData"})).value) } catch (err) { Logger.error("Failed to load extra user data", err) }
 
+    fixData()
+    
     // Mount the app
     app.mount('#app')
 
