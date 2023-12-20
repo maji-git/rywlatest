@@ -5,6 +5,8 @@ import html2pdf from 'html2pdf.js'
 import { downloadFile } from '../utils/downloader.js';
 import { thaiToDate } from '../utils/date';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
+import { Preferences } from "@capacitor/preferences"
+import Logger from 'js-logger';
 
 export async function reauthenticate() {
     if (store.state.authData.username == "" || store.state.authData.password == "") {
@@ -203,7 +205,7 @@ export async function getAttendees(month = 11) {
 
     for (const t of dom.querySelectorAll("div tbody tr")) {
         const tds = t.querySelectorAll("td")
-    
+
         if (tds.length > 3) {
             const attendData = {
                 date: thaiToDate(tds[0]?.innerHTML?.trim()),
@@ -212,13 +214,13 @@ export async function getAttendees(month = 11) {
                 exitTime: tds[2]?.innerHTML?.trim(),
                 comment: tds[3]?.innerHTML?.trim(),
             }
-    
+
             if (attendData.entranceTime && attendData.entranceTime != "-") {
                 attendees.push(attendData)
             }
         }
     }
-    
+
     return attendees
 }
 
@@ -326,10 +328,10 @@ export async function getFixStatus() {
             });
             const parser = new DOMParser()
             const dom = parser.parseFromString(stdPrint.data, "text/html")
-    
+
             return {
-                score: dom.querySelector("p[style='color:red;display:inline-block;float: left;']")?.innerHTML?.replace(/\D/g,''),
-                fixed: dom.querySelector("p[style='color:green;']")?.innerHTML?.replace(/\D/g,''),
+                score: dom.querySelector("p[style='color:red;display:inline-block;float: left;']")?.innerHTML?.replace(/\D/g, ''),
+                fixed: dom.querySelector("p[style='color:green;']")?.innerHTML?.replace(/\D/g, ''),
                 status: false
             }
         } else {
@@ -367,6 +369,17 @@ export async function loadFromPreferences() {
         const loginData = JSON.parse(loginDB.value)
         store.state.authData = loginData
 
+        try {
+            const userdataCache = await Preferences.get({ key: "cache_userData" })
+
+            if (userdataCache.value) {
+                store.state.userData = JSON.parse(userdataCache.value)
+            }
+        } catch (e) { Logger.warn(e) }
+
         store.state.userData = await getInfo()
+
+        Preferences.set({ key: "cache_userData", value: JSON.stringify(store.state.userData) })
+
     }
 }
