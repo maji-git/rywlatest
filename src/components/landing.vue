@@ -85,7 +85,7 @@
                                 <p style="font-size: 30vw;" class="m-0">👋</p>
                             </div>
                             <div class="landing-content">
-                                <h1>ยินดีต้อนรับฮะ!<br>คุณ{{ userData.firstname }} {{ userData.surname }}</h1>
+                                <h1>ยินดีต้อนรับ!<br>คุณ{{ userData.firstname }} {{ userData.surname }}</h1>
                                 <p>ยินดีต้อนรับเข้าสู่แอพ ล่าสุด ระยองวิทย์!</p>
                             </div>
                         </f7-block>
@@ -99,6 +99,7 @@
                     <f7-tab id="landing-welcome-preload" class="landing-page" tab-active>
                         <f7-preloader />
                         <i class="mt-2">รอสักครู่...</i>
+                        <i class="mt-2 force-reload-btn">ถ้าติดที่หน้านี้ ให้กด<a onclick="location.reload()">ที่นี้</a></i>
                     </f7-tab>
                 </f7-tabs>
             </f7-page>
@@ -165,5 +166,16 @@ onMounted(() => {
     to {
         opacity: 1;
     }
+}
+</style>
+
+<style>
+.force-reload-btn {
+    opacity: 0;
+    transition: opacity 1s ease-out 0.5s;
+}
+
+.tab-active .force-reload-btn {
+    opacity: 1;
 }
 </style>

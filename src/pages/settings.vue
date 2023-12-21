@@ -4,16 +4,17 @@
 
     <br>
     <div class="text-align-center" v-if="userData != null">
-      <swiper-container ref="swipePfp" :effect="'cards'" :grabCursor="true" events-prefix="swiper-" class="pictures-swipe">
-        <swiper-slide source="default"><img :src="`${userData.headshot}`"
-            height="200"></swiper-slide>
-          
-            <swiper-slide v-for="dpfp in store.state.defaultPfps" :source="dpfp"><img :src="dpfp"
-            height="200">
-              <button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon> </button>
-          </swiper-slide>
+      <swiper-container ref="swipePfp" :effect="'cards'" :grabCursor="true" events-prefix="swiper-"
+        class="pictures-swipe">
+        <swiper-slide source="default"><img :src="`${userData.headshot}`" height="200"></swiper-slide>
 
-            <swiper-slide class="add-pfp"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle" size="60"></f7-icon></swiper-slide>
+        <swiper-slide v-for="dpfp in store.state.defaultPfps" :source="dpfp"><img :src="dpfp" height="200">
+          <button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon>
+          </button>
+        </swiper-slide>
+
+        <swiper-slide class="add-pfp"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
+            size="60"></f7-icon></swiper-slide>
       </swiper-container>
 
       <h1 class="mt-5">{{ userData.firstname }} {{ userData.surname }}</h1>
@@ -116,18 +117,20 @@ const pfpRequestChange = (i) => {
   if (targetPfpSource) {
     store.state.extraUserData.preferredPfp = targetPfpSource
 
-    Preferences.set({key: "extraUserData", value: JSON.stringify(store.state.extraUserData)})
+    Preferences.set({ key: "extraUserData", value: JSON.stringify(store.state.extraUserData) })
   }
 }
 
 onMounted(() => {
-  swipePfp.value.addEventListener('swiper-slidechange', pfpRequestChange);
+  if (swipePfp.value) {
+    swipePfp.value.addEventListener('swiper-slidechange', pfpRequestChange);
 
-  const allSlides = Array.from(swipePfp.value.querySelectorAll(`swiper-slide`))
-  const targetPfpEl = swipePfp.value.querySelector(`swiper-slide[source='${store.state.extraUserData.preferredPfp}']`)
+    const allSlides = Array.from(swipePfp.value.querySelectorAll(`swiper-slide`))
+    const targetPfpEl = swipePfp.value.querySelector(`swiper-slide[source='${store.state.extraUserData.preferredPfp}']`)
 
-  if (targetPfpEl) {
-    swipePfp.value.swiper.slideTo(allSlides.indexOf(targetPfpEl))
+    if (targetPfpEl) {
+      swipePfp.value.swiper.slideTo(allSlides.indexOf(targetPfpEl))
+    }
   }
 })
 </script>
@@ -144,7 +147,7 @@ onMounted(() => {
   overflow: visible;
 }
 
-.pictures-swipe swiper-slide img { 
+.pictures-swipe swiper-slide img {
   border-radius: 8px;
 }
 

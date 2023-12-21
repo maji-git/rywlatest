@@ -14,8 +14,6 @@
         <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
         <f7-link tab-link="#view-calendar" icon-ios="f7:calendar_month" icon-md="material:calendar_month"
           text="ตารางกิจกรรม"></f7-link>
-        <!--<f7-link tab-link="#view-sports" icon-ios="f7:sports_soccer" icon-md="material:sports_soccer" text="กีฬาสี"></f7-link>-->
-        <!--<f7-link tab-link="#view-settings" icon-ios="f7:person" icon-md="material:person" text="เกี่ยวกับฉัน"></f7-link>-->
       </f7-toolbar>
 
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
@@ -49,39 +47,16 @@
             <f7-list-button title="ค้นหา" @click="infoSubmitted"></f7-list-button>
             <f7-list-button title="ปิด" @click="closeInfoRegister"></f7-list-button>
 
-            <!--<f7-list-button title="ลงชื่อด้วยบัตรนักเรียน" sheet-open="#card-scan-sheet"></f7-list-button>-->
-
             <f7-block-footer>
-              ข้อมูลนี้จะนำไปใช้ในการลงชื่อเข้าใช้ต่างๆ กับระบบโรงเรียน จะไม่มีการส่งข้อมูลออกทั้งสิ้น
+              ข้อมูลนี้จะนำไปใช้ในการลงชื่อเข้าใช้ต่างๆ กับระบบโรงเรียน จะไม่มีการส่งข้อมูลนี้ออกทั้งสิ้น
+
+              <f7-link href="#"
+                @click="openSite('https://rywlatest.web.app/legal/privacy')">เกี่ยวกับนโยบายความเป็นส่วนตัว</f7-link>
             </f7-block-footer>
           </f7-list>
         </f7-page>
       </f7-view>
     </f7-login-screen>
-
-    <f7-sheet id="card-scan-sheet" style="height: auto;">
-      <!-- Scrollable sheet content -->
-      <f7-page-content>
-        <f7-block>
-          <div class="text-center">
-            <h1>ลงชื่อเข้าใช้ด้วยบัตรนักเรียน</h1>
-            <p>ตัวแอพจะทำการดึงข้อมูลที่จำเป็นออกมาจากบัตร เพื่อให้การสแกนทำงานให้ดีที่สุด
-              เราขอแนะนำให้ทำตามขั้นตอนดังนี้:</p>
-          </div>
-
-          <f7-block strong inset>
-            <ol>
-              <li>ให้ถ่ายรูปบัตรจากมุมบน</li>
-              <li>แนะนำให้สีพื้นหลังเป็นสีที่ตัดกับสีของบัตร ตัวแอพจะได้จัดตรวจจับอัตโนมัติ</li>
-              <li>ถ่ายให้ข้อความบนบัตรเห็นชัด (โดยเฉพาะเลขประจำตัวต่างๆ)</li>
-              <li>ถ้าแอพไม่สามารถตรวจจับบัตรได้ ให้ลองลากจุด 4 จุดให้คลุมตัวบัตร</li>
-            </ol>
-          </f7-block>
-
-          <f7-button sheet-close @click="cardScan" tonal>โอเค</f7-button>
-        </f7-block>
-      </f7-page-content>
-    </f7-sheet>
   </f7-app>
 </template>
 <script setup>
@@ -102,10 +77,12 @@ import store from '@/js/store.js';
 import { getInfo, saveToPreferences, loadFromPreferences, setToState, clearAuthState } from "@/js/lib/stdsession.js"
 import { loadPrefs as notifyLoadPrefs, waitForMessages } from "@/js/services/notifications.js"
 import { Preferences } from "@capacitor/preferences"
-import { Capacitor } from '@capacitor/core'
-import { DocumentScanner } from 'capacitor-document-scanner'
-import { OCRClient } from 'tesseract-wasm';
 import Logger from 'js-logger';
+import { Browser } from '@capacitor/browser';
+
+const openSite = async (url) => {
+    await Browser.open({ url });
+}
 
 const device = getDevice();
 const f7params = {
@@ -134,67 +111,6 @@ const f7params = {
 
 const studentID = ref('');
 const cardID = ref('');
-
-const cardScan = async () => {
-  const { scannedImages } = await DocumentScanner.scanDocument()
-
-  if (scannedImages.length > 0) {
-    const preloadDialog = f7.dialog.preloader("กำลังสแกน...")
-    preloadDialog.open()
-
-    const fc = Capacitor.convertFileSrc(scannedImages[0])
-
-    const ocr = new OCRClient();
-
-    const imgData = new Image()
-    imgData.src = fc
-
-    imgData.onload = async () => {
-      const bt = await createImageBitmap(imgData)
-
-      try {
-        await ocr.loadModel('/ocr/tha.traineddata');
-
-        await ocr.loadImage(bt);
-
-        const text = await ocr.getText();
-        const processedText = text.trim().replaceAll(" ", "")
-
-        let foundInfos = 0
-        let studentIDResult = 0
-        let cardIDResult = 0
-
-        for (const textLi of processedText.split("\n")) {
-          const numOnly = textLi.replace(/\D/g, '')
-
-          if (numOnly.length == 5) {
-            foundInfos++
-            studentIDResult = numOnly
-          }
-
-          if (numOnly.length == 13) {
-            foundInfos++
-            cardIDResult = textLi.replace(/\D/g, '')
-          }
-        }
-
-        preloadDialog.close()
-
-        if (foundInfos >= 2) {
-          studentID.value = studentIDResult
-          cardID.value = cardIDResult
-
-          infoSubmitted()
-        } else {
-          f7.dialog.alert("ภาพไม่ชัดเจน")
-        }
-
-      } finally {
-        ocr.destroy();
-      }
-    }
-  }
-}
 
 const infoSubmitted = async () => {
   const preloadDialog = f7.dialog.preloader("กำลังค้นหา...")

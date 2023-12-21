@@ -8,7 +8,7 @@
                     <p>อัปเดตใหม่สามารถติดตั้งได้แล้ว</p>
                 </div>
 
-                <f7-button sheet-close @click="openStore" tonal>อัปเดตเลย!</f7-button>
+                <f7-button sheet-close @click="openStore" tonal>อัปเดตเลย</f7-button>
                 <f7-button class="mt-2" sheet-close>ยังดีกว่า...</f7-button>
             </f7-block>
         </f7-page-content>

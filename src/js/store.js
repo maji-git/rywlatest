@@ -30,7 +30,11 @@ const store = createStore({
     },
     preferredPfp({ state }) {
       if (state.extraUserData.preferredPfp == "default") {
-        return state.userData["headshot"]
+        if (state.userData) {
+          return state.userData["headshot"]
+        } else {
+          return
+        }
       }
 
       return state.extraUserData.preferredPfp

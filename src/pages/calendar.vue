@@ -10,8 +10,10 @@
         </f7-navbar>
 
         <div class="text-align-center" v-if="searching && events.length < 1 && !showPreloader">
-            <p>หาไม่เจอ ._.</p>
+            <p>ไม่มีกิจกรรมที่ตรงกับที่คุณค้นหา</p>
         </div>
+
+        <div id="event-calendar"></div>
 
         <div class="timeline">
             <div class="timeline-item" v-for="event in events">
@@ -62,7 +64,7 @@
                 </div>
                 -->
 
-                <br/>
+                <br />
             </div>
         </f7-sheet>
     </f7-page>
@@ -98,6 +100,8 @@ const pageEnded = ref(false)
 const searchQuery = ref("")
 const searching = ref(false)
 
+const calendarView = ref()
+
 const searchRequest = async (event) => {
     currentPage.value = 1
     events.value = []
@@ -123,6 +127,19 @@ const loadMore = async () => {
     if (eventz['events']) {
         pageEnded.value = false
         events.value.push(...eventz.events)
+
+        for (const event of eventz.events) {
+            calendarView.value.params.events.push({
+                date: new Date(event.start_date_details.year, event.start_date_details.month - 1, event.start_date_details.day),
+                hours: 12,
+                minutes: 30,
+                title: event.title,
+                color: '#2196f3',
+            })
+        }
+
+        calendarView.value.update()
+
         currentPage.value += 1
     } else {
         pageEnded.value = true
@@ -131,7 +148,30 @@ const loadMore = async () => {
 }
 
 onMounted(async () => {
+    calendarView.value = f7.calendar.create({
+        containerEl: '#event-calendar',
+        value: [new Date()],
+        events: [{
+                date: new Date(2023, 11, 21),
+                hours: 12,
+                minutes: 30,
+                color: '#2196f3',
+            }]
+    })
+
     await loadMore()
     await loadMore()
 })
 </script>
+
+<style>
+.calendar .toolbar {
+    position: absolute;
+    top: -80px;
+}
+
+.calendar {
+    margin-top: 80px;
+    overflow: visible;
+}
+</style>

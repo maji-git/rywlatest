@@ -33,7 +33,6 @@ import { getDocs } from "@/js/lib/docs.js"
 import { onMounted, ref } from "vue"
 import { downloadFileBlob } from '@/js/utils/downloader.js'
 import { openBlob } from "@/js/utils/opener.js"
-import { FileOpener } from "@capacitor-community/file-opener"
 import { f7 } from "framework7-vue"
 import { Browser } from "@capacitor/browser"
 import { Share } from '@capacitor/share'
