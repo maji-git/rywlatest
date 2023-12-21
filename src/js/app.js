@@ -91,7 +91,7 @@ async function preStartup() {
 
     window.isNative = Capacitor.isNativePlatform()
 
-    app.config.globalProperties.isDesktop = (platform.os.family != "Android" && platform.os.family != "iOS")
+    app.config.globalProperties.isDesktop = (platform.os.family == "Windows" || platform.os.family == "OS X")
     app.config.globalProperties.isNative = window.isNative
     app.config.globalProperties.currentPlatform = platform.name
     app.config.globalProperties.userAgent = navigator.userAgent
