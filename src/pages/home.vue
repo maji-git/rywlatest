@@ -102,7 +102,7 @@
         :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
     </f7-block>
 
-    <f7-block strong inset v-if="userData != null && isHoliday" @click="openRoute('/attendee/')">
+    <f7-block strong inset v-if="userData != null && !isHoliday" @click="openRoute('/attendee/')">
       <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
       <div class="display-flex align-items-center" style="color: var(--f7-color-teal);" v-if="checkedIn">
         <f7-icon material="check_circle" size="40"></f7-icon>
