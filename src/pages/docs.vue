@@ -2,10 +2,12 @@
   <f7-page name="settings">
     <f7-navbar title="เอกสาร"></f7-navbar>
 
-    <f7-block class="grid grid-cols-2 grid-gap">
-      <div v-for="doc in docs" @click="openDoc(doc)" @taphold="holdOptions(doc)" class="doc-item" :title="doc.title">
-        <img :src="`https://rywlatest.web.app/app/doc-thumbnails/${doc.thumbnail}`" class="img-field rounded shadow img-uncopyable">
-        <p>{{ doc.title }}</p>
+    <f7-block class="container-fluid">
+      <div class="row justify-content-md-start justify-content-center p-md-5">
+        <div v-for="doc in docs" @click="openDoc(doc)" @taphold="holdOptions($event, doc)" @contextmenu="holdOptions($event, doc)" class="doc-item col-md-2 col-5" :title="doc.title">
+          <img :src="`https://rywlatest.web.app/app/doc-thumbnails/${doc.thumbnail}`" class="img-field rounded shadow img-uncopyable">
+          <p>{{ doc.title }}</p>
+        </div>
       </div>
     </f7-block>
 
@@ -74,7 +76,8 @@ const shareDoc = async (doc) => {
   }
 }
 
-const holdOptions = (doc) => {
+const holdOptions = (e, doc) => {
+  e.preventDefault()
   Haptics.vibrate({ duration: 40 })
   holdedDoc.value = doc
   f7.popover.open("#docs-options", `.doc-item[title="${doc.title}"]`)

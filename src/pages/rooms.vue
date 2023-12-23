@@ -64,7 +64,7 @@
 
               <!--
               <div class="display-flex mt-1">
-                <f7-link color="orange" class="mr-3">
+                <f7-link color="orange" class="me3">
                   <f7-icon material="star"></f7-icon>
                 </f7-link>
                 <f7-link color="red">

@@ -6,41 +6,50 @@
         </f7-block>
 
         <div v-if="isLoggedin">
-            <div class="text-align-center">
-                <h4>คะแนนพฤติกรรม</h4>
-                <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA" border-width="7" />
-                <f7-gauge v-if="behaviourFixData && behaviourFixData.status" type="circle" value="100" size="300"
-                    border-color="#3CDB83" border-width="7" value-text=":D" value-font-size="100" value-text-color="#3CDB83"
-                    :label-text="behaviourStatus" />
+            <div class="container-fluid">
+                <div class="col-md-5">
+                    <div class="text-align-center">
+                        <h4>คะแนนพฤติกรรม</h4>
+                        <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA"
+                            border-width="7" />
+                        <f7-gauge v-if="behaviourFixData && behaviourFixData.status" type="circle" value="100" size="300"
+                            border-color="#3CDB83" border-width="7" value-text=":D" value-font-size="100"
+                            value-text-color="#3CDB83" :label-text="behaviourStatus" />
 
-                <f7-gauge value-text-color="#FF7A00" v-if="behaviourFixData && !behaviourFixData.status"
-                    value-font-size="60" type="circle" :value="behaviourFixData.fixed / behaviourFixData.score" size="300"
-                    border-bg-color="#FF7A00" border-color="#3CDB83" border-width="7"
-                    :value-text="`${(behaviourFixData.fixed / behaviourFixData.score) * 100}%`"
-                    :label-text="`คะแนนที่แก้ไขแล้ว (${behaviourFixData.fixed}/${behaviourFixData.score})`" />
+                        <f7-gauge value-text-color="#FF7A00" v-if="behaviourFixData && !behaviourFixData.status"
+                            value-font-size="60" type="circle" :value="behaviourFixData.fixed / behaviourFixData.score"
+                            size="300" border-bg-color="#FF7A00" border-color="#3CDB83" border-width="7"
+                            :value-text="`${(behaviourFixData.fixed / behaviourFixData.score) * 100}%`"
+                            :label-text="`คะแนนที่แก้ไขแล้ว (${behaviourFixData.fixed}/${behaviourFixData.score})`" />
+                    </div>
+
+                    <f7-block>
+                        <div class="grid grid-cols-2 grid-gap">
+                            <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
+                            <f7-button tonal @click="printLatePaper">ดาวน์โหลดใบแก้มาสาย</f7-button>
+                        </div>
+                    </f7-block>
+
+                    <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
+                    <div class="text-align-center text-muted" v-if="isLoaded && behaviours.length == 0">
+                        เอี่ยมอ่อง... ✨
+                    </div>
+                    <f7-list strong inset>
+                        <div class="text-align-center" v-if="!isLoaded">
+                            <f7-preloader />
+                        </div>
+                        <ul v-else>
+                            <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)"
+                                :title="b.behaviour" :subtitle="`${b.date} • ${b.reporter}`" :badge="b.consequence"
+                                :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
+                        </ul>
+                    </f7-list>
+                </div>
+                <div class="col-md-5">
+
+                </div>
             </div>
 
-            <f7-block>
-                <div class="grid grid-cols-2 grid-gap">
-                    <f7-button tonal @click="printPaper">ดาวน์โหลดใบแก้คะแนน</f7-button>
-                    <f7-button tonal @click="printLatePaper">ดาวน์โหลดใบแก้มาสาย</f7-button>
-                </div>
-            </f7-block>
-
-            <f7-block-title>ประวัติพฤติกรรม</f7-block-title>
-            <div class="text-align-center text-muted" v-if="isLoaded && behaviours.length == 0">
-                เอี่ยมอ่อง... ✨
-            </div>
-            <f7-list strong inset>
-                <div class="text-align-center" v-if="!isLoaded">
-                    <f7-preloader />
-                </div>
-                <ul v-else>
-                    <f7-list-item media-item link="#" v-for="b in behaviours" @click="previewInfo(b.index)"
-                        :title="b.behaviour" :subtitle="`${b.date} • ${b.reporter}`" :badge="b.consequence"
-                        :badge-color="b.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-list-item>
-                </ul>
-            </f7-list>
         </div>
 
         <f7-popup id="behaviour-info">

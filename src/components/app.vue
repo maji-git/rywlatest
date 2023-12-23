@@ -13,7 +13,7 @@
 
         <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
         <f7-link tab-link="#view-calendar" icon-ios="f7:calendar_month" icon-md="material:calendar_month"
-          text="ตารางกิจกรรม"></f7-link>
+          text="กิจกรรม"></f7-link>
       </f7-toolbar>
 
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>

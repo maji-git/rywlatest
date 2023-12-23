@@ -32,7 +32,7 @@
             <f7-list-item title="แผนการเรียน">
               <div class="display-flex align-items-center">
                 <img v-if="store.state.classPlansLogos.includes(userData.classPlan)"
-                  :src="`plan-icons/${userData.classPlan}.png`" class="mr-2" height="40">
+                  :src="`plan-icons/${userData.classPlan}.png`" class="me2" height="40">
 
                 {{ userData.classPlan }}
               </div>

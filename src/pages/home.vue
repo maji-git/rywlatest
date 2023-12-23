@@ -95,27 +95,29 @@
       </div>
     </f7-block>
 
-    <f7-block strong inset v-if="userData != null">
-      <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
-      <h1
-        :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'var(--f7-color-teal)' : 'var(--f7-color-deeporange)'};`"
-        :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
-    </f7-block>
-
-    <f7-block strong inset v-if="userData != null && !isHoliday">
-      <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
-      <div class="display-flex align-items-center" style="color: var(--f7-color-teal);" v-if="checkedIn">
-        <f7-icon material="check_circle" size="40"></f7-icon>
-        <div class="ml-2">
-          <h2 class="m-0">บันทึกแล้ว</h2>
-          <p class="m-0"><strong>{{ checkedInTime }}</strong></p>
-        </div>
+    <div class="container-fluid ps-3">
+      <div class="row">
+        <f7-block class="col-md-5" strong inset v-if="userData != null" @click="openTab('#view-behavior')">
+          <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
+          <h1
+            :style="`color: ${behaviourData?.status == 'ไม่มีคะแนนพฤติกรรม' ? 'var(--f7-color-teal)' : 'var(--f7-color-deeporange)'};`"
+            :class="{ 'skeleton-text': !behaviourData['status'] }">{{ behaviourData.status ?? "กำลังโหลด" }}</h1>
+        </f7-block>
+        <f7-block class="col-md-5" strong inset v-if="userData != null && isHoliday" @click="openRoute('/attendee/')">
+          <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
+          <div class="display-flex align-items-center" style="color: var(--f7-color-teal);" v-if="checkedIn">
+            <f7-icon material="check_circle" size="40"></f7-icon>
+            <div class="ms2">
+              <h2 class="m-0">บันทึกแล้ว</h2>
+              <p class="m-0"><strong>{{ checkedInTime }}</strong></p>
+            </div>
+          </div>
+          <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon
+              material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
+          <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
+        </f7-block>
       </div>
-
-      <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon
-          material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
-      <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
-    </f7-block>
+    </div>
 
     <div v-if="isNative">
       <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
@@ -156,6 +158,14 @@ import Logger from "js-logger"
 
 const openSite = async (url) => {
   await Browser.open({ url });
+}
+
+const openRoute = (path) => {
+  f7.view.main.router.navigate(path)
+}
+
+const openTab = (path) => {
+  f7.tab.show(path)
 }
 
 const newNotify = useStore('newNotify')

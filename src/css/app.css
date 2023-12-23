@@ -1,5 +1,5 @@
-/* Your app custom styles here */
-@import url('./bootstrap-4-utilities.min.css');
+@import url('./bootstrap-utilities.css');
+@import url('./bootstrap-grid.css');
 @import url('./animate.min.css');
 @import url('./fonts.css');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -28,6 +28,14 @@ input {
     user-select: all;
 }
 
+.page .page-content {
+    overflow-x: hidden;
+}
+
+.md {
+    --f7-popup-transition-duration: 500ms;
+    --f7-popup-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 .ios *:not(.icon) {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -197,16 +205,6 @@ input {
     filter: drop-shadow(0px 4px 16px rgba(0, 0, 0, 0.25));
 }
 
-@media only screen and (min-width: 610px) {
-    .landing-img {
-        display: none !important;
-    }
-
-    .landing-page {
-        height: calc(100% - 110px);
-    }
-}
-
 .h-100 {
     height: 100%;
 }
@@ -262,6 +260,10 @@ input {
     }
 }
 
+.sheet-backdrop, .popup-backdrop {
+    animation: fadeIn 0.5s;
+}
+
 .backdrop-in {
     transition-property: background-color;
 }
@@ -285,4 +287,74 @@ input {
 .tr-color {
     background-color: var(--f7-md-secondary-container);
     color: var(--f7-md-on-primary-container);
+}
+
+
+/* Desktop Configuration */
+@media only screen and (min-width: 610px) {
+    .landing-img {
+        display: none !important;
+    }
+
+    .landing-page {
+        height: calc(100% - 110px);
+    }
+    
+    .toolbar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 80px;
+        height: 100%;
+    }
+
+    .toolbar .toolbar-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .toolbar .toolbar-inner .tab-link {
+        height: 100px;
+    }
+
+    .ios .toolbar .toolbar-inner .tab-link {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .views.tabs .view { 
+        margin-left: 80px;
+    }
+
+    .popup:not(.photo-browser-popup) {
+        position: fixed;
+        left: initial;
+        right: 0;
+        top: initial;
+        bottom: 0;
+        border-radius: 0;
+        height: 100%;
+        width: calc(50% - 80px);
+        transform: translate(100%);
+    }
+
+    .popup.modal-out {
+        transform: translate(100%) !important;
+    }
+
+    .popup.modal-in {
+        transform: translate(0%);
+    }
+
+    .sheet-modal {
+        width: 500px;
+        right: 0;
+        position: fixed;
+        left: initial;
+    }
+}
+
+.container-fluid {
+    padding: 0;
 }

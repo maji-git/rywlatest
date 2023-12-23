@@ -38,7 +38,7 @@
         previewEventInfo.start_date_details.year }}</span>
 
                             <span v-if="previewEventInfo.start_date_details.day != previewEventInfo.end_date_details.day">
-                                <span class="ml-2 mr-2">-</span>
+                                <span class="ms2 me2">-</span>
 
                                 <span>{{ previewEventInfo.end_date_details.day }} {{
                                     monthsName[previewEventInfo.end_date_details.month - 1] }} {{
