@@ -4,7 +4,6 @@
   "description": "Rayongwit Latest",
   "repository": "",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "start": "npm run dev",
     "dev": "cross-env NODE_ENV=development vite",
