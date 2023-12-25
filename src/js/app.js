@@ -30,6 +30,10 @@ import platform from "platform"
 import { Capacitor } from '@capacitor/core';
 import { fixData } from './datafix.js';
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { setUserProperty } from './services/analytics.js';
+
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
 
@@ -130,6 +134,13 @@ async function preStartup() {
         console.log("Connecting Firebase...")
         initializeApp(firebaseConfig)
         */
+
+        Logger.info("Starting Telemetry Service...")
+
+        const fireApp = initializeApp(firebaseConfig)
+        const analytics = getAnalytics(fireApp)
+
+        setUserProperty(analytics, "platform", platform.os.family)
     }
 
     Logger.info("Loading user preferences...")
