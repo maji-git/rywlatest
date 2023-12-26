@@ -25,7 +25,7 @@
             </f7-list-item>
         </f7-list>
 
-        <f7-sheet id="teacher-info" backdrop swipe-to-close swipe-to-step style="height: auto;">
+        <f7-sheet id="teacher-info" backdrop swipe-to-close style="height: auto;">
             <f7-block>
                 <div class="block">
                     <h1 class="text-center">{{ previewData.name }}</h1>
