@@ -358,3 +358,12 @@ input {
 .container-fluid {
     padding: 0;
 }
+
+.ios .navbar-inner .left {
+    position: absolute;
+}
+
+.ios .navbar-inner .right {
+    position: absolute;
+    right: 10px;
+}
