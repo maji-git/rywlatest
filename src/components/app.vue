@@ -11,7 +11,10 @@
         <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face"
           text="พฤติกรรม"></f7-link>
 
+        <f7-link tab-link="#view-classworks" icon-ios="f7:doc_plaintext" icon-md="material:assignment" text="งาน"></f7-link>
+
         <f7-link tab-link="#view-docs" icon-ios="f7:book" icon-md="material:book" text="เอกสาร"></f7-link>
+        
         <f7-link tab-link="#view-calendar" icon-ios="f7:calendar_month" icon-md="material:calendar_month"
           text="กิจกรรม"></f7-link>
       </f7-toolbar>
@@ -19,6 +22,7 @@
       <f7-view id="view-home" main tab tab-active url="/"></f7-view>
       <f7-view id="view-behavior" name="behaviour" tab url="/behaviour/"></f7-view>
       <f7-view id="view-calendar" name="calendar" tab url="/calendar/"></f7-view>
+      <f7-view id="view-classworks" name="calendar" tab url="/classworks/"></f7-view>
       <f7-view id="view-docs" name="docs" tab url="/docs/"></f7-view>
       <f7-view id="view-sports" name="sports" tab url="/sports/"></f7-view>
       <f7-view id="view-settings" name="settings" tab url="/settings/"></f7-view>

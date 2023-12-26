@@ -21,6 +21,7 @@ import AttendeePage from '../pages/attendee.vue';
 import NotificationsPage from '../pages/notifications.vue';
 import RoomsPage from '../pages/rooms.vue';
 import QuotaPage from '../pages/quota.vue';
+import ClassworksPage from '../pages/classworks.vue';
 
 var routes = [
   {
@@ -89,6 +90,10 @@ var routes = [
     options: {
       transition: 'f7-dive',
     },
+  },
+  {
+    path: '/classworks/',
+    component: ClassworksPage,
   },
   {
     path: '(.*)',

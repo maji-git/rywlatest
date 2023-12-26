@@ -230,6 +230,8 @@ input {
 .chip {
     margin: 0.2em;
     border-radius: 50px;
+    background-color: var(--f7-md-secondary-container);
+    color: var(--f7-md-on-secondary-container);
 }
 
 .chip-container {
@@ -384,4 +386,35 @@ input {
     100% {
         transform: scale(1);
     }
+}
+
+.text-large {
+    font-size: 28px !important;
+}
+
+.send-btn .icon {
+    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.chip-select {
+    position: relative;
+}
+
+.chip-select select {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+li {
+    list-style: none;
 }
