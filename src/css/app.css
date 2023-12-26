@@ -361,9 +361,11 @@ input {
 
 .ios .navbar-inner .left {
     position: absolute;
+    z-index: 12;
 }
 
 .ios .navbar-inner .right {
     position: absolute;
     right: 10px;
+    z-index: 12;
 }
