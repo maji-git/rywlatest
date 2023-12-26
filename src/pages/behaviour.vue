@@ -1,5 +1,9 @@
 <template>
     <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
+        <f7-navbar title="คะแนนพฤติกรรม"></f7-navbar>
+
+        <br>
+
         <f7-block class="text-align-center" v-if="!isLoggedin">
             <p>ต้องลงชื่อเข้าใช้เพื่อใช้งานฟีเจอร์นี้</p>
             <f7-button fill login-screen-open="#info-register-screen">ลงชื่อเข้าใช้</f7-button>
@@ -9,7 +13,6 @@
             <div class="container-fluid">
                 <div class="col-md-5">
                     <div class="text-align-center">
-                        <h4>คะแนนพฤติกรรม</h4>
                         <f7-gauge v-if="!isLoaded" type="circle" value="100" size="300" border-color="#9BA9BA"
                             border-width="7" />
                         <f7-gauge v-if="behaviourFixData && behaviourFixData.status" type="circle" value="100" size="300"
