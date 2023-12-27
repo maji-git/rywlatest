@@ -5,7 +5,7 @@
     <f7-views tabs class="safe-areas">
       <!-- Tabbar for switching views-tabs -->
       <f7-toolbar tabbar icons bottom>
-        <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house_fill" icon-md="material:home"
+        <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
 
         <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face"
