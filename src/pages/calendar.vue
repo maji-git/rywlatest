@@ -1,6 +1,5 @@
 <template>
-    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader"
-        @infinite="loadMoreSearches">
+    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMoreSearches">
         <f7-navbar title="ปฏิทินโรงเรียน">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
@@ -16,6 +15,8 @@
             <div class="row">
                 <div class="calendar-view col-md-5" :class="{ 'd-none': searching }">
                     <div v-if="calendarView" class="d-flex ps-3 pe-3 align-items-center">
+                        <input id="event-calendar-date-select" type="date" class="d-none" readonly="readonly" />
+
                         <h2>{{ currentMonth }} {{ currentYr }}</h2>
                         <div class="flex-grow-1"></div>
                         <f7-button @click="calendarView.prevMonth()" class="me-2" tonal><f7-icon material="navigate_before"
@@ -102,6 +103,7 @@ import { f7 } from "framework7-vue";
 import store from '@/js/store.js';
 
 const previewEventInfo = ref(null)
+const datepicker = ref()
 
 const openSite = async (url) => {
     await Browser.open({ url });
@@ -114,6 +116,10 @@ const previewEvent = (event) => {
 
 const addToCalendar = () => {
 
+}
+
+const openSelectMenu = () => {
+    datepicker.value.open()
 }
 
 const getColorOfStr = (str) => {
@@ -174,16 +180,16 @@ const addToEvents = (evs) => {
         })
 
         const dateDifCount = dateDiffInDays(constructDateFromDetails(e.start_date_details), constructDateFromDetails(e.end_date_details))
-        
+
         console.log(dateDifCount)
 
-        for (let i = 1; i <= dateDifCount; i++) {  
+        for (let i = 1; i <= dateDifCount; i++) {
             const td = constructDateFromDetails(e.start_date_details)
             td.setDate(td.getDate() + i)
 
             console.log(e.title)
             console.log(td)
-            
+
             events.value.push({
                 ...e,
                 renderDate: td
@@ -285,6 +291,27 @@ onMounted(async () => {
 
     calendar.on("monthYearChangeEnd", onCalendarChange)
     onCalendarChange(calendar)
+
+    const yearSelectArray = []
+
+    for (let yr = 2023; yr < new Date().getFullYear() + 2; yr++) {
+        yearSelectArray.push(yr)
+    }
+
+    datepicker.value = f7.picker.create({
+        inputEl: '#event-calendar-date-select',
+        rotateEffect: true,
+        cols: [
+            {
+                textAlign: 'center',
+                values: monthsName,
+            },
+            {
+                textAlign: 'center',
+                values: yearSelectArray,
+            },
+        ],
+    })
 
     calendar.on("change", viewDayEvents)
 })

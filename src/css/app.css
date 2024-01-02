@@ -20,14 +20,6 @@ img:not(.img-uncopyable) {
     -webkit-touch-callout: default
 }
 
-input {
-    -webkit-user-select: all;
-    -khtml-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
-}
-
 .page .page-content {
     overflow-x: hidden;
 }
@@ -38,9 +30,9 @@ input {
 }
 
 .ios {
-    --f7-panel-transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
-    --f7-sheet-transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
-    --f7-sheet-transition-duration: 600ms;
+    --f7-panel-transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    --f7-sheet-transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    --f7-sheet-transition-duration: 800ms;
     --f7-tabbar-icon-size: 24px;
 }
 
@@ -262,7 +254,20 @@ input {
 }
 
 .backdrop-in {
-    transition-property: background-color;
+    animation: fadeIn 0.5s;
+}
+
+.ios .backdrop-in {
+    opacity: 0.25;
+}
+
+.ios .sheet-modal.modal-in {
+    box-shadow: 0px -4px 35px 0px rgba(0, 0, 0, 0.2);
+}
+
+.ios .sheet-modal {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -388,4 +393,5 @@ input {
 
 .calendar-day-selected .calendar-day-number {
     animation: tabLinkActiveAnim 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
 }
