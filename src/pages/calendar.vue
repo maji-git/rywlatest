@@ -1,5 +1,5 @@
 <template>
-    <f7-page name="news" class="screen-height-min" infinite :infinite-distance="80" :infinite-preloader="showPreloader"
+    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader"
         @infinite="loadMoreSearches">
         <f7-navbar title="ปฏิทินโรงเรียน">
             <f7-nav-right>
@@ -23,7 +23,7 @@
                         <f7-button @click="calendarView.nextMonth()" tonal><f7-icon material="navigate_next"
                                 size="20"></f7-icon></f7-button>
                     </div>
-                    <div id="event-calendar"></div>
+                    <div id="event-calendar" :class="{ 'calendar-loading': loading }"></div>
                 </div>
                 <div class="col-md-5">
                     <div class="text-align-center" v-if="searching && events.length < 1 && !showPreloader">
@@ -35,7 +35,9 @@
                                 monthsName[event.start_date_details.month - 1] }}</small></div>
                             <div class="timeline-item-divider"></div>
                             <div class="timeline-item-content" @click="previewEvent(event)">
-                                <div class="timeline-item-inner">{{ decodeHTMLEntities(event.title) }}</div>
+                                <div class="timeline-item-inner">
+                                    <p class="m-0">{{ decodeHTMLEntities(event.title) }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,14 +53,14 @@
             <div class="sheet-modal-swipe-step">
                 <f7-block>
                     <div class="block">
-                        <h1 class="m-0">{{ htmlDecode(previewEventInfo.title) }}</h1>
+                        <h1 class="m-0">{{ decodeHTMLEntities(previewEventInfo.title) }}</h1>
                         <p>
                             <span>{{ previewEventInfo.start_date_details.day }} {{
                                 monthsName[previewEventInfo.start_date_details.month - 1] }} {{
         previewEventInfo.start_date_details.year }}</span>
 
                             <span v-if="previewEventInfo.start_date_details.day != previewEventInfo.end_date_details.day">
-                                <span class="ms2 me2">-</span>
+                                <span class="ms-2 me-2">-</span>
 
                                 <span>{{ previewEventInfo.end_date_details.day }} {{
                                     monthsName[previewEventInfo.end_date_details.month - 1] }} {{
@@ -94,12 +96,12 @@
 import { onMounted, ref } from "vue";
 import { getEvents, getByMonthYear } from "@/js/lib/tribecalendar.js"
 import { decodeHTMLEntities } from "@/js/utils/text.js"
+import { dateDiffInDays } from "@/js/utils/date.js"
 import { Browser } from '@capacitor/browser';
 import { f7 } from "framework7-vue";
-import { decode } from 'html-entities';
+import store from '@/js/store.js';
 
 const previewEventInfo = ref(null)
-const htmlDecode = ref(decode)
 
 const openSite = async (url) => {
     await Browser.open({ url });
@@ -112,6 +114,10 @@ const previewEvent = (event) => {
 
 const addToCalendar = () => {
 
+}
+
+const getColorOfStr = (str) => {
+    return store.state.eventColors[Math.abs(Math.round(Math.sin(str.charCodeAt(str.length - 1)) * 9))]
 }
 
 const events = ref([])
@@ -149,6 +155,10 @@ const resetSearch = () => {
     loadMoreSearches()
 }
 
+const constructDateFromDetails = (details) => {
+    return new Date(details.year, details.month - 1, details.day)
+}
+
 const addToEvents = (evs) => {
     for (const e of evs) {
         // Filter out events with same ID
@@ -156,23 +166,50 @@ const addToEvents = (evs) => {
             continue
         }
 
-        events.value.push(e)
+        const renderDate = constructDateFromDetails(e.start_date_details)
+
+        events.value.push({
+            ...e,
+            renderDate: renderDate
+        })
+
+        const dateDifCount = dateDiffInDays(constructDateFromDetails(e.start_date_details), constructDateFromDetails(e.end_date_details))
+        
+        console.log(dateDifCount)
+
+        for (let i = 1; i <= dateDifCount; i++) {  
+            const td = constructDateFromDetails(e.start_date_details)
+            td.setDate(td.getDate() + i)
+
+            console.log(e.title)
+            console.log(td)
+            
+            events.value.push({
+                ...e,
+                renderDate: td
+            })
+        }
+
+        console.log("---")
     }
 
     calendarView.value.params.events = []
 
     for (const event of events.value) {
+        console.log(event.title)
+        console.log(event.renderDate)
+
         calendarView.value.params.events.push({
-            date: new Date(event.start_date_details.year, event.start_date_details.month - 1, event.start_date_details.day),
+            date: event.renderDate,
             hours: 12,
             minutes: 30,
             title: event.title,
-            color: '#2196f3',
+            color: getColorOfStr(event.title),
             data: event
         })
     }
 
-    console.log(calendarView.value.params.events)
+    console.log(events.value)
 
     calendarView.value.update()
 }
@@ -224,10 +261,10 @@ const onCalendarChange = (e) => {
 const viewDayEvents = (e) => {
     const date = e.value[0]
     const day = date.getDate()
-    const month = date.getMonth() + 1
+    const month = date.getMonth()
     const year = date.getFullYear()
 
-    viewEvents.value = events.value.filter((e) => (e.start_date_details.day == day && e.start_date_details.month == month && e.start_date_details.year == year))
+    viewEvents.value = events.value.filter((e) => (e.renderDate.getDate() == day && e.renderDate.getMonth() == month && e.renderDate.getFullYear() == year))
 }
 
 onMounted(async () => {
@@ -258,6 +295,12 @@ onMounted(async () => {
     animation: dayEventAppears 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.timeline-color {
+    width: 5px;
+    height: 100%;
+    background-color: red;
+}
+
 @keyframes dayEventAppears {
     0% {
         transform: scale(0);
@@ -281,6 +324,10 @@ onMounted(async () => {
 
 .timeline-in {
     animation: timelinePop 0.24s;
+}
+
+.calendar-loading {
+    pointer-events: none;
 }
 
 @keyframes timelinePop {

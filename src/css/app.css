@@ -386,6 +386,6 @@ input {
     }
 }
 
-.screen-height-min {
-    min-height: calc(100vh);
+.calendar-day-selected .calendar-day-number {
+    animation: tabLinkActiveAnim 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }

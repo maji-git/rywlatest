@@ -16,6 +16,18 @@ const store = createStore({
       enabled: false,
       token: ""
     },
+    eventColors: [
+      "#dc3545",
+      "#fd7e14",
+      "#ffc107",
+      "#198754",
+      "#20c997",
+      "#0dcaf0",
+      "#D63385",
+      "#6f42c1",
+      "#6610f2",
+      "#0d6efd",
+    ],
     newNotify: false,
     teacherData: null,
     defaultPfps: ["/external-assets/pfp/cat.png", "/external-assets/pfp/dog.png", "/external-assets/pfp/josh.png"],
