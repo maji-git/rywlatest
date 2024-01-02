@@ -1,5 +1,6 @@
 <template>
-    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMore">
+    <f7-page name="news" class="screen-height-min" infinite :infinite-distance="80" :infinite-preloader="showPreloader"
+        @infinite="loadMoreSearches">
         <f7-navbar title="ปฏิทินโรงเรียน">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
@@ -9,19 +10,38 @@
                 @searchbar:enable="searching = true" @searchbar:disable="resetSearch" @search="searchRequest" />
         </f7-navbar>
 
-        <div class="text-align-center" v-if="searching && events.length < 1 && !showPreloader">
-            <p>ไม่มีกิจกรรมที่ตรงกับที่คุณค้นหา</p>
-        </div>
+        <f7-progressbar class="event-progressbar" :class="{ 'event-progress-loadin': loading }" infinite />
 
-        <div id="event-calendar"></div>
-
-        <div class="timeline">
-            <div class="timeline-item" v-for="event in events">
-                <div class="timeline-item-date">{{ event.start_date_details.day }} <small>{{
-                    monthsName[event.start_date_details.month - 1] }}</small></div>
-                <div class="timeline-item-divider"></div>
-                <div class="timeline-item-content" @click="previewEvent(event)">
-                    <div class="timeline-item-inner">{{ decodeHTMLEntities(event.title) }}</div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="calendar-view col-md-5" :class="{ 'd-none': searching }">
+                    <div v-if="calendarView" class="d-flex ps-3 pe-3 align-items-center">
+                        <h2>{{ currentMonth }} {{ currentYr }}</h2>
+                        <div class="flex-grow-1"></div>
+                        <f7-button @click="calendarView.prevMonth()" class="me-2" tonal><f7-icon material="navigate_before"
+                                size="20"></f7-icon></f7-button>
+                        <f7-button @click="calendarView.nextMonth()" tonal><f7-icon material="navigate_next"
+                                size="20"></f7-icon></f7-button>
+                    </div>
+                    <div id="event-calendar"></div>
+                </div>
+                <div class="col-md-5">
+                    <div class="text-align-center" v-if="searching && events.length < 1 && !showPreloader">
+                        <p>ไม่มีกิจกรรมที่ตรงกับที่คุณค้นหา</p>
+                    </div>
+                    <div class="timeline timeline-in" v-if="viewEvents.length != 0">
+                        <div class="timeline-item" v-for="event in viewEvents">
+                            <div class="timeline-item-date">{{ event.start_date_details.day }} <small>{{
+                                monthsName[event.start_date_details.month - 1] }}</small></div>
+                            <div class="timeline-item-divider"></div>
+                            <div class="timeline-item-content" @click="previewEvent(event)">
+                                <div class="timeline-item-inner">{{ decodeHTMLEntities(event.title) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center timeline-in" v-else>
+                        <img src="@/assets/doddles/idk.png?v=2" height="200" class="doddle text-muted">
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,7 +51,7 @@
             <div class="sheet-modal-swipe-step">
                 <f7-block>
                     <div class="block">
-                        <h1 class="m-0">{{ previewEventInfo.title }}</h1>
+                        <h1 class="m-0">{{ htmlDecode(previewEventInfo.title) }}</h1>
                         <p>
                             <span>{{ previewEventInfo.start_date_details.day }} {{
                                 monthsName[previewEventInfo.start_date_details.month - 1] }} {{
@@ -72,12 +92,14 @@
   
 <script setup>
 import { onMounted, ref } from "vue";
-import { getEvents } from "@/js/lib/tribecalendar.js"
+import { getEvents, getByMonthYear } from "@/js/lib/tribecalendar.js"
 import { decodeHTMLEntities } from "@/js/utils/text.js"
 import { Browser } from '@capacitor/browser';
 import { f7 } from "framework7-vue";
+import { decode } from 'html-entities';
 
 const previewEventInfo = ref(null)
+const htmlDecode = ref(decode)
 
 const openSite = async (url) => {
     await Browser.open({ url });
@@ -93,52 +115,86 @@ const addToCalendar = () => {
 }
 
 const events = ref([])
+
 const showPreloader = ref(false)
+const loading = ref(false)
 const monthsName = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",];
 const currentPage = ref(1)
 const pageEnded = ref(false)
 const searchQuery = ref("")
 const searching = ref(false)
 
+const currentMonth = ref(0)
+const currentYr = ref(0)
+
 const calendarView = ref()
+const viewEvents = ref([])
 
 const searchRequest = async (event) => {
     currentPage.value = 1
-    events.value = []
+    viewEvents.value = []
+    pageEnded.value = false
     searchQuery.value = event.target.value
 
-    loadMore()
+    loadMoreSearches()
 }
 
 const resetSearch = () => {
     searching.value = false
     currentPage.value = 1
-    events.value = []
+    viewEvents.value = []
+    pageEnded.value = false
     searchQuery.value = undefined
 
-    loadMore()
+    loadMoreSearches()
 }
 
-const loadMore = async () => {
+const addToEvents = (evs) => {
+    for (const e of evs) {
+        // Filter out events with same ID
+        if (events.value.find((a) => a.id == e.id)) {
+            continue
+        }
+
+        events.value.push(e)
+    }
+
+    calendarView.value.params.events = []
+
+    for (const event of events.value) {
+        calendarView.value.params.events.push({
+            date: new Date(event.start_date_details.year, event.start_date_details.month - 1, event.start_date_details.day),
+            hours: 12,
+            minutes: 30,
+            title: event.title,
+            color: '#2196f3',
+            data: event
+        })
+    }
+
+    console.log(calendarView.value.params.events)
+
+    calendarView.value.update()
+}
+
+const loadMoreSearches = async () => {
+    if (!searching.value) {
+        return
+    }
+    if (pageEnded.value) {
+        return
+    }
     if (!pageEnded.value) {
         showPreloader.value = true
     }
     const eventz = await getEvents(currentPage.value, searchQuery.value)
+
     if (eventz['events']) {
         pageEnded.value = false
-        events.value.push(...eventz.events)
 
-        for (const event of eventz.events) {
-            calendarView.value.params.events.push({
-                date: new Date(event.start_date_details.year, event.start_date_details.month - 1, event.start_date_details.day),
-                hours: 12,
-                minutes: 30,
-                title: event.title,
-                color: '#2196f3',
-            })
-        }
+        addToEvents(eventz.events)
 
-        calendarView.value.update()
+        viewEvents.value.push(...eventz.events)
 
         currentPage.value += 1
     } else {
@@ -147,31 +203,90 @@ const loadMore = async () => {
     showPreloader.value = false
 }
 
+const loadCalendarEvents = async (e) => {
+    loading.value = true
+    const eventz = await getByMonthYear(e.currentMonth + 1, e.currentYear)
+
+    if (eventz['events']) {
+        addToEvents(eventz.events)
+    }
+
+    loading.value = false
+}
+
+const onCalendarChange = (e) => {
+    currentMonth.value = monthsName[e.currentMonth]
+    currentYr.value = e.currentYear
+
+    loadCalendarEvents(e)
+}
+
+const viewDayEvents = (e) => {
+    const date = e.value[0]
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+
+    viewEvents.value = events.value.filter((e) => (e.start_date_details.day == day && e.start_date_details.month == month && e.start_date_details.year == year))
+}
+
 onMounted(async () => {
-    calendarView.value = f7.calendar.create({
+    const calendar = f7.calendar.create({
         containerEl: '#event-calendar',
+        toolbar: false,
         value: [new Date()],
+        dayNamesShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
         events: [{
-                date: new Date(2023, 11, 21),
-                hours: 12,
-                minutes: 30,
-                color: '#2196f3',
-            }]
+            date: new Date(2023, 11, 21),
+            hours: 12,
+            minutes: 30,
+            color: '#2196f3',
+        }]
     })
 
-    await loadMore()
-    await loadMore()
+    calendarView.value = calendar
+
+    calendar.on("monthYearChangeEnd", onCalendarChange)
+    onCalendarChange(calendar)
+
+    calendar.on("change", viewDayEvents)
 })
 </script>
 
 <style>
-.calendar .toolbar {
-    position: absolute;
-    top: -80px;
+.calendar-day-event {
+    animation: dayEventAppears 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.calendar {
-    margin-top: 80px;
-    overflow: visible;
+@keyframes dayEventAppears {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+</style>
+
+<style scoped>
+.event-progressbar {
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+.event-progress-loadin {
+    opacity: 1;
+}
+
+.timeline-in {
+    animation: timelinePop 0.24s;
+}
+
+@keyframes timelinePop {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
 }
 </style>
