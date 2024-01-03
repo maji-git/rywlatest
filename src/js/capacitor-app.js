@@ -1,4 +1,5 @@
 import { Keyboard } from "@capacitor/keyboard";
+import { Capacitor } from '@capacitor/core';
 
 let capacitorApp = {
   f7: null,
@@ -90,6 +91,7 @@ let capacitorApp = {
   handleKeyboard: function () {
     let f7 = capacitorApp.f7;
     if (!window.Capacitor || !window.Capacitor.Plugins.Keyboard) return;
+    if (!Capacitor.isNativePlatform()) return;
     let $ = f7.$;
     if (!Keyboard) return;
     Keyboard.setResizeMode({ mode: 'native' });

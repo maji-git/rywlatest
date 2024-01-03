@@ -1,5 +1,5 @@
 <template>
-    <f7-popup v-model:opened="popupOpened" id="changelogs-popup" @popup:open="onChangelogOpen" @popup:close="onChangelogClose">
+    <f7-popup id="changelogs-popup" @popup:open="onChangelogOpen" @popup:close="onChangelogClose">
         <f7-page>
             <f7-navbar title="อัปเดตใหม่ๆ">
                 <f7-nav-right>
