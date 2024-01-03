@@ -6,8 +6,6 @@ export async function downloadFile(targetURL) {
         destination = destination.replace("https://rayongwit.ac.th", window.rywlAPIs.main + "/serve")
     }
 
-    console.log(destination)
-
     //http://localhost:3000
 
     const db = await CapacitorHttp.get({

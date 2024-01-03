@@ -181,30 +181,20 @@ const addToEvents = (evs) => {
 
         const dateDifCount = dateDiffInDays(constructDateFromDetails(e.start_date_details), constructDateFromDetails(e.end_date_details))
 
-        console.log(dateDifCount)
-
         for (let i = 1; i <= dateDifCount; i++) {
             const td = constructDateFromDetails(e.start_date_details)
             td.setDate(td.getDate() + i)
-
-            console.log(e.title)
-            console.log(td)
 
             events.value.push({
                 ...e,
                 renderDate: td
             })
         }
-
-        console.log("---")
     }
 
     calendarView.value.params.events = []
 
     for (const event of events.value) {
-        console.log(event.title)
-        console.log(event.renderDate)
-
         calendarView.value.params.events.push({
             date: event.renderDate,
             hours: 12,
@@ -214,8 +204,6 @@ const addToEvents = (evs) => {
             data: event
         })
     }
-
-    console.log(events.value)
 
     calendarView.value.update()
 }
