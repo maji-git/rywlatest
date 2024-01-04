@@ -252,8 +252,7 @@ const onCalendarChange = (e) => {
     loadCalendarEvents(e)
 }
 
-const viewDayEvents = (e) => {
-    const date = e.value[0]
+const viewDayEvents = (date) => {
     const day = date.getDate()
     const month = date.getMonth()
     const year = date.getFullYear()
@@ -301,7 +300,8 @@ onMounted(async () => {
         ],
     })
 
-    calendar.on("change", viewDayEvents)
+    calendar.on("change", (et) => viewDayEvents(et.value[0]))
+    viewDayEvents(new Date())
 })
 </script>
 

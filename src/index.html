@@ -56,6 +56,12 @@
       }
     }
 
+    @supports (-webkit-touch-callout: none) {
+      #preload-splash {
+        background-color: #F7F7F8;
+      }
+    }
+
     @media (prefers-color-scheme: dark) {
       #preload-splash {
         background-color: #252A30;
@@ -63,6 +69,12 @@
 
       .preload-icon {
         filter: invert(0);
+      }
+
+      @supports (-webkit-touch-callout: none) {
+        #preload-splash {
+          background-color: #121212;
+        }
       }
     }
   </style>
