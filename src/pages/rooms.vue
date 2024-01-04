@@ -154,6 +154,8 @@ const todayIndex = ref(0)
 const searching = ref(false)
 const filters = ref([])
 
+const dataCache = ref()
+
 const openFilters = () => {
   f7.popover.open("#filter-options", `#filters-chip`)
 }
@@ -217,7 +219,15 @@ const loadData = async (done) => {
   todayIndex.value = today.value.getDay() - 1
 
   currentPeriod.value = getPeriod(new Date())
-  const data = await getAvailabilites()
+  let data;
+
+  if (dataCache.value) {
+    data = dataCache.value
+  } else {
+    data = await getAvailabilites()
+    dataCache.value = data
+  }
+  
   let processed = {}
 
   if (filters.value.length > 0) {
