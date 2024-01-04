@@ -79,6 +79,9 @@ import { loadPrefs as notifyLoadPrefs, waitForMessages } from "@/js/services/not
 import { Preferences } from "@capacitor/preferences"
 import Logger from 'js-logger';
 import { Browser } from '@capacitor/browser';
+import { useEmitter } from '@/js/composables/events.js'
+
+const emitter = useEmitter()
 
 const openSite = async (url) => {
     await Browser.open({ url });
@@ -155,6 +158,10 @@ onMounted(() => {
       notifyLoadPrefs()
     } catch (err) {
       Logger.error(err)
+    }
+
+    if (store.state.userData) {
+      emitter.emit("userDataRefresh")
     }
 
     let firstTime = "0"

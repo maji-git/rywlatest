@@ -24,6 +24,7 @@ import PageEnd from '@/components/page-end.vue'
 import ChipIcon from '@/components/chip-icon.vue'
 
 import Logger from "js-logger"
+import mitt from 'mitt';
 
 import platform from "platform"
 
@@ -33,6 +34,8 @@ import { fixData } from './datafix.js';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { setUserProperty } from './services/analytics.js';
+
+const emitter = mitt();
 
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
@@ -149,8 +152,12 @@ async function preStartup() {
 
     fixData()
     
+    app.config.globalProperties.emitter = emitter
+
     // Mount the app
     app.mount('#app')
+
+    window.appMounted = true
 
     Logger.info("Application view mounted")
 }

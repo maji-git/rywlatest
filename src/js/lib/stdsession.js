@@ -377,7 +377,7 @@ export async function loadFromPreferences() {
             }
         } catch (e) { Logger.warn(e) }
 
-        store.state.userData = await getInfo()
+        store.dispatch("setUserdata", (await getInfo()))
 
         Preferences.set({ key: "cache_userData", value: JSON.stringify(store.state.userData) })
 

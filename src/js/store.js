@@ -1,6 +1,7 @@
 
 import { createStore } from 'framework7/lite';
 import { f7 } from 'framework7-vue';
+import { useEmitter } from './composables/events.js'
 
 const store = createStore({
   state: {
@@ -64,6 +65,10 @@ const store = createStore({
   actions: {
     setUserdata({ state }, data) {
       state.userData = data;
+
+      if (window.appMounted) {
+        useEmitter().emit("userDataRefresh")
+      }
     },
   },
 })

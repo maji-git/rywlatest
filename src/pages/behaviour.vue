@@ -1,5 +1,5 @@
 <template>
-    <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData" @page:tabshow="loadData">
+    <f7-page name="behaviours" ptr :ptr-mousewheel="true" @ptr:refresh="loadData">
         <f7-navbar title="คะแนนพฤติกรรม"></f7-navbar>
 
         <br>
@@ -109,7 +109,7 @@
 </template>
   
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { getStdFixPDF, getBehaviourData, getStdLatePDF, getFixStatus } from "@/js/lib/stdsession.js"
 import { downloadFile } from "@/js/utils/downloader.js"
 import { openBlob, openMedia } from "@/js/utils/opener.js"
@@ -118,6 +118,9 @@ import { Media } from "@capacitor-community/media"
 import { f7 } from 'framework7-vue';
 import store from '@/js/store.js';
 import Logger from "js-logger"
+import { useEmitter } from '@/js/composables/events.js'
+
+const emitter = useEmitter()
 
 const behaviourStatus = ref("-")
 const behaviours = ref([])
@@ -181,4 +184,10 @@ const printLatePaper = async () => {
         openBlob(data, "ryw-latefix.pdf")
     }
 }
+
+onMounted(() => {
+    emitter.on("userDataRefresh", () => {
+        loadData()
+    })
+})
 </script>
