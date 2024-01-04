@@ -48,7 +48,7 @@ const openDoc = async (doc) => {
 
   if (doc.isPDF) {
     f7.preloader.show()
-    const data = await downloadFileBlob(doc.source)
+    const data = await downloadFileBlob(doc.source, "application/pdf")
 
     openBlob(data, `${doc.title}.pdf`)
 

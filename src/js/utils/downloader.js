@@ -40,8 +40,15 @@ export function dataURItoBlob(dataURI) {
     return blob;
 }
 
-export async function downloadFileBlob(targetURL) {
-    const db = await downloadFile(targetURL)
+export async function downloadFileBlob(targetURL, contentType) {
+    let db = await downloadFile(targetURL)
+    let blob = dataURItoBlob(db)
 
-    return dataURItoBlob(db)
+    if (contentType) {
+        blob = blob.slice(0, blob.size, contentType)
+    }
+
+    console.log(blob)
+
+    return blob
 }
