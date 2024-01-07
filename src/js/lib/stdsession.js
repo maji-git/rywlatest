@@ -379,7 +379,7 @@ export async function loadFromPreferences() {
 
         store.dispatch("setUserdata", (await getInfo()))
 
-        Preferences.set({ key: "cache_userData", value: JSON.stringify(store.state.userData) })
+        Preferences.set({ key: "cache_userData", value: JSON.stringify({...store.state.userData, nationalID: "<>", studentID: "<>"}) })
 
     }
 }
