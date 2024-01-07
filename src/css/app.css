@@ -184,6 +184,7 @@ img:not(.img-uncopyable) {
 
 .navbar-inner .title {
     flex-grow: 1;
+    overflow: visible;
 }
 
 .alert-warn {
