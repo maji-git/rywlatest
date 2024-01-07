@@ -13,7 +13,7 @@ export async function openBlob(blob, filename = "rywl-file") {
             blob: blob
         })
 
-        FileOpener.open({
+        await FileOpener.open({
             filePath: blo
         })
     } else {
@@ -38,4 +38,10 @@ export async function openMedia(imgURL) {
     } else {
         saveAs(dataURItoBlob(imgURL), "rywl-out.jpg");
     }
+}
+
+export function rawToBlob(data, contentType) {
+    return new Blob([data], {
+        type: contentType
+    })
 }

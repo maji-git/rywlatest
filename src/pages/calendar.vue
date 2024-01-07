@@ -1,5 +1,6 @@
 <template>
-    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMoreSearches" @page:tabshow="onTabShow">
+    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMoreSearches"
+        @page:tabshow="onTabShow">
         <f7-navbar title="ปฏิทินโรงเรียน">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
@@ -72,10 +73,9 @@
                 </f7-block>
                 <f7-block class="mb-3" inset strong outline-ios v-html="previewEventInfo.description"></f7-block>
 
-                <!--
                 <div class="grid grid-cols-2 grid-gap block mt-0">
 
-                    <f7-button tonal color="red" class="block-action-btn" @click="addToCalendar">
+                    <f7-button tonal color="red" class="block-action-btn" @click="addToCalendar(previewEventInfo)">
                         <f7-icon material="event"></f7-icon>
                         <p>เพิ่มกิจกรรมบนปฏิทิน</p>
                     </f7-button>
@@ -85,7 +85,6 @@
                         <p>เปิดหน้าเว็บ</p>
                     </f7-button>
                 </div>
-                -->
 
                 <br />
             </div>
@@ -98,9 +97,13 @@ import { onMounted, ref } from "vue";
 import { getEvents, getByMonthYear } from "@/js/lib/tribecalendar.js"
 import { decodeHTMLEntities } from "@/js/utils/text.js"
 import { dateDiffInDays } from "@/js/utils/date.js"
+import { rawToBlob, openBlob } from "@/js/utils/opener.js"
+
 import { Browser } from '@capacitor/browser';
 import { f7 } from "framework7-vue";
+import { createEvent as icsCreateEvent } from "ics"
 import store from '@/js/store.js';
+import Logger from "js-logger";
 
 const previewEventInfo = ref(null)
 const datepicker = ref()
@@ -114,8 +117,34 @@ const previewEvent = (event) => {
     f7.sheet.open("#event-info")
 }
 
-const addToCalendar = () => {
+const addToCalendar = (event) => {
+    f7.preloader.show()
+    icsCreateEvent({
+        title: decodeHTMLEntities(event.title),
+        description: decodeHTMLEntities(event.description.replace("<br>", "\n")),
+        busyStatus: 'BUSY',
+        url: event.url,
+        start: [
+            parseInt(event.start_date_details.year),
+            parseInt(event.start_date_details.month),
+            parseInt(event.start_date_details.day),
+        ],
+        end: [
+            parseInt(event.end_date_details.year),
+            parseInt(event.end_date_details.month),
+            parseInt(event.end_date_details.day) + 1,
+        ],
+    }, async (error, value) => {
+        if (error) {
+            Logger.error(error)
+            return
+        }
 
+        const blo = rawToBlob(value, `text/calendar`)
+        await openBlob(blo, `${event.title}.ics`)
+
+        f7.preloader.hide()
+    })
 }
 
 const openSelectMenu = () => {
