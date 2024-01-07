@@ -37,7 +37,7 @@ export async function getBanners() {
 
   const result = []
 
-  for (const element of dom.querySelectorAll(".fitvidsignore")[1].querySelectorAll(".n2-ss-slide-background-image img.skip-lazy")) {
+  for (const element of dom.querySelectorAll(".fitvidsignore")[0].querySelectorAll(".n2-ss-slide-background-image img.skip-lazy")) {
     result.push(element.getAttribute("src"))
   }
 
