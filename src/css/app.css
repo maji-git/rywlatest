@@ -372,7 +372,7 @@ img:not(.img-uncopyable) {
     z-index: 12;
 }
 
-.button:not(.block-action-btn) {
+.ios .button:not(.block-action-btn) {
     border-radius: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
