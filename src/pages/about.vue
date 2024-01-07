@@ -2,8 +2,9 @@
   <f7-page name="about">
     <f7-navbar title="เกี่ยวกับแอพนี้" back-link="ย้อนกลับ"></f7-navbar>
     <f7-block>
-      <img src="@/assets/mai.png" class="img-field">
-      <h1 class="text-center">RYW Latest {{ appVersion }}</h1>
+      <img src="@/assets/ver.png" class="img-field">
+      <p class="text-center text-sub text-sm m-0">RYW LATEST</p>
+      <h1 class="text-center m-0 mb-2 version-txt">"starry" {{ appVersion }}</h1>
       <p>
         &nbsp;&nbsp;&nbsp;&nbsp;สวัสดีครับ! และขอขอบคุณที่ติดตั้งแอพนี้ครับ
       </p>
@@ -36,3 +37,9 @@ const openSite = async (url) => {
   await Browser.open({ url });
 }
 </script>
+
+<style scoped>
+.text-sub, .version-txt {
+  font-family: 'JetBrains Mono', monospace;
+}
+</style>
