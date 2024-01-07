@@ -1,5 +1,5 @@
 <template>
-    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMoreSearches">
+    <f7-page name="news" infinite :infinite-distance="80" :infinite-preloader="showPreloader" @infinite="loadMoreSearches" @page:tabshow="onTabShow">
         <f7-navbar title="ปฏิทินโรงเรียน">
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".event-searchbar" icon-ios="f7:search"
@@ -141,6 +141,8 @@ const currentYr = ref(0)
 
 const calendarView = ref()
 const viewEvents = ref([])
+
+const firstPageLoad = ref(true)
 
 const searchRequest = async (event) => {
     currentPage.value = 1
@@ -301,8 +303,18 @@ onMounted(async () => {
     })
 
     calendar.on("change", (et) => viewDayEvents(et.value[0]))
-    viewDayEvents(new Date())
 })
+
+const onTabShow = () => {
+    if (firstPageLoad.value) {
+        firstPageLoad.value = false
+        firstLoad()
+    }
+}
+
+const firstLoad = () => {
+    viewDayEvents(new Date())
+}
 </script>
 
 <style>
