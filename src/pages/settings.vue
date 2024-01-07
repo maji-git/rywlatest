@@ -9,12 +9,12 @@
         <swiper-slide source="default"><img :src="`${userData.headshot}`" height="200"></swiper-slide>
 
         <swiper-slide v-for="dpfp in store.state.defaultPfps" :source="dpfp"><img :src="dpfp" height="200">
-          <button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon>
-          </button>
+          <!--<button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon>
+          </button>-->
         </swiper-slide>
 
-        <swiper-slide class="add-pfp"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
-            size="60"></f7-icon></swiper-slide>
+        <!--<swiper-slide add-pfp="ye" class="add-pfp" @click="addPfpRequest"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
+            size="60"></f7-icon></swiper-slide>-->
       </swiper-container>
 
       <h1 class="mt-5">{{ userData.firstname }} {{ userData.surname }}</h1>
@@ -66,6 +66,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { clearAuthState, saveToPreferences } from "@/js/lib/stdsession.js"
+import { pickMedia } from "@/js/utils/files.js"
 import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
 import { Preferences } from "@capacitor/preferences";
@@ -112,7 +113,8 @@ const clearUserdata = () => {
 }
 
 const pfpRequestChange = (i) => {
-  const targetPfpSource = swipePfp.value.querySelectorAll("swiper-slide")[swipePfp.value.swiper.activeIndex]?.getAttribute("source")
+  const activeIndex = swipePfp.value.querySelectorAll("swiper-slide")[swipePfp.value.swiper.activeIndex]
+  const targetPfpSource = activeIndex?.getAttribute("source")
 
   if (targetPfpSource) {
     store.state.extraUserData.preferredPfp = targetPfpSource
@@ -120,6 +122,13 @@ const pfpRequestChange = (i) => {
     Preferences.set({ key: "extraUserData", value: JSON.stringify(store.state.extraUserData) })
   }
 }
+
+/*
+const addPfpRequest = () => {
+  console.log("ADD!")
+  pickMedia()
+}
+*/
 
 onMounted(() => {
   if (swipePfp.value) {
