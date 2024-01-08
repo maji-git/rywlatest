@@ -106,7 +106,7 @@
       <f7-block-title>ระบบบันทึกการมาโรงเรียน</f7-block-title>
       <div class="display-flex align-items-center" style="color: var(--f7-color-teal);" v-if="checkedIn">
         <f7-icon material="check_circle" size="40"></f7-icon>
-        <div class="ms2">
+        <div class="ms-2">
           <h2 class="m-0">บันทึกแล้ว</h2>
           <p class="m-0"><strong>{{ checkedInTime }}</strong></p>
         </div>
