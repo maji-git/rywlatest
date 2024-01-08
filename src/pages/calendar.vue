@@ -152,7 +152,7 @@ const openSelectMenu = () => {
 }
 
 const getColorOfStr = (str) => {
-    return store.state.eventColors[Math.abs(Math.round(Math.sin(str.charCodeAt(str.length - 1)) * 9))]
+    return store.state.eventColors[Math.abs(Math.round(Math.sin(str.charCodeAt(str.length / 2)) * 9))]
 }
 
 const events = ref([])
