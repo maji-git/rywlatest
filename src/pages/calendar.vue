@@ -36,9 +36,9 @@
                             <div class="timeline-item-date">{{ event.start_date_details.day }} <small>{{
                                 monthsName[event.start_date_details.month - 1] }}</small></div>
                             <div class="timeline-item-divider"></div>
-                            <div class="timeline-item-content" @click="previewEvent(event)">
+                            <div class="timeline-item-content">
                                 <div class="timeline-item-inner">
-                                    <p class="m-0">{{ decodeHTMLEntities(event.title) }}</p>
+                                    <p class="m-0" @click="previewEvent(event)">{{ decodeHTMLEntities(event.title) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -50,9 +50,9 @@
             </div>
         </div>
 
-        <f7-sheet id="event-info" backdrop swipe-to-close swipe-to-step style="height: auto;" v-if="previewEventInfo">
+        <f7-sheet id="event-info" backdrop swipe-to-close swipe-to-step style="height: auto;">
 
-            <div class="sheet-modal-swipe-step">
+            <div class="sheet-modal-swipe-step" v-if="previewEventInfo">
                 <f7-block>
                     <div class="block">
                         <h1 class="m-0">{{ decodeHTMLEntities(previewEventInfo.title) }}</h1>
@@ -113,6 +113,7 @@ const openSite = async (url) => {
 }
 
 const previewEvent = (event) => {
+    console.log("C")
     previewEventInfo.value = event
     f7.sheet.open("#event-info")
 }
