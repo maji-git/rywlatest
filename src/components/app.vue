@@ -92,7 +92,7 @@ const f7params = {
   name: 'คือ...!!!',
   theme: 'auto',
   colors: {
-    primary: '#235B95',
+    primary: (window.darkMode ? "#8CBBEC" : "#235B95"),
   },
   store: store,
   routes: routes,
