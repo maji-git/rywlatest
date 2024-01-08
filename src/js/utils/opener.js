@@ -5,7 +5,7 @@ import { dataURItoBlob } from "./downloader.js";
 
 export async function openBlob(blob, filename = "rywl-file") {
     const { saveAs } = await import('file-saver')
-    const writeBlob = await import('capacitor-blob-writer')
+    const writeBlob = (await import('capacitor-blob-writer')).default
 
     if (window.isNative) {
         const blo = await writeBlob({
