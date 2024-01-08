@@ -35,7 +35,7 @@
                         <div class="timeline-item" v-for="event in viewEvents">
                             <div class="timeline-item-date">{{ event.start_date_details.day }} <small>{{
                                 monthsName[event.start_date_details.month - 1] }}</small></div>
-                            <div class="timeline-item-divider"></div>
+                            <div class="timeline-item-divider" :style="{'background-color': getColorOfStr(event.title) }"></div>
                             <div class="timeline-item-content">
                                 <div class="timeline-item-inner">
                                     <p class="m-0" @click="previewEvent(event)">{{ decodeHTMLEntities(event.title) }}</p>
@@ -113,7 +113,6 @@ const openSite = async (url) => {
 }
 
 const previewEvent = (event) => {
-    console.log("C")
     previewEventInfo.value = event
     f7.sheet.open("#event-info")
 }
@@ -385,6 +384,22 @@ const firstLoad = () => {
 
 .calendar-loading {
     pointer-events: none;
+}
+
+.timeline-item-divider:after, .timeline-item-divider:before {
+    width: 0px;
+}
+
+.timeline-item {
+    align-items: center;
+}
+
+.timeline-item-divider {
+    height: 20px;
+    width: 5px;
+    border-radius: 10px;
+    margin-left: 12px;
+    margin-right: 8px;
 }
 
 @keyframes timelinePop {
