@@ -1,11 +1,12 @@
-import writeBlob from "capacitor-blob-writer";
 import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"
-import { saveAs } from 'file-saver';
 import { Media } from "@capacitor-community/media"
 import { dataURItoBlob } from "./downloader.js";
 
 export async function openBlob(blob, filename = "rywl-file") {
+    const { saveAs } = await import('file-saver')
+    const writeBlob = await import('capacitor-blob-writer')
+
     if (window.isNative) {
         const blo = await writeBlob({
             path: filename,
@@ -22,6 +23,8 @@ export async function openBlob(blob, filename = "rywl-file") {
 }
 
 export async function openMedia(imgURL) {
+    const { saveAs } = await import('file-saver')
+
     if (window.isNative) {
         const albums = await Media.getAlbums()
         const targetAlbum = albums.albums.find((e) => e.name == "Download").identifier

@@ -101,7 +101,6 @@ import { rawToBlob, openBlob } from "@/js/utils/opener.js"
 
 import { Browser } from '@capacitor/browser';
 import { f7 } from "framework7-vue";
-import { createEvent as icsCreateEvent } from "ics"
 import store from '@/js/store.js';
 import Logger from "js-logger";
 
@@ -117,9 +116,12 @@ const previewEvent = (event) => {
     f7.sheet.open("#event-info")
 }
 
-const addToCalendar = (event) => {
+const addToCalendar = async (event) => {
     f7.preloader.show()
-    icsCreateEvent({
+
+    const { createEvent } = await import("ics")
+
+    createEvent({
         title: decodeHTMLEntities(event.title),
         description: decodeHTMLEntities(event.description.replace("<br>", "\n")),
         busyStatus: 'BUSY',

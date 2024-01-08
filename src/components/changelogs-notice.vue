@@ -17,14 +17,13 @@
 </template>
 
 <script setup>
-import { parse } from "marked"
 import { ref } from "vue";
-import { AppUpdate } from '@capawesome/capacitor-app-update'
 import { Preferences } from "@capacitor/preferences"
 
 const changelogHTML = ref("")
 
 const onChangelogOpen = async () => {
+    const { parse } = await import("marked")
     const res = await fetch("https://rywlatest.web.app/app/changelogs.md")
     const clmd = await res.text()
 

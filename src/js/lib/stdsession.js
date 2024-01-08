@@ -1,7 +1,6 @@
 import { RYWLHttp } from '../utils/http.js';
 import store from '@/js/store.js';
 import { f7 } from 'framework7-vue';
-import html2pdf from 'html2pdf.js'
 import { downloadFile } from '../utils/downloader.js';
 import { thaiToDate } from '../utils/date';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
@@ -39,6 +38,7 @@ export async function reauthenticate() {
 }
 
 export async function getDocPDF(targetURL) {
+    const html2pdf = await import("html2pdf.js")
     const sessionID = await reauthenticate()
 
     if (sessionID) {
