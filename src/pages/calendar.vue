@@ -38,7 +38,7 @@
                             <div class="timeline-item-divider" :style="{'background-color': getColorOfStr(event.title) }"></div>
                             <div class="timeline-item-content">
                                 <div class="timeline-item-inner">
-                                    <p class="m-0" @click="previewEvent(event)">{{ decodeHTMLEntities(event.title) }}</p>
+                                    <p class="m-0" @click="previewEvent(event)">{{ decodeHTMLEntities(event.displayTitle ?? event.title) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
             <div class="sheet-modal-swipe-step" v-if="previewEventInfo">
                 <f7-block>
                     <div class="block">
-                        <h1 class="m-0">{{ decodeHTMLEntities(previewEventInfo.title) }}</h1>
+                        <h1 class="m-0">{{ decodeHTMLEntities(previewEventInfo.displayTitle ?? previewEventInfo.title) }}</h1>
                         <p>
                             <span>{{ previewEventInfo.start_date_details.day }} {{
                                 monthsName[previewEventInfo.start_date_details.month - 1] }} {{
@@ -190,8 +190,6 @@ const resetSearch = () => {
     viewEvents.value = []
     pageEnded.value = false
     searchQuery.value = undefined
-
-    loadMoreSearches()
 }
 
 const constructDateFromDetails = (details) => {
@@ -207,12 +205,19 @@ const addToEvents = (evs) => {
 
         const renderDate = constructDateFromDetails(e.start_date_details)
 
+        const dateDifCount = dateDiffInDays(constructDateFromDetails(e.start_date_details), constructDateFromDetails(e.end_date_details))
+
+        let firstDisplay = e.title
+
+        if (dateDifCount > 1) {
+            firstDisplay = `${e.title} (วันที่ 1)`
+        }
+
         events.value.push({
             ...e,
+            displayTitle: firstDisplay,
             renderDate: renderDate
         })
-
-        const dateDifCount = dateDiffInDays(constructDateFromDetails(e.start_date_details), constructDateFromDetails(e.end_date_details))
 
         for (let i = 1; i <= dateDifCount; i++) {
             const td = constructDateFromDetails(e.start_date_details)
@@ -220,6 +225,7 @@ const addToEvents = (evs) => {
 
             events.value.push({
                 ...e,
+                displayTitle: `${e.title} (วันที่ ${i + 1})`,
                 renderDate: td
             })
         }
@@ -299,12 +305,7 @@ onMounted(async () => {
         toolbar: false,
         value: [new Date()],
         dayNamesShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
-        events: [{
-            date: new Date(2023, 11, 21),
-            hours: 12,
-            minutes: 30,
-            color: '#2196f3',
-        }]
+        events: []
     })
 
     calendarView.value = calendar
