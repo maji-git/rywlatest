@@ -38,7 +38,7 @@ export async function reauthenticate() {
 }
 
 export async function getDocPDF(targetURL) {
-    const html2pdf = await import("html2pdf.js")
+    const html2pdf = (await import("html2pdf.js")).default
     const sessionID = await reauthenticate()
 
     if (sessionID) {
