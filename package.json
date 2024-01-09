@@ -12,7 +12,8 @@
     "build-capacitor-ios": "cross-env NODE_ENV=production vite build && npx cap copy ios",
     "build-capacitor-android": "cross-env NODE_ENV=production vite build && npx cap copy android",
     "postinstall": "cpy --flat ./node_modules/framework7-icons/fonts/*.* ./src/fonts/ && cpy --flat ./node_modules/material-icons/iconfont/*.* ./src/fonts/",
-    "deploy-pwa": "firebase deploy --only hosting:rywl-pwa"
+    "deploy-pwa": "firebase deploy --only hosting:rywl-pwa",
+    "deploy-beta": "firebase deploy --only hosting:rywl-beta"
   },
   "browserslist": [
     "IOS >= 15",
@@ -43,6 +44,8 @@
     "capacitor-blob-writer": "^1.1.14",
     "capacitor-secure-storage-plugin": "^0.9.0",
     "dom7": "^4.0.6",
+    "emoji-palette": "^0.0.3",
+    "emoji-unicode": "^2.0.1",
     "file-saver": "^2.0.5",
     "firebase": "^10.7.0",
     "framework7": "^8.3.0",

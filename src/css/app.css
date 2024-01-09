@@ -403,3 +403,9 @@ img:not(.img-uncopyable) {
     letter-spacing: 3px;
     opacity: 0.5;
 }
+
+.flex-center-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

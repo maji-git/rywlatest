@@ -13,6 +13,12 @@
           </button>-->
         </swiper-slide>
 
+        <swiper-slide extra-section="emoji" class="flex-center-in rounded emoji-field-container"
+          :style="{ 'background': emojiFieldBg }"><input type="text" class="emoji-field" v-model="emojiField"
+          @input="emojiFieldChange" @change="emojiFieldChange">
+        <img src="@/assets/doddles/pfpEmojiGuide.png" class="emoji-guide doddle" height="80" alt="">
+        </swiper-slide>
+
         <!--<swiper-slide add-pfp="ye" class="add-pfp" @click="addPfpRequest"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
             size="60"></f7-icon></swiper-slide>-->
       </swiper-container>
@@ -64,16 +70,19 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { clearAuthState, saveToPreferences } from "@/js/lib/stdsession.js"
-import { pickMedia } from "@/js/utils/files.js"
+import { adjustBrightness } from '@/js/utils/color';
 import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
 import { Preferences } from "@capacitor/preferences";
 const userData = useStore(store, "userData")
 import Logger from "js-logger"
+import { generatePalette } from "emoji-palette";
 
 const swipePfp = ref(null)
+const emojiField = ref("😉")
+const emojiFieldBg = ref("var(--f7-md-primary-container)")
 
 const clearAllData = () => {
   f7.dialog.confirm("คุณต้องการลบข้อมูลทั้งหมดหรือไม่? (จะทำการรีเซ็ตทั้งแอพ)", async () => {
@@ -112,15 +121,50 @@ const clearUserdata = () => {
   })
 }
 
+const emojiFieldChange = () => {
+  if (emojiField.value.length == 0) {
+    return
+  }
+  const palette = generatePalette(emojiField.value)
+  const c1 = adjustBrightness(palette[0], 80)
+  const c2 = adjustBrightness(palette[1], 120)
+
+  store.state.extraUserData.preferredPfpType = "emoji"
+  store.state.extraUserData.preferredPfp = emojiField.value
+  store.state.extraUserData.emojiPfpCache = emojiField.value
+  store.state.extraUserData.preferredPfpExtra['start'] = c1
+  store.state.extraUserData.preferredPfpExtra['end'] = c2
+
+  emojiFieldAdaptColor()
+}
+
+const emojiFieldAdaptColor = () => {
+  const palette = generatePalette(emojiField.value)
+  const c1 = adjustBrightness(palette[0], 50)
+  const c2 = adjustBrightness(palette[1], 100)
+
+  const procBg = `linear-gradient(180deg, ${c1} 0%, ${c2}) 100%`
+
+  emojiFieldBg.value = procBg
+}
+
 const pfpRequestChange = (i) => {
   const activeIndex = swipePfp.value.querySelectorAll("swiper-slide")[swipePfp.value.swiper.activeIndex]
   const targetPfpSource = activeIndex?.getAttribute("source")
 
   if (targetPfpSource) {
     store.state.extraUserData.preferredPfp = targetPfpSource
-
-    Preferences.set({ key: "extraUserData", value: JSON.stringify(store.state.extraUserData) })
+    store.state.extraUserData.preferredPfpType = "image"
+    store.state.extraUserData.preferredPfpExtra = {}
   }
+
+  if (activeIndex?.getAttribute("extra-section") == "emoji") {
+    emojiFieldChange()
+  }
+}
+
+const saveExtra = () => {
+  Preferences.set({ key: "extraUserData", value: JSON.stringify(store.state.extraUserData) })
 }
 
 /*
@@ -140,7 +184,20 @@ onMounted(() => {
     if (targetPfpEl) {
       swipePfp.value.swiper.slideTo(allSlides.indexOf(targetPfpEl))
     }
+
+    if (store.state.extraUserData.preferredPfpType == "emoji") {
+      emojiField.value = store.state.extraUserData.preferredPfp
+      swipePfp.value.swiper.slideTo(allSlides.indexOf(swipePfp.value.querySelector(`swiper-slide[extra-section='emoji']`)))
+    } else {
+      emojiField.value = store.state.extraUserData.emojiPfpCache
+    }
   }
+
+  emojiFieldAdaptColor()
+})
+
+onUnmounted(() => {
+  saveExtra()
 })
 </script>
 
@@ -183,11 +240,45 @@ onMounted(() => {
   pointer-events: all;
 }
 
+.appear-swiper-active {
+  transition: 0.5s opacity;
+  opacity: 0;
+}
+
+.swiper-slide-active .appear-swiper-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
 .add-pfp {
   background-color: var(--f7-md-primary-container);
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--f7-color-primary);
+}
+
+.emoji-field {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  font-size: 70px;
+  filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.156));
+  font-family: 'Arial';
+}
+
+.emoji-guide {
+  position: absolute;
+  left: calc(100% + 5px);
+  transition: 0.5s transform cubic-bezier(0.34, 1.56, 0.64, 1), 0.5s opacity cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: scale(0.5);
+  transform-origin: left;
+  opacity: 0;
+}
+
+.swiper-slide-active .emoji-guide {
+  transform: scale(1);
+  opacity: 0.5;
 }
 </style>
