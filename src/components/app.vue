@@ -5,7 +5,7 @@
     <f7-views tabs class="safe-areas">
       <!-- Tabbar for switching views-tabs -->
       <f7-toolbar tabbar icons bottom>
-        <f7-link tab-link="#view-home" tab-link-active icon-ios="f7:house" icon-md="material:home"
+        <f7-link tab-link="#view-home" @click="tabClick('/')" tab-link-active icon-ios="f7:house" icon-md="material:home"
           text="หน้าหลัก"></f7-link>
 
         <f7-link tab-link="#view-behavior" icon-ios="f7:asterisk_circle" icon-md="material:face"
@@ -141,6 +141,13 @@ const infoSubmitted = async () => {
 
 const closeInfoRegister = () => {
   f7.loginScreen.close()
+}
+
+const tabClick = (origin) => {
+  if (f7.view.main.router.currentRoute.path != origin) {
+    f7.view.main.router.navigate(origin)
+  }
+  //if (f7.view.router.currentRoute.url)
 }
 
 onMounted(() => {
