@@ -1,4 +1,5 @@
 import { compress, decompress } from "./compression.js"
+import { writeFile } from 'fs-web';
 
 export async function storeUserImage() {
     if (window.isNative) {
@@ -8,50 +9,28 @@ export async function storeUserImage() {
 }
 
 export async function pickMedia() {
-    if (window.isNative) {
+    return new Promise((resolve) => {
+        const input = document.createElement("input")
+        input.setAttribute("type", "file")
+        input.setAttribute("accept", "image/png, image/jpeg")
 
-    } else {
-        return new Promise((resolve) => {
-            const input = document.createElement("input")
-            input.setAttribute("type", "file")
-            input.setAttribute("accept", "image/png, image/jpeg")
+        input.click()
 
-            input.click()
+        const reader = new FileReader();
 
-            const reader = new FileReader();
+        reader.onload = async () => {
+            const contents = reader.result;
 
-            reader.onload = async () => {
-                const contents = reader.result;
-                console.log(contents)
+            await writeFile(`pfps/${new Date().getTime()}`, (await compress(contents, "gzip")))
+            resolve()
+        };
 
-                const decoder = new TextDecoder()
-                const encoder = new TextEncoder()
+        input.addEventListener("change", () => {
+            if (input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
 
-                const d = decoder.decode(await compress(contents, "gzip"))
-
-                console.log(d)
-
-                console.log("NXt-")
-
-                const e = encoder.encode(d)
-
-                console.log(e)
-
-                console.log("FINAL-")
-
-                const dd = await decompress(contents, "gzip")
-
-                console.log(dd)
-
-            };
-
-            input.addEventListener("change", () => {
-                if (input.files[0]) {
-                    reader.readAsDataURL(input.files[0]);
-                }
-
-                input.remove()
-            })
+            input.remove()
         })
-    }
+    })
 }

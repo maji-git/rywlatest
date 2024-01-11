@@ -83,6 +83,8 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
     document.querySelector("#theme-color-meta").setAttribute("content", "#121212")
 }
 
+var webFS
+
 async function preStartup() {
     Logger.info("Fetching app metadata...")
 
@@ -148,10 +150,10 @@ async function preStartup() {
 
     Logger.info("Loading user preferences...")
     try { await loadFromPreferences() } catch (err) { Logger.error("Failed to load user data", err) }
-    try { store.state.extraUserData = JSON.parse((await Preferences.get({key: "extraUserData"})).value) } catch (err) { Logger.error("Failed to load extra user data", err) }
+    try { store.state.extraUserData = JSON.parse((await Preferences.get({ key: "extraUserData" })).value) } catch (err) { Logger.error("Failed to load extra user data", err) }
 
     fixData()
-    
+
     app.config.globalProperties.emitter = emitter
 
     // Mount the app

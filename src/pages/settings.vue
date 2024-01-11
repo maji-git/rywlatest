@@ -13,13 +13,18 @@
           </button>-->
         </swiper-slide>
 
+        <!--<swiper-slide v-for="dpfp in extraPfps" extra-section="external" :source="dpfp.path"><img :src="dpfp.src" height="200">
+          <button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon>
+          </button>
+        </swiper-slide>-->
+
         <swiper-slide extra-section="emoji" class="flex-center-in rounded emoji-field-container"
           :style="{ 'background': emojiFieldBg }"><input type="text" class="emoji-field" v-model="emojiField"
           @input="emojiFieldChange" @change="emojiFieldChange">
         <img src="@/assets/doddles/pfpEmojiGuide.png" class="emoji-guide doddle" height="80" alt="">
         </swiper-slide>
 
-        <!--<swiper-slide add-pfp="ye" class="add-pfp" @click="addPfpRequest"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
+        <!--<swiper-slide add-pfp="ye" class="add-pfp rounded" @click="addPfpRequest"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
             size="60"></f7-icon></swiper-slide>-->
       </swiper-container>
 
@@ -72,6 +77,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import { clearAuthState, saveToPreferences } from "@/js/lib/stdsession.js"
+import { pickMedia } from "@/js/utils/files.js"
 import { adjustBrightness } from '@/js/utils/color';
 import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
@@ -79,8 +85,11 @@ import { Preferences } from "@capacitor/preferences";
 const userData = useStore(store, "userData")
 import Logger from "js-logger"
 import { generatePalette } from "emoji-palette";
+import { compress, decompress } from "@/js/utils/compression.js"
+import { readdir, readFile } from 'fs-web';
 
 const swipePfp = ref(null)
+const extraPfps = ref([])
 const emojiField = ref("😉")
 const emojiFieldBg = ref("var(--f7-md-primary-container)")
 
@@ -167,12 +176,27 @@ const saveExtra = () => {
   Preferences.set({ key: "extraUserData", value: JSON.stringify(store.state.extraUserData) })
 }
 
-/*
-const addPfpRequest = () => {
-  console.log("ADD!")
-  pickMedia()
+const addPfpRequest = async () => {
+  await pickMedia()
+  listPfps()
 }
-*/
+
+const listPfps = async () => {
+  const pfps = await readdir("pfps")
+  console.log(pfps)
+
+  extraPfps.value = []
+
+  for (const pf of pfps) {
+    console.log(pf.path)
+    console.log((await readFile(pf.path)))
+    console.log((await decompress((await readFile(pf.path)), "gzip")))
+    extraPfps.value.push({
+      path: pf.path,
+      src: (await decompress((await readFile(pf.path)), "gzip"))
+    })
+  }
+}
 
 onMounted(() => {
   if (swipePfp.value) {
@@ -192,6 +216,8 @@ onMounted(() => {
       emojiField.value = store.state.extraUserData.emojiPfpCache
     }
   }
+
+  //listPfps()
 
   emojiFieldAdaptColor()
 })

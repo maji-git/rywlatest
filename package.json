@@ -51,6 +51,7 @@
     "framework7": "^8.3.0",
     "framework7-icons": "^5.0.5",
     "framework7-vue": "^8.3.0",
+    "fs-web": "^1.0.1",
     "html2pdf.js": "^0.10.1",
     "ics": "^3.7.2",
     "jetifier": "^2.0.0",
