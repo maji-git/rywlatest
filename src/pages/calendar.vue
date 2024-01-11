@@ -52,41 +52,37 @@
 
         <f7-sheet id="event-info" backdrop swipe-to-close swipe-to-step style="height: auto;">
 
-            <div class="sheet-modal-swipe-step" v-if="previewEventInfo">
-                <f7-block>
-                    <div class="block">
-                        <h1 class="m-0">{{ decodeHTMLEntities(previewEventInfo.displayTitle ?? previewEventInfo.title) }}</h1>
-                        <p>
-                            <span>{{ previewEventInfo.start_date_details.day }} {{
-                                monthsName[previewEventInfo.start_date_details.month - 1] }} {{
-        previewEventInfo.start_date_details.year }}</span>
-
-                            <span v-if="previewEventInfo.start_date_details.day != previewEventInfo.end_date_details.day">
-                                <span class="ms-2 me-2">-</span>
-
-                                <span>{{ previewEventInfo.end_date_details.day }} {{
-                                    monthsName[previewEventInfo.end_date_details.month - 1] }} {{
-        previewEventInfo.end_date_details.year }}</span>
-                            </span>
-                        </p>
+            <div class="sheet-modal-swipe-step">
+                <div v-if="previewEventInfo">
+                    <f7-block>
+                        <div class="block">
+                            <h1 class="m-0">{{ decodeHTMLEntities(previewEventInfo.displayTitle ?? previewEventInfo.title) }}</h1>
+                            <p>
+                                <span>{{ previewEventInfo.start_date_details.day }} {{
+                                    monthsName[previewEventInfo.start_date_details.month - 1] }} {{
+                            previewEventInfo.start_date_details.year }}</span>
+                                <span v-if="previewEventInfo.start_date_details.day != previewEventInfo.end_date_details.day">
+                                    <span class="ms-2 me-2">-</span>
+                                    <span>{{ previewEventInfo.end_date_details.day }} {{
+                                        monthsName[previewEventInfo.end_date_details.month - 1] }} {{
+                            previewEventInfo.end_date_details.year }}</span>
+                                </span>
+                            </p>
+                        </div>
+                    </f7-block>
+                    <f7-block class="mb-3" inset strong outline-ios v-html="previewEventInfo.description"></f7-block>
+                    <div class="grid grid-cols-2 grid-gap block mt-0">
+                        <f7-button tonal color="red" class="block-action-btn" @click="addToCalendar(previewEventInfo)">
+                            <f7-icon material="event"></f7-icon>
+                            <p>เพิ่มกิจกรรมบนปฏิทิน</p>
+                        </f7-button>
+                        <f7-button tonal color="blue" class="block-action-btn" @click="openSite(previewEventInfo.url)">
+                            <f7-icon material="web"></f7-icon>
+                            <p>เปิดหน้าเว็บ</p>
+                        </f7-button>
                     </div>
-                </f7-block>
-                <f7-block class="mb-3" inset strong outline-ios v-html="previewEventInfo.description"></f7-block>
-
-                <div class="grid grid-cols-2 grid-gap block mt-0">
-
-                    <f7-button tonal color="red" class="block-action-btn" @click="addToCalendar(previewEventInfo)">
-                        <f7-icon material="event"></f7-icon>
-                        <p>เพิ่มกิจกรรมบนปฏิทิน</p>
-                    </f7-button>
-
-                    <f7-button tonal color="blue" class="block-action-btn" @click="openSite(previewEventInfo.url)">
-                        <f7-icon material="web"></f7-icon>
-                        <p>เปิดหน้าเว็บ</p>
-                    </f7-button>
+                    <br />
                 </div>
-
-                <br />
             </div>
         </f7-sheet>
     </f7-page>
