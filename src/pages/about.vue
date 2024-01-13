@@ -1,7 +1,7 @@
 <template>
   <f7-page name="about">
     <f7-navbar title="เกี่ยวกับแอพนี้" back-link="ย้อนกลับ"></f7-navbar>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <f7-block>
@@ -18,9 +18,13 @@
               &nbsp;&nbsp;&nbsp;&nbsp;แอพนี้เป็นแอพที่เปิดให้ใช้ได้กับเพื่อนๆ ระยองวิทย์ทุกคน โดยไม่แสวงหาผลกำไร สำหรับใครที่สนใจในตัวโค้ด สามารถหาได้บน <f7-link @click="openSite('https://github.com/SK-Fast/rywlatest')">Github</f7-link>
             </p>
             <p>
-              &nbsp;&nbsp;&nbsp;&nbsp;แอพพัฒนาโดยเด็กชายธรรมจิตร กล่ำจันทร์ คับผม :>
+              &nbsp;&nbsp;&nbsp;&nbsp;แอพพัฒนาโดยปกป้อง คับผม :>
             </p>
             <p>เขียนด้วย Framework7 Vue, Capacitor. ซอฟต์แวร์ License บนสัญญาอนุญาต MIT</p>
+
+            <div class="text-center">
+              <f7-link @click="openSite('https://github.com/SK-Fast/rywlatest')">Github</f7-link> • <f7-link @click="openSite('https://www.instagram.com/rywlatest/')">Instagram</f7-link>
+            </div>
         
           </f7-block>
           <page-end/>
