@@ -182,14 +182,10 @@ const addPfpRequest = async () => {
 
 const listPfps = async () => {
   const pfps = await readdir("pfps")
-  console.log(pfps)
 
   extraPfps.value = []
 
   for (const pf of pfps) {
-    console.log(pf.path)
-    console.log((await readFile(pf.path)))
-    console.log((await decompress((await readFile(pf.path)), "gzip")))
     extraPfps.value.push({
       path: pf.path,
       src: (await decompress((await readFile(pf.path)), "gzip"))

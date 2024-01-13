@@ -75,13 +75,8 @@ const store = createStore({
         </svg>
         `
 
-        console.log(svgData)
-
         return `data:image/svg+xml;base64,${btoa(svgData)}`
       }
-
-      console.log("RETURNING DEFAULT ", state.extraUserData.preferredPfp)
-      console.log("DATA ", state.extraUserData)
 
       return state.extraUserData.preferredPfp
     },
@@ -99,8 +94,7 @@ const store = createStore({
     setUserdata({ state }, data) {
       state.userData = data
       state.displayUserData = data
-      console.log("Display set", data)
-
+    
       if (window.appMounted) {
         useEmitter().emit("userDataRefresh")
       }

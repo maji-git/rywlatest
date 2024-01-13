@@ -375,8 +375,6 @@ export async function loadFromPreferences() {
             if (userdataCache.value) {
                 store.state.userData = JSON.parse(userdataCache.value)
                 store.state.displayUserData = store.state.userData
-                console.log("Display set _CACHE", store.state.displayUserData)
-
             }
         } catch (e) { Logger.warn(e) }
 

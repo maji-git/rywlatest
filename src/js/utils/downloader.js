@@ -48,7 +48,5 @@ export async function downloadFileBlob(targetURL, contentType) {
         blob = blob.slice(0, blob.size, contentType)
     }
 
-    console.log(blob)
-
     return blob
 }
