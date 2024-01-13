@@ -8,10 +8,7 @@
         class="pictures-swipe">
         <swiper-slide source="default"><img :src="`${userData.headshot}`" height="200"></swiper-slide>
 
-        <swiper-slide v-for="dpfp in store.state.defaultPfps" :source="dpfp"><img :src="dpfp" height="200">
-          <!--<button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon>
-          </button>-->
-        </swiper-slide>
+        <swiper-slide v-for="dpfp in store.state.defaultPfps" :source="dpfp"><img :src="dpfp" height="200"></swiper-slide>
 
         <!--<swiper-slide v-for="dpfp in extraPfps" extra-section="external" :source="dpfp.path"><img :src="dpfp.src" height="200">
           <button class="pfp-delete"> <f7-icon ios="f7:minus" md="material:remove" size="15" color="white"></f7-icon>
@@ -20,8 +17,8 @@
 
         <swiper-slide extra-section="emoji" class="flex-center-in rounded emoji-field-container"
           :style="{ 'background': emojiFieldBg }"><input type="text" class="emoji-field" v-model="emojiField"
-          @input="emojiFieldChange" @change="emojiFieldChange">
-        <img src="@/assets/doddles/pfpEmojiGuide.png" class="emoji-guide doddle" height="80" alt="">
+            @input="emojiFieldChange" @change="emojiFieldChange">
+          <img src="@/assets/doddles/pfpEmojiGuide.png" class="emoji-guide doddle" height="80" alt="">
         </swiper-slide>
 
         <!--<swiper-slide add-pfp="ye" class="add-pfp rounded" @click="addPfpRequest"><f7-icon ios="f7:plus_circle_fill" md="material:add_circle"
