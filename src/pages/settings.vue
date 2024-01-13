@@ -287,6 +287,7 @@ onUnmounted(() => {
   font-size: 70px;
   filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.156));
   font-family: 'Arial';
+  color: black;
 }
 
 .emoji-guide {
