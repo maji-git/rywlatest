@@ -13,6 +13,11 @@
           <f7-icon material="cloud_sync" color="teal">
           </f7-icon>
         </f7-link>
+
+        <f7-link class="external" @click="openFeedback">
+          <f7-icon material="rate_review" color="orange">
+          </f7-icon>
+        </f7-link>
       </f7-nav-left>
 
       <f7-nav-title class="text-center" sliding>RYW Latest</f7-nav-title>
@@ -153,6 +158,7 @@ import LogoTextDarkJSON from "@/assets/lottie/logo-text-dark.json"
 import { f7, useStore } from 'framework7-vue';
 import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
 import Logger from "js-logger"
+import platform from "platform"
 
 const openSite = async (url) => {
   await Browser.open({ url });
@@ -209,6 +215,33 @@ const loadBehaviour = async () => {
 
 const beforeLoadIn = () => {
   userPfp.value = store.getters.preferredPfp.value
+}
+
+const openFeedback = () => {
+  const formURL = new URL("https://docs.google.com/forms/d/e/1FAIpQLScEZgm8WwSJsS4BpqMNMna5kvtOGkJMxjdP5rlrVzlGYJ4x1Q/viewform")
+  formURL.searchParams.append("usp", "pp_url")
+
+  if (store.state.userData) {
+    formURL.searchParams.append("entry.1374260474", `มัธยมศึกษาปีที่ ${store.state.userData.mathayom}`)
+  }
+
+  let osField = "Unknown"
+
+  switch (platform.os.family) {
+    case "Android":
+      osField = "Android"
+      break;
+    case "iOS":
+      osField = "iOS"
+      break;
+  }
+
+  formURL.searchParams.append("entry.1467095533", osField)
+
+  formURL.searchParams.append("entry.1404173330", `${platform.name}/${platform.version}`)
+  formURL.searchParams.append("entry.1404398283", __APP_VERSION__)
+
+  openSite(formURL.toString())
 }
 
 const loadData = async (done) => {
