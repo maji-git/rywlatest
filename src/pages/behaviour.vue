@@ -65,7 +65,7 @@
                     </f7-navbar>
                     <f7-block>
                         <div class="block">
-                            <img v-if="previewData.evidence" class="img-field rounded" :src="previewData.evidence">
+                            <img v-if="previewData.evidence && !store.state.incognitoEnabled" class="img-field rounded" :src="previewData.evidence">
                             <f7-chip :text="previewData.consequence"
                                 :color="previewData.consequence == 'ตักเตือน' ? 'orange' : 'red'"></f7-chip>
                             <h1>{{ previewData.behaviour }}</h1>

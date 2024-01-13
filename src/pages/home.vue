@@ -167,7 +167,7 @@ const openTab = (path) => {
 }
 
 const newNotify = useStore('newNotify')
-const userData = useStore('userData')
+const userData = useStore('displayUserData')
 
 const targetLogoText = ref(LogoTextJSON)
 const annoucements = ref({})

@@ -16,7 +16,7 @@ export async function reauthenticate() {
     });
 
     if (store.state.userData == null) {
-        store.state.userData = {}
+        store.dispatch("setUserdata", {})
     }
 
     let sessionID = ""

@@ -79,7 +79,7 @@ import { adjustBrightness } from '@/js/utils/color';
 import store from '@/js/store.js';
 import { useStore, f7 } from "framework7-vue"
 import { Preferences } from "@capacitor/preferences";
-const userData = useStore(store, "userData")
+const userData = useStore(store, "displayUserData")
 import Logger from "js-logger"
 import { generatePalette } from "emoji-palette";
 import { compress, decompress } from "@/js/utils/compression.js"
@@ -120,6 +120,8 @@ const clearUserdata = () => {
   f7.dialog.confirm("คุณต้องการที่จะลงชื่อออกหรือไม่?", async () => {
     f7.dialog.close()
     store.state.userData = null
+    store.state.displayUserData = null
+
     clearAuthState()
     await saveToPreferences()
 

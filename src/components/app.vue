@@ -125,7 +125,7 @@ const infoSubmitted = async () => {
   if (studentData['firstname'] != "") {
     f7.dialog.confirm(`คุณใช่ ${studentData.firstname} ${studentData.surname} จากห้อง ${studentData.mathayom}/${studentData.room} หรือไม่?`, () => {
       f7.toast.create({ text: "บันทึกข้อมูลเสร็จสิ้น!", closeTimeout: 2000, closeButton: true }).open()
-      store.state.userData = studentData
+      store.dispatch("setUserdata", studentData)
       Preferences.set({ key: "landingDone", value: "1" })
       saveToPreferences()
 

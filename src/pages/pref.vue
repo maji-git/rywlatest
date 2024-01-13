@@ -14,6 +14,12 @@
                     </template>
                 </f7-list-item>
 
+                <f7-list-item title="ซ่อนข้อมูลส่วนตัว">
+                    <template #after>
+                        <f7-toggle class="no-fastclick" v-model:checked="incognitoToggle" @click="onIncognitoToggled" />
+                    </template>
+                </f7-list-item>
+
                 <f7-list-item accordion-item title="สำหรับผู้พัฒนา">
                     <f7-accordion>
                         <f7-accordion-item>
@@ -42,6 +48,7 @@ import { enableNotify, disableNotify } from '@/js/services/notifications.js';
 import store from '@/js/store.js';
 
 const notifyUserToggle = ref(false)
+const incognitoToggle = ref(false)
 
 const rerunApp = () => {
     location.reload()
@@ -58,9 +65,37 @@ const onNotifyToggled = async () => {
     }
 }
 
+const onIncognitoToggled = async () => {
+    const val = !incognitoToggle.value
+
+    store.state.incognitoEnabled = val
+
+    if (val) {
+        store.state.displayUserData = {
+            sessionID: "<>",
+            headshot: "/external-assets/pfp/incognito.png",
+            firstname: "ไม่ระบุชื่อ",
+            surname: "",
+            mathayom: 1,
+            room: 0,
+            no: 0,
+            studentID: 0,
+            classPlan: "ปกติ",
+            classTeachers: ["ครู"],
+            nationalID: 0
+        }
+    } else {
+        store.state.displayUserData = store.state.userData
+    }
+}
+
 const prefStateLoad = () => {
     if (store.state.notify.enabled) {
         notifyUserToggle.value = true
+    }
+
+    if (store.state.incognitoEnabled) {
+        incognitoToggle.value = true
     }
 }
 </script>

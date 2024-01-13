@@ -7,6 +7,7 @@ import { encode } from 'html-entities';
 const store = createStore({
   state: {
     userData: null,
+    displayUserData: null,
     extraUserData: {
       preferredPfp: "default",
       preferredPfpType: "image",
@@ -36,7 +37,8 @@ const store = createStore({
     newNotify: false,
     teacherData: null,
     defaultPfps: ["/external-assets/pfp/cat.png", "/external-assets/pfp/dog.png", "/external-assets/pfp/capy.png"],
-    notifyVapidKey: "BM9D5rXwYlVApFKH9Dh80aieKWQVhplozvTMNJ-3P3p_07-sizoKzttMouKO4_kEgxgcI6WqwlBq5-uF-yCOo4s"
+    notifyVapidKey: "BM9D5rXwYlVApFKH9Dh80aieKWQVhplozvTMNJ-3P3p_07-sizoKzttMouKO4_kEgxgcI6WqwlBq5-uF-yCOo4s",
+    incognitoEnabled: false
   },
   getters: {
     userData({ state }) {
@@ -45,10 +47,13 @@ const store = createStore({
       }
       return state.userData;
     },
+    displayUserData({ state }) {
+      return state.displayUserData;
+    },
     preferredPfp({ state }) {
       if (state.extraUserData.preferredPfp == "default") {
-        if (state.userData) {
-          return state.userData["headshot"]
+        if (state.displayUserData) {
+          return state.displayUserData["headshot"]
         } else {
           return
         }
@@ -92,7 +97,9 @@ const store = createStore({
   },
   actions: {
     setUserdata({ state }, data) {
-      state.userData = data;
+      state.userData = data
+      state.displayUserData = data
+      console.log("Display set", data)
 
       if (window.appMounted) {
         useEmitter().emit("userDataRefresh")
