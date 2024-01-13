@@ -3,19 +3,21 @@
 
     <f7-navbar large :sliding="false">
       <f7-nav-left>
+        <!--
         <f7-link href="/notifications/" v-if="isNative">
           <f7-icon ios="f7:bell" md="material:notifications">
             <f7-badge color="red" v-if="newNotify"></f7-badge>
           </f7-icon>
         </f7-link>
+        -->
 
-        <f7-link popup-open="#proxy-popup" v-else>
+        <f7-link popup-open="#proxy-popup" v-if="!isNative">
           <f7-icon material="cloud_sync" color="teal">
           </f7-icon>
         </f7-link>
 
         <f7-link class="external" @click="openFeedback">
-          <f7-icon material="rate_review" color="orange">
+          <f7-icon material="rate_review">
           </f7-icon>
         </f7-link>
       </f7-nav-left>
