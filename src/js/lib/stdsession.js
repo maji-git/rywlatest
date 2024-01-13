@@ -6,6 +6,7 @@ import { thaiToDate } from '../utils/date';
 import { SecureStoragePlugin } from 'capacitor-secure-storage-plugin';
 import { Preferences } from "@capacitor/preferences"
 import Logger from 'js-logger';
+import QRCode from 'qrcode'
 
 export async function reauthenticate() {
     if (store.state.authData.username == "" || store.state.authData.password == "") {
@@ -66,7 +67,17 @@ export async function getDocPDF(targetURL) {
             i++
             prog.setProgress((i / queryAll.length) * 100)
 
-            let targetURL = imgs.src.replace("http://192.168.1.170:5173/", "https://rayongwit.ac.th/").replace("../", "https://rayongwit.ac.th/")
+            if (imgs.src.startsWith("https://chart.googleapis.com/")) {
+                const parsed = new URL(imgs.src)
+                const res = (parsed.searchParams.get("chs") ?? "120x120").split("x")
+                imgs.src = (await QRCode.toDataURL(parsed.searchParams.get("chl")))
+                imgs.width = res[0]
+                imgs.height = res[1]
+            } else {
+                imgs.src = imgs.src.replace("http://192.168.1.170:5173/", "https://rayongwit.ac.th/").replace("../", "https://rayongwit.ac.th/")
+            }
+
+            let targetURL = imgs.src
             imgs.setAttribute("onerror", "this.src=&quot;https://rayongwit.ac.th/ticket/pic/no-pic.JPG&quot;;")
 
             if (targetURL.includes("logo.png")) {
