@@ -1,6 +1,10 @@
 import { CapacitorHttp } from '@capacitor/core';
 
 export async function downloadFile(targetURL) {
+    if (targetURL.startsWith("data")) {
+        return targetURL
+    }
+
     let destination = targetURL
     if (!window.isNative) {
         destination = destination.replace("https://rayongwit.ac.th", window.rywlAPIs.main + "/serve")
