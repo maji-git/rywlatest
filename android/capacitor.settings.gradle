@@ -50,8 +50,5 @@ project(':capawesome-capacitor-app-update').projectDir = new File('../node_modul
 include ':capacitor-blob-writer'
 project(':capacitor-blob-writer').projectDir = new File('../node_modules/capacitor-blob-writer/android')
 
-include ':capacitor-document-scanner'
-project(':capacitor-document-scanner').projectDir = new File('../node_modules/capacitor-document-scanner/android')
-
 include ':capacitor-secure-storage-plugin'
 project(':capacitor-secure-storage-plugin').projectDir = new File('../node_modules/capacitor-secure-storage-plugin/android')
