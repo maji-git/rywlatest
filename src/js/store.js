@@ -35,7 +35,7 @@ const store = createStore({
     ],
     newNotify: false,
     teacherData: null,
-    defaultPfps: ["/external-assets/pfp/cat.png", "/external-assets/pfp/dog.png", "/external-assets/pfp/josh.png"],
+    defaultPfps: ["/external-assets/pfp/cat.png", "/external-assets/pfp/dog.png", "/external-assets/pfp/capy.png"],
     notifyVapidKey: "BM9D5rXwYlVApFKH9Dh80aieKWQVhplozvTMNJ-3P3p_07-sizoKzttMouKO4_kEgxgcI6WqwlBq5-uF-yCOo4s"
   },
   getters: {
