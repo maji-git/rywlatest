@@ -2,6 +2,7 @@ import { Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener"
 import { Media } from "@capacitor-community/media"
 import { dataURItoBlob } from "./downloader.js";
+import { Browser } from '@capacitor/browser';
 
 export async function openBlob(blob, filename = "rywl-file") {
     const { saveAs } = await import('file-saver')
@@ -47,4 +48,12 @@ export function rawToBlob(data, contentType) {
     return new Blob([data], {
         type: contentType
     })
+}
+
+export function openSite(url) {
+    if (window.isNative) {
+        Browser.open({ url });
+    } else {
+        window.open(url, "_blank")
+    }
 }

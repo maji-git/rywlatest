@@ -35,14 +35,10 @@
 </template>
 
 <script setup>
-import { Browser } from '@capacitor/browser';
+import { openSite } from "@/js/utils/opener.js"
 import { ref } from 'vue';
 
 const appVersion = ref(__APP_VERSION__)
-
-const openSite = async (url) => {
-  await Browser.open({ url });
-}
 </script>
 
 <style scoped>

@@ -17,11 +17,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getAnnouncements } from "@/js/lib/announcements.js"
-import { Browser } from '@capacitor/browser';
-
-const openSite = async (url) => {
-  await Browser.open({ url });
-}
+import { openSite } from "@/js/utils/opener.js"
 
 const annoucements = ref({})
 const isLoaded = ref(false)

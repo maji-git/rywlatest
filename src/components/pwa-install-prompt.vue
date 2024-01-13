@@ -51,12 +51,7 @@
 </template>
 
 <script setup>
-import { Browser } from '@capacitor/browser';
-
-const openSite = async (url) => {
-  await Browser.open({ url });
-}
-
+import { openSite } from "@/js/utils/opener.js"
 </script>
 
 <style scoped>

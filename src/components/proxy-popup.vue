@@ -40,12 +40,8 @@
 </template>
 
 <script setup>
-import { Browser } from '@capacitor/browser';
+import { openSite } from "@/js/utils/opener.js"
 import { ref } from 'vue';
 
 const serverURL = ref(window.rywlAPIs.main)
-
-const openSite = async (url) => {
-  await Browser.open({ url });
-}
 </script>

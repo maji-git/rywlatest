@@ -150,7 +150,7 @@
 import { onMounted, ref } from "vue";
 import { getAnnouncements, getBanners } from "@/js/lib/announcements.js"
 import { getBehaviourData, getAttendees } from "@/js/lib/stdsession.js"
-import { Browser } from '@capacitor/browser';
+import { openSite } from "@/js/utils/opener.js"
 import store from '@/js/store.js';
 import { LottieAnimation } from "lottie-web-vue"
 import LogoTextJSON from "@/assets/lottie/logo-text.json"
@@ -159,10 +159,6 @@ import { f7, useStore } from 'framework7-vue';
 import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
 import Logger from "js-logger"
 import platform from "platform"
-
-const openSite = async (url) => {
-  await Browser.open({ url });
-}
 
 const openRoute = (path) => {
   f7.view.main.router.navigate(path)

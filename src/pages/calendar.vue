@@ -95,17 +95,13 @@ import { decodeHTMLEntities } from "@/js/utils/text.js"
 import { dateDiffInDays } from "@/js/utils/date.js"
 import { rawToBlob, openBlob } from "@/js/utils/opener.js"
 
-import { Browser } from '@capacitor/browser';
+import { openSite } from "@/js/utils/opener.js"
 import { f7 } from "framework7-vue";
 import store from '@/js/store.js';
 import Logger from "js-logger";
 
 const previewEventInfo = ref(null)
 const datepicker = ref()
-
-const openSite = async (url) => {
-    await Browser.open({ url });
-}
 
 const previewEvent = (event) => {
     previewEventInfo.value = event
