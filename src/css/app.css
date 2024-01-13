@@ -252,15 +252,21 @@ img:not(.img-uncopyable) {
 }
 
 .sheet-backdrop, .popup-backdrop {
-    animation: fadeIn 0.5s;
-}
-
-.backdrop-in {
-    animation: fadeIn 0.5s;
+    animation: fadeInBackdrop 0.5s;
 }
 
 .ios .backdrop-in {
     opacity: 0.25;
+}
+
+@keyframes fadeInBackdrop {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.25;
+    }
 }
 
 .ios .sheet-modal.modal-in {
