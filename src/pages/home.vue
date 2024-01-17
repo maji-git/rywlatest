@@ -102,6 +102,16 @@
       </div>
     </f7-block>
 
+    <f7-block class="mb-0 pb-0 pt-0 mt-2">
+      <div v-if="store.state.iframeApps" v-for="ifApp in store.state.iframeApps">
+
+        <div class="row justify-content-center">
+          <iframe class="col-11 p-0 ifapp-banner" :src="`${ifApp.url}/banner.html`" frameborder="0" height="150" scrolling="no"></iframe>
+
+        </div>
+      </div>
+    </f7-block>
+
     <f7-block strong inset v-if="userData != null" @click="openTab('#view-behavior')">
       <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
       <h1
