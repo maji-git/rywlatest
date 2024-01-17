@@ -199,7 +199,7 @@ onMounted(() => {
         f7.popup.open("#landing-popup", true)
 
         if (window.isNative) {
-          Preferences.set({ key: "changelogLatest", value: appUpdateInfo.currentVersion.toString() })
+          Preferences.set({ key: "changelogLatest", value: __APP_VERSION__ })
         }
 
       } else if (notifyPrompted.value !== "1") {
@@ -214,7 +214,7 @@ onMounted(() => {
           } else {
             const prefChangelog = await Preferences.get({ key: "changelogLatest" })
 
-            if (prefChangelog.value != appUpdateInfo.currentVersion) {
+            if (prefChangelog.value != __APP_VERSION__) {
               f7.popup.open("#changelogs-popup")
             }
           }
