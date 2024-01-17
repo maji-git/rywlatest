@@ -41,7 +41,7 @@ npm run dev
 
 <div align="center">
 
-[devpixels.xyz](https://devpixels.xyz)
+[himaji.xyz](https://himaji.xyz)
 •
 [rayongwit.ac.th](https://rayongwit.ac.th)
 
