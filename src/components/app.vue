@@ -31,6 +31,7 @@
     <ChangelogsPopup />
     <ProxyPopup />
     <PwaInstallPrompt />
+    <IfAppContainer />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -66,6 +67,7 @@ import LandingPopup from "./landing.vue"
 import NotifyPopup from "./notify-popup.vue"
 import UpdatePopup from "./update-popup.vue"
 import ProxyPopup from "./proxy-popup.vue"
+import IfAppContainer from "./ifapp.vue"
 import ChangelogsPopup from "./changelogs-notice.vue"
 import PwaInstallPrompt from "./pwa-install-prompt.vue"
 import { AppUpdate } from '@capawesome/capacitor-app-update';

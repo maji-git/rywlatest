@@ -103,7 +103,7 @@
     </f7-block>
 
     <f7-block class="mb-0 pb-0 pt-0 mt-2">
-      <div v-if="store.state.iframeApps" v-for="ifApp in store.state.iframeApps">
+      <div v-if="store.state.iframeApps" v-for="ifApp in store.state.iframeApps" @click="emitter.emit('ifAppLaunch', ifApp.url)">
 
         <div class="row justify-content-center">
           <iframe class="col-11 p-0 ifapp-banner" :src="`${ifApp.url}/banner.html`" frameborder="0" height="150" scrolling="no"></iframe>
@@ -171,6 +171,9 @@ import { f7, useStore } from 'framework7-vue';
 import { loadPrefs as notifyLoadPrefs } from "@/js/services/notifications.js"
 import Logger from "js-logger"
 import platform from "platform"
+import { useEmitter } from '@/js/composables/events.js'
+
+const emitter = useEmitter()
 
 const openRoute = (path) => {
   f7.view.main.router.navigate(path)

@@ -43,7 +43,7 @@ Framework7.use(Framework7Vue);
 // Init App
 const app = createApp(App);
 
-const RYWL_SERVER_URL = "http://127.0.0.1:8080" //"https://rywlatest.web.app"
+const RYWL_SERVER_URL = "http://192.168.1.170:8080" // "http://127.0.0.1:8080" //"https://rywlatest.web.app"
 
 // Register Framework7 Vue components
 registerComponents(app);
