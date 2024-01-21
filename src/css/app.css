@@ -421,3 +421,11 @@ img:not(.img-uncopyable) {
     overflow: hidden;
     pointer-events: none;
 }
+
+.dialog-text {
+    word-wrap: break-word;
+}
+
+code {
+    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
+}

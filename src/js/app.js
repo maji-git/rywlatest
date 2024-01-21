@@ -34,6 +34,7 @@ import { fixData } from './datafix.js';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { setUserProperty } from './services/analytics.js';
+import { adaptStatusbar } from './utils/app-theme.js';
 
 const emitter = mitt();
 
@@ -80,12 +81,7 @@ const socialUserAgent = {
     "ig": "Instagram"
 }
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    window.darkMode = true
-    document.querySelector("#theme-color-meta").setAttribute("content", "#121212")
-}
-
-var webFS
+adaptStatusbar()
 
 async function preStartup() {
     Logger.info("Fetching app metadata...")
