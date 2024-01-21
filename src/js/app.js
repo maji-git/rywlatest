@@ -34,6 +34,7 @@ import { fixData } from './datafix.js';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { setUserProperty } from './services/analytics.js';
+import { adaptStatusbar } from './utils/app-theme.js';
 
 const emitter = mitt();
 
@@ -42,6 +43,8 @@ Framework7.use(Framework7Vue);
 
 // Init App
 const app = createApp(App);
+
+const RYWL_SERVER_URL = "http://192.168.1.170:8080" // "http://127.0.0.1:8080" //"https://rywlatest.web.app"
 
 // Register Framework7 Vue components
 registerComponents(app);
@@ -78,17 +81,12 @@ const socialUserAgent = {
     "ig": "Instagram"
 }
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    window.darkMode = true
-    document.querySelector("#theme-color-meta").setAttribute("content", "#121212")
-}
-
-var webFS
+adaptStatusbar()
 
 async function preStartup() {
     Logger.info("Fetching app metadata...")
 
-    const res = await fetch("https://rywlatest.web.app/app/meta.json")
+    const res = await fetch(`${RYWL_SERVER_URL}/app/meta.json`)
     const metadata = await res.json()
 
     Logger.info("Running on", platform.name)
@@ -120,14 +118,14 @@ async function preStartup() {
 
         window.rywlAPIs = {
             main: "https://rayongwit.ac.th",
-            rywl: "https://rywlatest.web.app",
+            rywl: RYWL_SERVER_URL,
         }
     } else {
         Logger.info("Connecting via Proxy...")
 
         window.rywlAPIs = {
             main: "https://rywproxy.deno.dev",
-            rywl: "https://rywlatest.web.app",
+            rywl: RYWL_SERVER_URL,
         }
 
         window.rywlUseProxy = true

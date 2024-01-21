@@ -415,3 +415,17 @@ img:not(.img-uncopyable) {
     justify-content: center;
     align-items: center;
 }
+
+.ifapp-banner {
+    border-radius: 8px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.dialog-text {
+    word-wrap: break-word;
+}
+
+code {
+    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
+}
