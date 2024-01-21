@@ -31,6 +31,9 @@
                                     <f7-list-button tonal popup-open="#notify-popup">เปิด Notifications
                                         Prompt</f7-list-button>
                                     <f7-list-button tonal popup-open="#changelogs-popup">เปิด Chagelogs</f7-list-button>
+
+                                    <f7-list-input type="text" label="RYWL IframeApp URLs (Seperate with comma)" :value="rywlIfAppURLS" @input="rywlIfAppURLS = $event.target.value">
+                                    </f7-list-input>
                                 </f7-list>
                             </f7-accordion-content>
                         </f7-accordion-item>
@@ -43,12 +46,33 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { enableNotify, disableNotify } from '@/js/services/notifications.js';
 import store from '@/js/store.js';
 
 const notifyUserToggle = ref(false)
 const incognitoToggle = ref(false)
+
+const rywlIfAppURLS = ref("")
+
+onMounted(() => {
+    let sepd = ""
+
+    for (const d of store.state.iframeApps) {
+        sepd += d.url + ","
+    }
+
+    rywlIfAppURLS.value = sepd
+})
+
+onUnmounted(() => {
+    store.state.iframeApps = []
+    for (const durl of rywlIfAppURLS.value.split(",")) {
+        if (durl.trim().length != 0) {
+            store.state.iframeApps.push({url: durl})
+        }
+    }
+})
 
 const rerunApp = () => {
     location.reload()
