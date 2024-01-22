@@ -103,7 +103,7 @@
     </f7-block>
 
     <f7-block class="mb-0 pb-0 pt-0 mt-2">
-      <div class="mb-3" v-if="store.state.iframeApps" v-for="ifApp in store.state.iframeApps" @click="emitter.emit('ifAppLaunch', ifApp.url)">
+      <div class="mb-3" v-if="store.state.iframeApps" v-for="ifApp in iframeApps" @click="emitter.emit('ifAppLaunch', ifApp.url)">
 
         <div class="row justify-content-center">
           <iframe class="col-11 p-0 ifapp-banner" :src="`${ifApp.url}/banner.html`" frameborder="0" height="150" scrolling="no"></iframe>
@@ -183,8 +183,8 @@ const openTab = (path) => {
   f7.tab.show(path)
 }
 
-const newNotify = useStore('newNotify')
 const userData = useStore('displayUserData')
+const iframeApps = useStore('iframeApps')
 
 const targetLogoText = ref(LogoTextJSON)
 const annoucements = ref({})

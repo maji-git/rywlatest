@@ -42,10 +42,10 @@ const store = createStore({
   },
   getters: {
     userData({ state }) {
-      if (state.userData == null) {
-        return null
-      }
       return state.userData;
+    },
+    iframeApps({ state }) {
+      return state.iframeApps;
     },
     displayUserData({ state }) {
       return state.displayUserData;
