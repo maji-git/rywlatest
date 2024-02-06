@@ -22,7 +22,7 @@
                         <f7-gauge value-text-color="#FF7A00" v-if="behaviourFixData && !behaviourFixData.status"
                             value-font-size="60" type="circle" :value="behaviourFixData.fixed / behaviourFixData.score"
                             size="300" border-bg-color="#FF7A00" border-color="#3CDB83" border-width="7"
-                            :value-text="`${(behaviourFixData.fixed / behaviourFixData.score) * 100}%`"
+                            :value-text="`${Math.round((behaviourFixData.fixed / behaviourFixData.score) * 100)}%`"
                             :label-text="`คะแนนที่แก้ไขแล้ว (${behaviourFixData.fixed}/${behaviourFixData.score})`" />
                     </div>
 
