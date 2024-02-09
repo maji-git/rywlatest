@@ -102,16 +102,6 @@
       </div>
     </f7-block>
 
-    <f7-block class="mb-0 pb-0 pt-0 mt-2">
-      <div class="mb-3" v-if="store.state.iframeApps" v-for="ifApp in iframeApps" @click="emitter.emit('ifAppLaunch', ifApp.url)">
-
-        <div class="row justify-content-center">
-          <iframe class="col-11 p-0 ifapp-banner" :src="`${ifApp.url}/banner.html`" frameborder="0" height="150" scrolling="no"></iframe>
-
-        </div>
-      </div>
-    </f7-block>
-
     <f7-block strong inset v-if="userData != null" @click="openTab('#view-behavior')">
       <f7-block-title>คะแนนพฤติกรรม</f7-block-title>
       <h1
@@ -132,6 +122,16 @@
       <h1 v-if="checkedIn == false && isLoading == false" style="color: var(--f7-color-deeporange);"><f7-icon
           material="error" size="30"></f7-icon> ยังไม่ได้บันทึก</h1>
       <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
+    </f7-block>
+
+    <f7-block class="mb-0 pb-0 pt-0 mt-2">
+      <div class="mb-3" v-if="store.state.iframeApps" v-for="ifApp in iframeApps" @click="emitter.emit('ifAppLaunch', ifApp.url)">
+
+        <div class="row justify-content-center">
+          <iframe class="col-11 p-0 ifapp-banner" :src="`${ifApp.url}/banner.html`" frameborder="0" height="150" scrolling="no"></iframe>
+
+        </div>
+      </div>
     </f7-block>
 
     <div v-if="isNative">
