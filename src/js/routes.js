@@ -1,11 +1,8 @@
 
 import HomePage from '../pages/home.vue';
 import AboutPage from '../pages/about.vue';
-import FormPage from '../pages/form.vue';
 import SettingsPage from '../pages/settings.vue';
 
-import DynamicRoutePage from '../pages/dynamic-route.vue';
-import RequestAndLoad from '../pages/request-and-load.vue';
 import NotFoundPage from '../pages/404.vue';
 
 import NewsPage from '../pages/news.vue';

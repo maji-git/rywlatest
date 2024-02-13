@@ -23,7 +23,7 @@
             <p>เขียนด้วย Framework7 Vue, Capacitor. ซอฟต์แวร์ License บนสัญญาอนุญาต MIT</p>
 
             <div class="text-center">
-              <f7-link @click="openSite('https://github.com/SK-Fast/rywlatest')">Github</f7-link> • <f7-link @click="openSite('https://www.instagram.com/rywlatest/')">Instagram</f7-link>
+              <f7-link @click="openSite('https://github.com/SK-Fast/rywlatest')">Github</f7-link> • <f7-link @click="openSite('https://www.instagram.com/rywlatest/')">Instagram</f7-link> • <f7-link popup-open="#classtimeleft-modal">??</f7-link>
             </div>
         
           </f7-block>

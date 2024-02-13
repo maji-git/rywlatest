@@ -32,6 +32,7 @@
     <ProxyPopup />
     <PwaInstallPrompt />
     <IfAppContainer />
+    <ClassTimeLeft />
 
     <f7-login-screen id="info-register-screen">
       <f7-view>
@@ -70,6 +71,7 @@ import ProxyPopup from "./proxy-popup.vue"
 import IfAppContainer from "./ifapp.vue"
 import ChangelogsPopup from "./changelogs-notice.vue"
 import PwaInstallPrompt from "./pwa-install-prompt.vue"
+import ClassTimeLeft from "./class-time-left.vue"
 import { AppUpdate } from '@capawesome/capacitor-app-update';
 
 import { getDevice } from 'framework7/lite-bundle';
