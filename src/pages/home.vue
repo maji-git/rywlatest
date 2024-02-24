@@ -124,6 +124,17 @@
       <h1 v-if="!checkedIn && isLoading" style="color: var(--f7-md-secondary);">กำลังโหลด</h1>
     </f7-block>
 
+    <f7-block strong inset v-if="userData != null">
+      <f7-block-title>ห้องเรียนห้องต่อไป</f7-block-title>
+      <h1
+      :style="`color: ${currSubject == 'เวลานอกตาราง' ? 'var(--f7-color-deeporange)' : 'var(--f7-color-teal)'};`"
+      >
+        <f7-icon v-if="currSubject == 'เวลานอกตาราง'"
+          material="error" size="30"></f7-icon>
+        {{ currSubject }}
+      </h1>
+    </f7-block>
+
     <div v-if="isNative">
       <f7-block-title>ข่าวสารโรงเรียน</f7-block-title>
       <div class="text-align-center" v-if="isLoading">
@@ -149,9 +160,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { getAnnouncements, getBanners } from "@/js/lib/announcements.js"
-import { getBehaviourData, getAttendees } from "@/js/lib/stdsession.js"
+import { getBehaviourData, getAttendees, getTimetableData } from "@/js/lib/stdsession.js"
 import { openSite } from "@/js/utils/opener.js"
 import store from '@/js/store.js';
 import { LottieAnimation } from "lottie-web-vue"
@@ -176,6 +187,9 @@ const userData = useStore('displayUserData')
 const targetLogoText = ref(LogoTextJSON)
 const annoucements = ref({})
 const behaviourData = ref({})
+const timetableData = ref({})
+const timePeriod = ref('')
+const currSubject = ref('')
 const banners = ref([])
 const logoAnim = ref()
 const isLoading = ref(false)
@@ -209,6 +223,26 @@ const loadBehaviour = async () => {
       }
     } catch (err) { Logger.error(err) }
   }
+}
+
+const loadTimetable = async () => {
+  try { timetableData.value = await getTimetableData() } catch (err) { Logger.error(err) }
+  const today = new Date()
+  const totalMinutes = today.getHours() * 60 + today.getMinutes()
+  let period = Math.floor(totalMinutes - 500 / 50)
+  if (period < 0 || period > 10) period = -1
+  timePeriod.value = {
+    day: today.getDate() - 1,
+    period
+  }
+}
+
+const updateTimetable = () => {
+  if (timePeriod.period == -1 || isHoliday) {
+    currSubject.value = 'เวลานอกตาราง'
+    return;
+  }
+  currSubject.value = timetableData.value[`${userData.mathayom}/${userData.room}`]?.[timePeriod.day]?.[timePeriod.period]
 }
 
 const beforeLoadIn = () => {
@@ -264,6 +298,7 @@ const loadData = async (done) => {
 
   if (store.state.userData) {
     await loadBehaviour()
+    await loadTimetable()
   }
 
   if (window.isNative) {
@@ -286,5 +321,6 @@ onMounted(() => {
   }
 
   loadData()
+  updateTimetable()
 })
 </script>

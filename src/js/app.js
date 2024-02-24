@@ -118,9 +118,10 @@ async function preStartup() {
     if (app.config.globalProperties.isNative) {
         Logger.info("Connecting Directly...")
 
-        window.rywlAPIs = {
+        wlAPIs = {
             main: "https://rayongwit.ac.th",
             rywl: "https://rywlatest.web.app",
+            ryws: "http://rywscrape.netlify.app"
         }
     } else {
         Logger.info("Connecting via Proxy...")
@@ -128,6 +129,7 @@ async function preStartup() {
         window.rywlAPIs = {
             main: "https://rywproxy.deno.dev",
             rywl: "https://rywlatest.web.app",
+            ryws: "http://rywscrape.netlify.app"
         }
 
         window.rywlUseProxy = true

@@ -172,6 +172,11 @@ export async function getBehaviourData() {
     }
 }
 
+export async function getTimetableData() {
+    const res = await fetch(`${window.rywlAPIs.ryws}/timetables.json`)
+    return (await res.json())
+}
+
 export async function getTeachersTel() {
     const sessionID = await reauthenticate()
 
