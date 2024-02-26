@@ -118,7 +118,7 @@ async function preStartup() {
     if (app.config.globalProperties.isNative) {
         Logger.info("Connecting Directly...")
 
-        wlAPIs = {
+        window.rywlAPIs = {
             main: "https://rayongwit.ac.th",
             rywl: "https://rywlatest.web.app",
             ryws: "http://rywscrape.netlify.app"
