@@ -47,7 +47,7 @@
     "emoji-palette": "^0.0.3",
     "emoji-unicode": "^2.0.1",
     "file-saver": "^2.0.5",
-    "firebase": "^10.7.0",
+    "firebase": "^10.6.0",
     "framework7": "^8.3.0",
     "framework7-icons": "^5.0.5",
     "framework7-vue": "^8.3.0",
