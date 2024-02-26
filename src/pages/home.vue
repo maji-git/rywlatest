@@ -127,9 +127,9 @@
     <f7-block strong inset v-if="userData != null">
       <f7-block-title>ห้องเรียนห้องต่อไป</f7-block-title>
       <h1
-      :style="`color: ${currSubject == 'เวลานอกตาราง' ? 'var(--f7-color-deeporange)' : 'var(--f7-color-teal)'};`"
+      :style="`color: ${['เวลานอกตาราง', 'ห้องไม่ระบุในตารางเรียน'].includes(currSubject) ? 'var(--f7-color-deeporange)' : 'var(--f7-color-teal)'};`"
       >
-        <f7-icon v-if="currSubject == 'เวลานอกตาราง'"
+        <f7-icon v-if="['เวลานอกตาราง', 'ห้องไม่ระบุในตารางเรียน'].includes(currSubject)"
           material="error" size="30"></f7-icon>
         {{ currSubject }}
       </h1>
@@ -240,9 +240,10 @@ const loadTimetable = async () => {
 const updateTimetable = () => {
   if (timePeriod.period == -1 || isHoliday) {
     currSubject.value = 'เวลานอกตาราง'
-    return;
+    return
   }
   currSubject.value = timetableData.value[`${userData.mathayom}/${userData.room}`]?.[timePeriod.day]?.[timePeriod.period]
+  if (currSubject.value === "0") currSubject.value = "ห้องไม่ระบุในตารางเรียน"
 }
 
 const beforeLoadIn = () => {
