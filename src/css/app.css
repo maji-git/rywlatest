@@ -429,3 +429,9 @@ img:not(.img-uncopyable) {
 code {
     font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
 }
+
+#app {
+    height: 100%;
+    top: 0;
+    position: fixed;
+}
